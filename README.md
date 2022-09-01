@@ -452,9 +452,9 @@ for their source `.c` and header `.h` files:
 
 ## Sources
 
-[docs.w3cub.com/make](https://docs.w3cub.com/gnu_make/)
-[gnu.org/make/manual](https://www.gnu.org/software/make/manual/html_node)
-[makefiletutorial.com](https://makefiletutorial.com/)
+- **[docs.w3cub.com/make](https://docs.w3cub.com/gnu_make/)**
+- **[gnu.org/make/manual](https://www.gnu.org/software/make/manual/html_node)**
+- **[makefiletutorial.com](https://makefiletutorial.com/)**
 
 ## Todo
 
