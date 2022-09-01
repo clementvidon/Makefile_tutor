@@ -45,9 +45,9 @@ What we call a `rule` is made of:
 
 ## Templates
 
-- **[1.1 Makefile for basic C project](#1.1-Makefile-for-basic-C-project)**
-- **[1.2 Makefile for basic C project](#1.2-Makefile-for-basic-C-project)**
-- **[1.3 Makefile for basic C project](#1.3-Makefile-for-basic-C-project)**
+- **[1.1 Makefile for basic C project](#11-Makefile-for-basic-C-project)**
+- **[1.2 Makefile for basic C project](#12-Makefile-for-basic-C-project)**
+- **[1.3 Makefile for basic C project](#13-Makefile-for-basic-C-project)**
 
 ###     1.1 Makefile for basic C project.
 
