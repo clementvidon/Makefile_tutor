@@ -11,7 +11,7 @@
 	<span> · </span>
 	<a href="#Sources">Sources</a>
 	<span> · </span>
-	<a href="#Soon">Soon</a>
+	<a href="#Todo">Todo</a>
 </h3>
 
 ## Summary
@@ -36,16 +36,18 @@ What we call a `rule` is made of:
 - `prerequisites` are files required (dependencies) for the `rule` to execute
 - `recipe` are any lines that begins with a tab and appear in a "rule context"
 
+```
     target: prerequisite
         recipe line 1
         recipe line 2
         ...
+```
 
 ## Templates
 
--[1.1 Makefile for basic C project](#1.1-Makefile-for-basic-C-project)
--[1.2 Makefile for basic C project](#1.2-Makefile-for-basic-C-project)
--[1.3 Makefile for basic C project](#1.3-Makefile-for-basic-C-project)
+- **[1.1 Makefile for basic C project](#1.1-Makefile-for-basic-C-project)**
+- **[1.2 Makefile for basic C project](#1.2-Makefile-for-basic-C-project)**
+- **[1.3 Makefile for basic C project](#1.3-Makefile-for-basic-C-project)**
 
 ###     1.1 Makefile for basic C project.
 
@@ -451,7 +453,7 @@ for their source `.c` and header `.h` files:
 [gnu.org/make/manual](https://www.gnu.org/software/make/manual/html_node)
 [makefiletutorial.com](https://makefiletutorial.com/)
 
-## Soon
+## Todo
 
 - Makefile for simple C librairy.
 - Makefile for simple C project using librairy.
