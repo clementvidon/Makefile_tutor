@@ -51,6 +51,7 @@ What we call a `rule` is made of:
 
 The simplest Makefile, made for projects with the following structure:
 
+```
     before build:        after build:
 
     \---Project:         \---Project:
@@ -58,9 +59,11 @@ The simplest Makefile, made for projects with the following structure:
           main.c               main.c
                                main.o
                                icecream
+```
 
 Build a program called `icecream`:
 
+```make
     NAME        := icecream
 
     #------------------------------------------------#
@@ -112,14 +115,17 @@ Build a program called `icecream`:
     #------------------------------------------------#
 
     .PHONY: all clean fclean re run
+```
 
 - The prerequisites of the `.PHONY:` special target become targets that make
   will run regardless of whether a file with that name exists.
 
 - The C compilation is operated by the following *implicit rule*:
 
+```make
     %.o: %.c
         $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+```
 
 Where `%.o` evaluates to each object, `%.c` to each source, `$<` to the first
 prerequisite (which is `%.c`) and `$@` to the name of the target being generated
@@ -130,6 +136,7 @@ written.*
 
 - Illustration of a `make all`:
 
+```make
     all: $(NAME)                            3 ← 2
 
     $(NAME): $(OBJS)                        2 ← 1
@@ -138,6 +145,7 @@ written.*
     %.o: %.c                                1 ← 0
       $(CC) $(CFLAGS) -c $< -o $@
       echo "CREATED $@"
+```
 
 The `all` rule requires `icecream` that requires `objects` that require
 `sources` that require... `nothing`.  In other words `all` creates `icecream`
@@ -158,6 +166,7 @@ As above but for a project including *header files* with the addition of
 
 Thus the project tree changes quite a bit:
 
+```
     before build:        after build:
 
     \---Project:         \---Project:
@@ -166,6 +175,7 @@ Thus the project tree changes quite a bit:
           icecream.h           main.o
                                icecream.h
                                icecream
+```
 
 We add the following features:
 
@@ -174,6 +184,7 @@ We add the following features:
   execution.
 - First custom rule that make and run our program with a simple `make run`.
 
+```make
     NAME        := icecream
 
     #------------------------------------------------#
@@ -218,10 +229,12 @@ We add the following features:
     %.o: %.c
         $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
         echo "CREATED $@"
+```
 
 - The implicit C compilation rule is overwritten with an explicit version that
   comes with an `echo` statement.
 
+```make
     clean:
         $(RM) $(OBJS)
         echo "REMOVED $(OBJS)"
@@ -239,17 +252,20 @@ We add the following features:
 
     run: re
         -./$(NAME)
+```
 
 - The dash at the start of `-./$(NAME)` suppresses the errors of non-zero status
   code.  In effect, make is interrupted by any line that return a non-zero
   value.
 
+```make
     #------------------------------------------------#
     #   SPECIAL                                      #
     #------------------------------------------------#
 
     .SILENT:
     .PHONY: all clean fclean re run
+```
 
 - Normally make prints each line of a rule's recipe before it is executed.  The
   special target `.SILENT:` silence the rules passed to it as prerequisites,
@@ -264,6 +280,7 @@ symbol.*
 As above but a more complex project structure that uses dedicated directories
 for their source `.c` and header `.h` files:
 
+```
     before build:        after build:
 
     \---Project:         \---Project:
@@ -291,6 +308,7 @@ for their source `.c` and header `.h` files:
                                  \---base:
                                        milk.c
                                        water.c
+```
 
 - For this result we add basic automations that facilitate the scaling up to a
   larger project with the use of *substitution reference* to automatically
@@ -301,6 +319,7 @@ for their source `.c` and header `.h` files:
 - We add the useful custom rule `info` that prints each lines of the build
   recipe (without executing them).
 
+```make
     NAME        := icecream
 
     #------------------------------------------------#
@@ -328,6 +347,7 @@ for their source `.c` and header `.h` files:
         base/water.c
     SRCS        := $(SRCS:%=$(SRC_DIR)/%)
     OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+```
 
 - By ending it with a `backslash` we can split the line to increase the
   visibility of `SRCS` content and facilitate its modification.
@@ -337,6 +357,7 @@ for their source `.c` and header `.h` files:
   `SRCS` represented by `%` becomes itself `%` plus the `$(SRC_DIR)/`
   alteration, so the item `main.c` would be turned into `src/main.c`.
 
+```make
     #------------------------------------------------#
     #   UTENSILS                                     #
     #------------------------------------------------#
@@ -373,12 +394,14 @@ for their source `.c` and header `.h` files:
         echo "REMOVED $(NAME)"
 
     re: fclean all
+```
 
 -  In the compilation rule `.o: %.c` becomes  `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
    since our structure uses directories.
 
 - The compilation rule uses `@D`, an *automatic variable* that expands to the
   directory part of the target file name, to create the `OBJ_DIR` structure:
+
 ```
 -[ ! -d $(@D) ] && mkdir -p $(@D)
 || |  |    |    |  |      |    |
@@ -392,8 +415,10 @@ for their source `.c` and header `.h` files:
                           +----|- and the parents directories if missing
                                +- of the dir part of the target filename
 ```
+
 - In the `clean` rule we add `--recursive` to `RM` to remove `OBJ_DIR`.
 
+```make
     #------------------------------------------------#
     #   EXTRA RECIPES                                #
     #------------------------------------------------#
@@ -404,18 +429,21 @@ for their source `.c` and header `.h` files:
 
     run: re
         -./$(NAME)
+```
 
 - The `info` rule will execute a simple `make` command with `--dry-run` to print
   the recipe without executing it, `--always-make` to `make` even if the targets
   already exist.  The `--no-print-directory` flag and `grep` command are used to
   clear up the output from unwanted lines.
 
+```make
     #------------------------------------------------#
     #   SPECIAL                                      #
     #------------------------------------------------#
 
     .SILENT:
     .PHONY: all clean fclean re run info
+```
 
 ## Sources
 
