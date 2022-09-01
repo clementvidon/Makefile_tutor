@@ -118,6 +118,7 @@ Build a program called `icecream`:
 
     .PHONY: all clean fclean re run
 ```
+<hr>
 
 - The prerequisites of the `.PHONY:` special target become targets that make
   will run regardless of whether a file with that name exists.
@@ -268,6 +269,7 @@ We add the following features:
     .SILENT:
     .PHONY: all clean fclean re run
 ```
+<hr>
 
 - Normally make prints each line of a rule's recipe before it is executed.  The
   special target `.SILENT:` silence the rules passed to it as prerequisites,
@@ -446,6 +448,7 @@ for their source `.c` and header `.h` files:
     .SILENT:
     .PHONY: all clean fclean re run info
 ```
+<hr>
 
 ## Sources
 
