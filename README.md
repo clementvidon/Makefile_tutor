@@ -30,7 +30,7 @@ making them more digestible and even tasty 🍔
 <hr>
 
 ***[LAST UPDATE]***
-- Add **[GitHub Page](clemedon.github.io/makefile_tutor/)** version
+- Add **[GitHub Page](https://clemedon.github.io/Makefile_tutor/)** version
 - Add *projects* directory
 - Add *Syntax* section
 - Add *BEG* and *END* to highlight the beginning and the end
