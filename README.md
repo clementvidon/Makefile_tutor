@@ -40,13 +40,13 @@ making them more digestible and even tasty 🍔
 
 Our template will be composed of the following parts:
 ```
-####### BEG   mark the beginning of the template
-INGREDIENTS   variables containing the build ingredients
-UTENSILS      variables containing shell command tools
-RECIPES       minimum essential set of rules
-EXTRA RECIPES custom rules
-SPECIAL       make "special targets"
-####### END   mark the end of the template
+####### BEG     mark the beginning of the template
+INGREDIENTS     variables containing the build ingredients
+UTENSILS        variables containing shell command tools
+RECIPES         minimum essential set of rules
+EXTRA RECIPES   custom rules
+SPECIAL         make "special targets"
+####### END     mark the end of the template
 ```
 What we call a `rule` is made of:
 
