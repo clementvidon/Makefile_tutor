@@ -45,11 +45,11 @@ What we call a `rule` is made of:
 
 ## Templates
 
-- **[1.1 Makefile for basic C project](#11-Makefile-for-basic-C-project)**
-- **[1.2 Makefile for basic C project](#12-Makefile-for-basic-C-project)**
-- **[1.3 Makefile for basic C project](#13-Makefile-for-basic-C-project)**
+- **[1 Makefile for basic C project](#1-Makefile-for-basic-C-project)**
+- **[1 Makefile for basic C project](#2-Makefile-for-basic-C-project)**
+- **[1 Makefile for basic C project](#3-Makefile-for-basic-C-project)**
 
-###     1.1 Makefile for basic C project.
+###     1 Makefile for basic C project.
 
 The simplest Makefile, made for projects with the following structure:
 
@@ -118,6 +118,7 @@ Build a program called `icecream`:
 
     .PHONY: all clean fclean re run
 ```
+
 <hr>
 
 - The prerequisites of the `.PHONY:` special target become targets that make
@@ -162,7 +163,7 @@ material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
 direction while building each resource that is required the direct upper level
 `0 → 1 → 2 → 3`.
 
-###     1.2 Makefile for basic C project.
+###     2 Makefile for basic C project.
 
 As above but for a project including *header files* with the addition of
 `CPPFLAGS` dedicated to preprocessor's flags like `-I <include_dir>`.
@@ -279,7 +280,7 @@ We add the following features:
 *To silence at the line level we can prefix the wanted recipes line with an `@`
 symbol.*
 
-###     1.3 Makefile for basic C project.
+###     3 Makefile for basic C project.
 
 As above but a more complex project structure that uses dedicated directories
 for their source `.c` and header `.h` files:
@@ -407,17 +408,17 @@ for their source `.c` and header `.h` files:
   directory part of the target file name, to create the `OBJ_DIR` structure:
 
 ```
--[ ! -d $(@D) ] && mkdir -p $(@D)
-|| |  |    |    |  |      |    |
-+|-|--|----|----|--|------|----|- suppress make non-zero status errors
- +-|--|----|----|--|------|----|- if
-   +--|----|----|--|------|----|- doesn't exist
-      +----|----|--|------|----|- as a directory
-           +----|--|------|----|- the dir part of the target filename
-                +--|------|----|- then
-                   +------|----|- create the directory
-                          +----|- and the parents directories if missing
-                               +- of the dir part of the target filename
+    -[ ! -d $(@D) ] && mkdir -p $(@D)
+    || |  |    |    |  |      |    |
+    +|-|--|----|----|--|------|----|- suppress make non-zero status errors
+    +-|--|----|----|--|------|----|- if
+    +--|----|----|--|------|----|- doesn't exist
+        +----|----|--|------|----|- as a directory
+            +----|--|------|----|- the dir part of the target filename
+                    +--|------|----|- then
+                    +------|----|- create the directory
+                            +----|- and the parents directories if missing
+                                +- of the dir part of the target filename
 ```
 
 - In the `clean` rule we add `--recursive` to `RM` to remove `OBJ_DIR`.
@@ -429,7 +430,7 @@ for their source `.c` and header `.h` files:
     # run           run the program
 
     info:
-    	make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
+        make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
 
     run: re
         -./$(NAME)
@@ -464,3 +465,4 @@ for their source `.c` and header `.h` files:
 - Fully automated Makefile.
 
 - C++ differences.
+
