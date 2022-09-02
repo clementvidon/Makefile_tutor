@@ -46,8 +46,8 @@ What we call a `rule` is made of:
 ## Templates
 
 - **[1 Makefile for basic C project](#1-Makefile-for-basic-C-project)**
-- **[1 Makefile for basic C project](#2-Makefile-for-basic-C-project)**
-- **[1 Makefile for basic C project](#3-Makefile-for-basic-C-project)**
+- **[2 Makefile for basic C project](#2-Makefile-for-basic-C-project)**
+- **[3 Makefile for basic C project](#3-Makefile-for-basic-C-project)**
 
 ###     1 Makefile for basic C project.
 
@@ -463,6 +463,4 @@ for their source `.c` and header `.h` files:
 - Makefile for simple C project using librairy.
 - Makefile for C project (with deps)
 - Fully automated Makefile.
-
 - C++ differences.
-
