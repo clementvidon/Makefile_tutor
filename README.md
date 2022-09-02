@@ -7,7 +7,9 @@
 	<span> · </span>
 	<a href="#Glossary">Glossary</a>
 	<span> · </span>
-	<a href="#Templates">Templates</a>
+	<a href="#Glossary">Syntax</a>
+	<span> · </span>
+	<a href="#Template">Template</a>
 	<span> · </span>
 	<a href="#Sources">Sources</a>
 	<span> · </span>
@@ -16,34 +18,62 @@
 
 ## Summary
 
-Indented to help 42 students to step up their Makefile skills through a
-documented template that evolves gradually step by step. With the aim of making
-them more digestible and even tasty 🍣
+Addressed to beginners and not to newcomers, the idea behind this tutorial is to
+focus on the essentials. The basics such as syntax specifications or anything
+not directly related to the template we are going to create will not be covered
+here.
+
+Initially intended to help 42 students to step up their Makefile skills through
+a documented template that evolves gradually, step by step. With the aim of
+making them more digestible and even tasty 🍙.
+
+**Last update**
+
+- Add *projects* directory
+- Add *Syntax* section
+- Add *BEG* and *END* to highlight the beginning and the end
+- Update *todo* section
 
 ## Glossary
 
 Our template will be composed of the following parts:
 
+- `####### BEG`   mark the beginning of the template
 - `INGREDIENTS`   variables containing the build ingredients
 - `UTENSILS`      variables containing shell command tools
 - `RECIPES`       minimum essential set of rules
 - `EXTRA RECIPES` custom rules
 - `SPECIAL`       make "special targets"
+- `####### END`   mark the end of the template
 
 What we call a `rule` is made of:
 
 - `targets` is the file name we want to make
 - `prerequisites` are files required (dependencies) for the `rule` to execute
-- `recipe` are any lines that begins with a tab and appear in a "rule context"
+- `recipe` are any lines that begins with a TAB and appear in a "rule context"
 
 ```
-    target: prerequisite
-        recipe line 1
-        recipe line 2
-        ...
+target: prerequisite
+    recipe line 1
+    recipe line 2
+    ...
 ```
 
-## Templates
+## Syntax
+
+Like every makefile our template use a combination of *makefile syntax* and
+*shell script syntax*.  The *shell script syntax* is reserved and limited to
+*recipe lines*, by default those lines have to start with a `TAB` character to
+be differentiated by make (and passed to the shell).  The *makefile syntax* is
+used for all the other lines.
+
+Equal signs:
+
+- `:=` simply expand the defined variable (like C equal sign)
+- `=` recursively expand the defined variable (the expression is expanded when
+  the variable is used)
+
+## Template
 
 - **[1 Makefile for basic C project](#1-Makefile-for-basic-C-project)**
 - **[2 Makefile for basic C project](#2-Makefile-for-basic-C-project)**
@@ -54,72 +84,74 @@ What we call a `rule` is made of:
 The simplest Makefile, made for projects with the following structure:
 
 ```
-    before build:        after build:
+before build:        after build:
 
-    \---Project:         \---Project:
-          Makefile             Makefile
-          main.c               main.c
-                               main.o
-                               icecream
+\---Project:         \---Project:
+        Makefile             Makefile
+        main.c               main.c
+                            main.o
+                            icecream
 ```
 
 Build a program called `icecream`:
 
 ```make
-    NAME        := icecream
+####################################### BEG_1 ####
 
-    #------------------------------------------------#
-    #   INGREDIENTS                                  #
-    #------------------------------------------------#
-    # CC        compilers
-    # CFLAGS    compiler flags
-    #
-    # SRCS      source files
-    # OBJS      object files
+NAME        := icecream
 
-    CC          := clang
-    CFLAGS      := -Wall -Wextra -Werror
+#------------------------------------------------#
+#   INGREDIENTS                                  #
+#------------------------------------------------#
+# CC        compilers
+# CFLAGS    compiler flags
+#
+# SRCS      source files
+# OBJS      object files
 
-    SRCS        := main.c
-    OBJS        := main.o
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
 
-    #------------------------------------------------#
-    #   UTENSILS                                     #
-    #------------------------------------------------#
-    # RM        cleaning command
+SRCS        := main.c
+OBJS        := main.o
 
-    RM          := rm -f
+#------------------------------------------------#
+#   UTENSILS                                     #
+#------------------------------------------------#
+# RM        cleaning command
 
-    #------------------------------------------------#
-    #   RECIPES                                      #
-    #------------------------------------------------#
-    # all       build all targets
-    # $(NAME)   build $(NAME) target
-    # clean     remove objects
-    # fclean    remove objects and binary
-    # re        remove objects and binary and rebuild all
+RM          := rm -f
 
-    all: $(NAME)
+#------------------------------------------------#
+#   RECIPES                                      #
+#------------------------------------------------#
+# all       build all targets
+# $(NAME)   build $(NAME) target
+# clean     remove objects
+# fclean    remove objects and binary
+# re        remove objects and binary and rebuild all
 
-    $(NAME): $(OBJS)
-        $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+all: $(NAME)
 
-    clean:
-        $(RM) $(OBJS)
+$(NAME): $(OBJS)
+    $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-    fclean: clean
-        $(RM) $(NAME)
+clean:
+    $(RM) $(OBJS)
 
-    re: fclean all
+fclean: clean
+    $(RM) $(NAME)
 
-    #------------------------------------------------#
-    #   SPECIAL                                      #
-    #------------------------------------------------#
+re: fclean all
 
-    .PHONY: all clean fclean re run
+#------------------------------------------------#
+#   SPECIAL                                      #
+#------------------------------------------------#
+
+.PHONY: all clean fclean re run
+
+####################################### END_1 ####
 ```
-
-<hr>
 
 - The prerequisites of the `.PHONY:` special target become targets that make
   will run regardless of whether a file with that name exists.
@@ -127,8 +159,8 @@ Build a program called `icecream`:
 - The C compilation is operated by the following *implicit rule*:
 
 ```make
-    %.o: %.c
-        $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+%.o: %.c
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 ```
 
 Where `%.o` evaluates to each object, `%.c` to each source, `$<` to the first
@@ -141,14 +173,14 @@ written.*
 - Illustration of a `make all`:
 
 ```make
-    all: $(NAME)                            3 ← 2
+all: $(NAME)                            3 ← 2
 
-    $(NAME): $(OBJS)                        2 ← 1
-      $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS)                        2 ← 1
+  $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-    %.o: %.c                                1 ← 0
-      $(CC) $(CFLAGS) -c $< -o $@
-      echo "CREATED $@"
+%.o: %.c                                1 ← 0
+  $(CC) $(CFLAGS) -c $< -o $@
+  echo "CREATED $@"
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
@@ -171,14 +203,14 @@ As above but for a project including *header files* with the addition of
 Thus the project tree changes quite a bit:
 
 ```
-    before build:        after build:
+before build:        after build:
 
-    \---Project:         \---Project:
-          Makefile             Makefile
-          main.c               main.c
-          icecream.h           main.o
-                               icecream.h
-                               icecream
+\---Project:         \---Project:
+      Makefile             Makefile
+      main.c               main.c
+      icecream.h           main.o
+                           icecream.h
+                           icecream
 ```
 
 We add the following features:
@@ -189,73 +221,75 @@ We add the following features:
 - First custom rule that make and run our program with a simple `make run`.
 
 ```make
-    NAME        := icecream
+####################################### BEG_2 ####
 
-    #------------------------------------------------#
-    #   INGREDIENTS                                  #
-    #------------------------------------------------#
-    # CC        compilers
-    # CFLAGS    compiler flags
-    # CPPFLAGS  preprocessor flags
-    #
-    # SRCS      source files
-    # OBJS      object files
+NAME        := icecream
 
-    CC          := clang
-    CFLAGS      := -Wall -Wextra -Werror
-    CPPFLAGS    := -I .
+#------------------------------------------------#
+#   INGREDIENTS                                  #
+#------------------------------------------------#
+# CC        compilers
+# CFLAGS    compiler flags
+# CPPFLAGS  preprocessor flags
+#
+# SRCS      source files
+# OBJS      object files
 
-    SRCS        := main.c
-    OBJS        := main.o
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
+CPPFLAGS    := -I .
 
-    #------------------------------------------------#
-    #   UTENSILS                                     #
-    #------------------------------------------------#
-    # RM        cleaning command
+SRCS        := main.c
+OBJS        := main.o
 
-    RM          := rm -f
+#------------------------------------------------#
+#   UTENSILS                                     #
+#------------------------------------------------#
+# RM        cleaning command
 
-    #------------------------------------------------#
-    #   RECIPES                                      #
-    #------------------------------------------------#
-    # all       build all targets
-    # $(NAME)   build $(NAME) target
-    # clean     remove objects
-    # fclean    remove objects and binary
-    # re        remove objects and binary and rebuild all
+RM          := rm -f
 
-    all: $(NAME)
+#------------------------------------------------#
+#   RECIPES                                      #
+#------------------------------------------------#
+# all       build all targets
+# $(NAME)   build $(NAME) target
+# clean     remove objects
+# fclean    remove objects and binary
+# re        remove objects and binary and rebuild all
 
-    $(NAME): $(OBJS)
-        $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
-        echo "CREATED $(NAME)"
+all: $(NAME)
 
-    %.o: %.c
-        $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-        echo "CREATED $@"
+$(NAME): $(OBJS)
+    $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
+    echo "CREATED $(NAME)"
+
+%.o: %.c
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+    echo "CREATED $@"
 ```
 
 - The implicit C compilation rule is overwritten with an explicit version that
   comes with an `echo` statement.
 
 ```make
-    clean:
-        $(RM) $(OBJS)
-        echo "REMOVED $(OBJS)"
+clean:
+    $(RM) $(OBJS)
+    echo "REMOVED $(OBJS)"
 
-    fclean: clean
-        $(RM) $(NAME)
-        echo "REMOVED $(NAME)"
+fclean: clean
+    $(RM) $(NAME)
+    echo "REMOVED $(NAME)"
 
-    re: fclean all
+re: fclean all
 
-    #------------------------------------------------#
-    #   EXTRA RECIPES                                #
-    #------------------------------------------------#
-    # run           run the program
+#------------------------------------------------#
+#   EXTRA RECIPES                                #
+#------------------------------------------------#
+# run           run the program
 
-    run: re
-        -./$(NAME)
+run: re
+    -./$(NAME)
 ```
 
 - The dash at the start of `-./$(NAME)` suppresses the errors of non-zero status
@@ -263,14 +297,15 @@ We add the following features:
   value.
 
 ```make
-    #------------------------------------------------#
-    #   SPECIAL                                      #
-    #------------------------------------------------#
+#------------------------------------------------#
+#   SPECIAL                                      #
+#------------------------------------------------#
 
-    .SILENT:
-    .PHONY: all clean fclean re run
+.SILENT:
+.PHONY: all clean fclean re run
+
+####################################### END_2 ####
 ```
-<hr>
 
 - Normally make prints each line of a rule's recipe before it is executed.  The
   special target `.SILENT:` silence the rules passed to it as prerequisites,
@@ -286,33 +321,33 @@ As above but a more complex project structure that uses dedicated directories
 for their source `.c` and header `.h` files:
 
 ```
-    before build:        after build:
+before build:        after build:
 
-    \---Project:         \---Project:
-        | Makefile           | Makefile
-        |                    | icecream
-        |                    |
-        +---include:         +---include:
-        |     icecream.h     |     icecream.h
-        |                    |
-        \---src:             +---obj:
-            | main.c         |   | main.o
-            |                |   |
-            +---arom:        |   +---arom:
-            |     coco.c     |   |     coco.o
-            |                |   |
-            \---base:        |   \---base:
-                  milk.c     |         milk.o
-                  water.c    |         water.o
-                             \---src:
-                                 | main.c
-                                 |
-                                 +---arom:
-                                 |     coco.c
-                                 |
-                                 \---base:
-                                       milk.c
-                                       water.c
+\---Project:         \---Project:
+    | Makefile           | Makefile
+    |                    | icecream
+    |                    |
+    +---include:         +---include:
+    |     icecream.h     |     icecream.h
+    |                    |
+    \---src:             +---obj:
+        | main.c         |   | main.o
+        |                |   |
+        +---arom:        |   +---arom:
+        |     coco.c     |   |     coco.o
+        |                |   |
+        \---base:        |   \---base:
+              milk.c     |         milk.o
+              water.c    |         water.o
+                         \---src:
+                             | main.c
+                             |
+                             +---arom:
+                             |     coco.c
+                             |
+                             \---base:
+                                   milk.c
+                                   water.c
 ```
 
 - For this result we add basic automations that facilitate the scaling up to a
@@ -325,33 +360,35 @@ for their source `.c` and header `.h` files:
   recipe (without executing them).
 
 ```make
-    NAME        := icecream
+####################################### BEG_3 ####
 
-    #------------------------------------------------#
-    #   INGREDIENTS                                  #
-    #------------------------------------------------#
-    # CC        compilers
-    # CFLAGS    compiler flags
-    # CPPFLAGS  preprocessor flags
-    #
-    # SRC_DIR   source directory
-    # OBJ_DIR   object directory
-    # SRCS      source files
-    # OBJS      object files
+NAME        := icecream
 
-    CC          := clang
-    CFLAGS      := -Wall -Wextra -Werror
-    CPPFLAGS    := -I include
+#------------------------------------------------#
+#   INGREDIENTS                                  #
+#------------------------------------------------#
+# CC        compilers
+# CFLAGS    compiler flags
+# CPPFLAGS  preprocessor flags
+#
+# SRC_DIR   source directory
+# OBJ_DIR   object directory
+# SRCS      source files
+# OBJS      object files
 
-    SRC_DIR     := src
-    OBJ_DIR     := obj
-    SRCS        := \
-        main.c          \
-        arom/coco.c     \
-        base/milk.c     \
-        base/water.c
-    SRCS        := $(SRCS:%=$(SRC_DIR)/%)
-    OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
+CPPFLAGS    := -I include
+
+SRC_DIR     := src
+OBJ_DIR     := obj
+SRCS        := \
+    main.c          \
+    arom/coco.c     \
+    base/milk.c     \
+    base/water.c
+SRCS        := $(SRCS:%=$(SRC_DIR)/%)
+OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 ```
 
 - By ending it with a `backslash` we can split the line to increase the
@@ -363,42 +400,42 @@ for their source `.c` and header `.h` files:
   alteration, so the item `main.c` would be turned into `src/main.c`.
 
 ```make
-    #------------------------------------------------#
-    #   UTENSILS                                     #
-    #------------------------------------------------#
-    # RM        cleaning command
+#------------------------------------------------#
+#   UTENSILS                                     #
+#------------------------------------------------#
+# RM        cleaning command
 
-    RM          := rm -f
+RM          := rm -f
 
-    #------------------------------------------------#
-    #   RECIPES                                      #
-    #------------------------------------------------#
-    # all       build all targets
-    # $(NAME)   build $(NAME) target
-    # clean     remove objects
-    # fclean    remove objects and binary
-    # re        remove objects and binary and rebuild all
+#------------------------------------------------#
+#   RECIPES                                      #
+#------------------------------------------------#
+# all       build all targets
+# $(NAME)   build $(NAME) target
+# clean     remove objects
+# fclean    remove objects and binary
+# re        remove objects and binary and rebuild all
 
-    all: $(NAME)
+all: $(NAME)
 
-    $(NAME): $(OBJS)
-        $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
-        echo "CREATED $(NAME)"
+$(NAME): $(OBJS)
+    $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
+    echo "CREATED $(NAME)"
 
-    $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-        -[ ! -d $(@D) ] && mkdir -p $(@D)
-        $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-        echo "CREATED $@"
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+    -[ ! -d $(@D) ] && mkdir -p $(@D)
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+    echo "CREATED $@"
 
-    clean:
-        -[ -d $(OBJ_DIR) ] && $(RM) --recursive $(OBJ_DIR)
-        echo "REMOVED $(OBJ_DIR)"
+clean:
+    -[ -d $(OBJ_DIR) ] && $(RM) --recursive $(OBJ_DIR)
+    echo "REMOVED $(OBJ_DIR)"
 
-    fclean: clean
-        $(RM) $(NAME)
-        echo "REMOVED $(NAME)"
+fclean: clean
+    $(RM) $(NAME)
+    echo "REMOVED $(NAME)"
 
-    re: fclean all
+re: fclean all
 ```
 
 -  In the compilation rule `.o: %.c` becomes  `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
@@ -408,32 +445,32 @@ for their source `.c` and header `.h` files:
   directory part of the target file name, to create the `OBJ_DIR` structure:
 
 ```
-    -[ ! -d $(@D) ] && mkdir -p $(@D)
-    || |  |    |    |  |      |    |
-    +|-|--|----|----|--|------|----|- suppress make non-zero status errors
-    +-|--|----|----|--|------|----|- if
-    +--|----|----|--|------|----|- doesn't exist
-        +----|----|--|------|----|- as a directory
-            +----|--|------|----|- the dir part of the target filename
-                    +--|------|----|- then
-                    +------|----|- create the directory
-                            +----|- and the parents directories if missing
-                                +- of the dir part of the target filename
+-[ ! -d $(@D) ] && mkdir -p $(@D)
+|| |  |    |    |  |      |    |
++|-|--|----|----|--|------|----|- suppress make non-zero status errors
+ +-|--|----|----|--|------|----|- if
+   +--|----|----|--|------|----|- doesn't exist
+      +----|----|--|------|----|- as a directory
+           +----|--|------|----|- the dir part of the target filename
+                +--|------|----|- then
+                   +------|----|- create the directory
+                          +----|- and the parents directories if missing
+                               +- of the dir part of the target filename
 ```
 
 - In the `clean` rule we add `--recursive` to `RM` to remove `OBJ_DIR`.
 
 ```make
-    #------------------------------------------------#
-    #   EXTRA RECIPES                                #
-    #------------------------------------------------#
-    # run           run the program
+#------------------------------------------------#
+#   EXTRA RECIPES                                #
+#------------------------------------------------#
+# run           run the program
 
-    info:
-        make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
+info:
+    make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
 
-    run: re
-        -./$(NAME)
+run: re
+    -./$(NAME)
 ```
 
 - The `info` rule will execute a simple `make` command with `--dry-run` to print
@@ -442,14 +479,15 @@ for their source `.c` and header `.h` files:
   clear up the output from unwanted lines.
 
 ```make
-    #------------------------------------------------#
-    #   SPECIAL                                      #
-    #------------------------------------------------#
+#------------------------------------------------#
+#   SPECIAL                                      #
+#------------------------------------------------#
 
-    .SILENT:
-    .PHONY: all clean fclean re run info
+.SILENT:
+.PHONY: all clean fclean re run info
+
+####################################### END_3 ####
 ```
-<hr>
 
 ## Sources
 
@@ -459,9 +497,10 @@ for their source `.c` and header `.h` files:
 
 ## Todo
 
-- Makefile for simple C librairy.
-- Makefile for simple C project using librairy.
-- Makefile for C project (with deps)
-- Fully automated Makefile.
-- C++ differences.
-- Change [pages](https://clemedon.github.io/Makefile_tutor/) theme.
+- C++
+- Auto-Dependency Generation
+- Portability (GNU/BSD, POSIX compliant)
+- project that uses a librairy
+- project that is a librairy
+- Change GitHub page theme.
+- Add [GH Page Buttons](https://buttons.github.io/)
