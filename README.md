@@ -464,3 +464,4 @@ for their source `.c` and header `.h` files:
 - Makefile for C project (with deps)
 - Fully automated Makefile.
 - C++ differences.
+- Change [pages](https://clemedon.github.io/Makefile_tutor/) theme.
