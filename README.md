@@ -25,15 +25,17 @@ Initially intended to help 42 students to step up their Makefile skills through
 a **documented template** that evolves gradually, **step by step**. With the aim
 of making them more digestible and even tasty 🍔
 
-**→** [**Page**](https://clemedon.github.io/Makefile_tutor/)
+***TL;DR*** Confer **bold** text.
+
+[**→ Page**](https://clemedon.github.io/Makefile_tutor/)
 
 <hr>
 
 ***[ DONE ]***
 
 - Update keywords to **bold** (with the logic which reading bold text only is
-  still intelligible).
-- Add a **Brief** to each template section.
+  still intelligible making it a TLDR).
+- Add a **Brief** section to each template version.
 - Update [**Todo**](#todo) section.
 - Add `### BEG` and `### END` to highlight the template beginning and the end.
 - Add [**Syntax**](#syntax) section.
@@ -88,19 +90,21 @@ Equal signs:
 
 # Template
 
-Each each of the following sections is divided into **3 parts**:
-- An illustration of the **project structure**
-- A **Brief** (that repeats the **bold parts of the template comments**).
-- A **commented template**  (comments are always placed at the end template part
-  that concerns them).
+Each version has **3 sections**:
+- **Structure** the project structure type.
+- **Brief** compile all the bold text from the template comments.
+- **Template** our Makefile with comments (that are always placed at the end of
+  the template part that concerns them).
 
-- [**1 Makefile for basic C project**](#1-Makefile-for-basic-C-project)
+##  Index
+
+[**Version 1**](#Version-1)
 
 > - the `.PHONY:` special target
 > - The implicit C compilation
 > - Illustration of a `make all`
 
-- [**2 Makefile for basic C project**](#2-Makefile-for-basic-C-project)
+[**Version 2**](#Version-2)
 
 > - preprocessor's flags
 > - output of a descriptive message
@@ -108,7 +112,7 @@ Each each of the following sections is divided into **3 parts**:
 > - the `dash` suppresses errors
 > - `.SILENT:` silences the rules
 
-- [**3 Makefile for basic C project**](#3-Makefile-for-basic-C-project)
+[**Version 3**](#Version-3)
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
@@ -118,7 +122,9 @@ Each each of the following sections is divided into **3 parts**:
 > - `info` rule print the `$(NAME)` recipe without executing it
 > - automation substitution reference `@D`
 
-##     1 Makefile for basic C project
+##  Version 1
+
+###     Structure
 
 The simplest, build a program called `icecream` with the following structure:
 
@@ -132,11 +138,13 @@ before build:        after build:
                            icecream
 ```
 
-Brief:
+###     Brief
 
 - the `.PHONY:` special target
 - The implicit C compilation
 - Illustration of a `make all`
+
+###     Template
 
 ```make
 ####################################### BEG_1 ####
@@ -238,7 +246,11 @@ material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
 direction while building each resource that is required by the direct upper level
 `0 → 1 → 2 → 3`.
 
-##  2 Makefile for basic C project
+[**Return to Index ↑**](#Index)
+
+##  Version 2
+
+###     Structure
 
 As above but for a project that **includes header files**:
 
@@ -253,13 +265,15 @@ before build:        after build:
                            icecream
 ```
 
-Brief:
+###     Brief
 
 - preprocessor's flags
 - output of a descriptive message
 - implicit C compilation rule is overwritten
 - the `dash` suppresses errors
 - `.SILENT:` silences the rules
+
+###     Template
 
 ```make
 ####################################### BEG_2 ####
@@ -366,7 +380,11 @@ symbol.*
 ####################################### END_2 ####
 ```
 
-##  3 Makefile for basic C project
+[**Return to Index ↑**](#Index)
+
+##  Version 3
+
+###     Structure
 
 As above but a more complex project structure with **multiple source
 directories**:
@@ -401,7 +419,7 @@ before build:        after build:
                                    water.c
 ```
 
-Brief:
+###     Brief
 
 - split the line with a `backslash`
 - substitution reference so `main.c` becomes `src/main.c`
@@ -410,6 +428,8 @@ Brief:
 - `clean` rule `--recursive`
 - `info` rule print the `$(NAME)` recipe without executing it
 - automation substitution reference `@D`
+
+###     Template
 
 ```make
 ####################################### BEG_3 ####
@@ -548,6 +568,8 @@ run: re
   generation of the `obj` directory based on the `src` directory structure.
 
 *This will work the same with every possible kind of src directory structure.*
+
+[**Return to Index ↑**](#Index)
 
 # Sources
 
