@@ -88,7 +88,7 @@ Equal signs:
 
 # Template
 
-Each each of the following sections is divided into 3 parts:
+Each each of the following sections is divided into **3 parts**:
 - An illustration of the **project structure**
 - A **Brief** (that repeats the **bold parts of the template comments**).
 - A **commented template**  (comments are always placed at the end template part
@@ -96,35 +96,29 @@ Each each of the following sections is divided into 3 parts:
 
 - [**1 Makefile for basic C project**](#1-Makefile-for-basic-C-project)
 
-Brief:
-
-- the `.PHONY:` special target
-- The implicit C compilation
-- Illustration of a `make all`
+> - the `.PHONY:` special target
+> - The implicit C compilation
+> - Illustration of a `make all`
 
 - [**2 Makefile for basic C project**](#2-Makefile-for-basic-C-project)
 
-Brief:
-
-- preprocessor's flags
-- output of a descriptive message
-- implicit C compilation rule is overwritten
-- the `dash` suppresses errors
-- `.SILENT:` silences the rules
+> - preprocessor's flags
+> - output of a descriptive message
+> - implicit C compilation rule is overwritten
+> - the `dash` suppresses errors
+> - `.SILENT:` silences the rules
 
 - [**3 Makefile for basic C project**](#3-Makefile-for-basic-C-project)
 
-Brief:
+> - split the line with a `backslash`
+> - substitution reference so `main.c` becomes `src/main.c`
+> - compilers rule uses multiple source directories
+> - `@D` expands to the directory part of the target file name
+> - `clean` rule `--recursive`
+> - `info` rule print the `$(NAME)` recipe without executing it
+> - automation substitution reference `@D`
 
-- split the line with a `backslash`
-- substitution reference so `main.c` becomes `src/main.c`
-- compilers rule uses multiple source directories
-- `@D` expands to the directory part of the target file name
-- `clean` rule `--recursive`
-- `info` rule print the `$(NAME)` recipe without executing it
-- automation substitution reference `@D`
-
-##     1 Makefile for basic C project.
+##     1 Makefile for basic C project
 
 The simplest, build a program called `icecream` with the following structure:
 
