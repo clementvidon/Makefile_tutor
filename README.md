@@ -54,7 +54,7 @@ This tutorial is designed to be read line by line **linearly at first**.
 Then it can be quickly navigated thanks to the:
 
 - **Brief** of each version which is visible from the [**Index**](#index).
-- **Return to Index ↑** buttons at the end of each version.
+- [**Return to Index ↑**](#index) buttons at the end of each version.
 - **Text in bold** that compile **the escence** of this tutorial.
 
 Each version of the templates has an assigned directory in the
@@ -94,6 +94,26 @@ What we call a `rule` is made of:
 
 - `targets`         Name of an **action or a file** we want to make.
 - `prerequisites`   Files required (**targets dependencies**) for the `rule` to execute.
+
+TODO
+
+- A normal prerequisite makes two statements: first, it imposes an order in
+which recipes will be invoked: the recipes for all prerequisites of a target
+will be completed before the recipe for the target is run. Second, it imposes a
+dependency relationship: if any prerequisite is newer than the target, then the
+target is considered out-of-date and must be rebuilt.
+
+- Order-only prerequisite impose a specific ordering on the rules to be invoked
+without forcing the target to be updated if one of those rules is executed.
+
+Prerequisites in Makefile have two functions:
+1. They are checked and, if necessary, are built before the target
+2. If any of the prerequisites gets rebuilt (or is simply newer than the target)
+   then the target will also be rebuilt.
+
+Order-only prerequisites do only:
+1. (ie. impose build-order)
+
 - `recipe`          Lines that **begins with a `TAB`** character, appear in a rule context.
 
 ```
@@ -605,6 +625,7 @@ run: re
 - [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
 - [**gnu.org/make/manual**](https://www.gnu.org/software/make/manual/html_node)
 - [**makefiletutorial.com**](https://makefiletutorial.com/)
+- [**well worth a look**](https://stackoverflow.com/a/68584653)
 
 # Contact
 
