@@ -45,13 +45,13 @@ making them more digestible and even tasty 🍔
 
 Our template will be composed of the following parts:
 
-- ####### BEG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mark the beginning of the template
-- INGREDIENTS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; variables containing the build ingredients
-- UTENSILS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; variables containing shell command tools
-- RECIPES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; minimum essential set of rules
-- EXTRA RECIPES &nbsp;&nbsp;&nbsp; custom rules
-- SPECIAL &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make `special targets`
-- ####### END &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mark the end of the template
+- `####### BEG` mark the beginning of the template
+- `INGREDIENTS` variables containing the build ingredients
+- `UTENSILS` variables containing shell command tools
+- `RECIPES` minimum essential set of rules
+- `EXTRA RECIPES` custom rules
+- `SPECIAL` make `special targets`
+- `####### END` mark the end of the template
 
 What we call a `rule` is made of:
 
