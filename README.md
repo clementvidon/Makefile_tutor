@@ -20,7 +20,7 @@
 
 Addressed to beginners and not to newcomers, the idea behind this tutorial is to
 focus on the essentials. The basics such as syntax specifications or anything
-not directly related to the template we are going to create will not be covered
+not directly related to the template we are going to explore will not be covered
 here.
 
 Initially intended to help 42 students to step up their Makefile skills through
@@ -31,10 +31,15 @@ making them more digestible and even tasty 🍔
 
 ***[LAST UPDATE]***
 - Add **[GitHub Page](https://clemedon.github.io/Makefile_tutor/)** version
-- Add *projects* directory
-- Add *Syntax* section
-- Add *BEG* and *END* to highlight the beginning and the end
-- Update *todo* section
+- Add *[projects](projects)* directory
+- Add *[Syntax](#syntax)* section
+- Add *BEG* and *END* to highlight the template beginning and the end
+- Update *[Todo](#todo)* section
+
+***[NEXT UPDATE]***
+
+- Auto-Dependency Generation
+- C++
 
 ## Glossary
 
@@ -52,7 +57,7 @@ What we call a `rule` is made of:
 
 - `targets` is the file name we want to make
 - `prerequisites` are files required (dependencies) for the `rule` to execute
-- `recipe` are any lines that begins with a TAB and appear in a "rule context"
+- `recipe` are any lines that begins with a `TAB` and appear in a "rule context"
 
 ```
 target: prerequisite
@@ -72,7 +77,7 @@ used for all the other lines.
 Equal signs:
 
 - `:=` simply expand the defined variable (like C equal sign)
-- `=` recursively expand the defined variable (the expression is expanded when
+- `=` recursively expand the defined variable (the expression is expanded afterward, when
   the variable is used)
 
 ## Template
@@ -89,10 +94,10 @@ The simplest Makefile, made for projects with the following structure:
 before build:        after build:
 
 \---Project:         \---Project:
-        Makefile             Makefile
-        main.c               main.c
-                            main.o
-                            icecream
+      Makefile             Makefile
+      main.c               main.c
+                           main.o
+                           icecream
 ```
 
 Build a program called `icecream`:
@@ -186,15 +191,12 @@ $(NAME): $(OBJS)                        2 ← 1
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
-`sources` that require... `nothing`.  In other words `all` creates `icecream`
+`sources` that require... a `programmer`.  In other words `all` creates `icecream`
 with the `.o` created with the `.c` that you are supposed to create.
 
-So make will go back to its raw material and do the opposite way by stacking
-each brick.
-
-So make will first trace his path to the lower level where there is the raw
+Make will first trace his path to the lower level where there is the raw
 material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
-direction while building each resource that is required the direct upper level
+direction while building each resource that is required by the direct upper level
 `0 → 1 → 2 → 3`.
 
 ###     2 Makefile for basic C project.
@@ -460,7 +462,7 @@ re: fclean all
                                +- of the dir part of the target filename
 ```
 
-- In the `clean` rule we add `--recursive` to `RM` to remove `OBJ_DIR`.
+- In the `clean` rule we add `--recursive` to `RM` to remove `OBJ_DIR` and its content recursively.
 
 ```make
 #------------------------------------------------#
