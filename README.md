@@ -5,11 +5,13 @@
 <h3 align="center">
 	<a href="#summary">Summary</a>
 	<span> · </span>
-	<a href="#slossary">Glossary</a>
+	<a href="#usage">Usage</a>
+	<span> · </span>
+	<a href="#glossary">Glossary</a>
 	<span> · </span>
 	<a href="#syntax">Syntax</a>
 	<span> · </span>
-	<a href="#semplate">Template</a>
+	<a href="#template">Template</a>
 	<span> · </span>
 	<a href="#sources">Sources</a>
 </h3>
@@ -25,7 +27,7 @@ Initially intended to help 42 students to step up their Makefile skills through
 a **documented template** that evolves gradually, **step by step**. With the aim
 of making them more digestible and even tasty 🍔
 
-[**Website version**](https://clemedon.github.io/Makefile_tutor/)
+[**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)
 
 ***TL;DR*** Confer to the **bold** text.
 
@@ -33,16 +35,10 @@ of making them more digestible and even tasty 🍔
 
 ***[ DONE ]***
 
-- Update keywords to **bold** (with the logic which reading bold text only is
-  still intelligible making it a TLDR).
-- Add a **Brief** section to each template version.
-- Update [**Todo**](#todo) section.
-- Add `### BEG` and `### END` to highlight the template beginning and the end.
-- Add [**Syntax**](#syntax) section.
+- Update text to **bold** with the logic which reading bold text only is still
+  intelligible, making it a more brief version (TLDR).
 - Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version.
-- Add [**Template**](#template)
-- Add [**projets**](projects) folder with the templates ready to try.
-- Add [**Summary**](#summary) [**Glossary**](#glossary) [**Sources**](#sources)
+- Add [**projets**](projects) directory with the templates **ready to try**.
 
 ***[ SOON ]***
 
@@ -52,7 +48,24 @@ of making them more digestible and even tasty 🍔
 
 # Usage
 
-Each version of the templates has assigned folder in [**projects**](projects) folder, to play with a Makefile simply run `git clone git@github.com:clemedon/Makefile_tutor.git && cd Makefile_tutor && cd project` and `cd` to the version of your choice and finally `make` the rules of your choise. 
+This tutorial is designed to be read line by line **linearly at first**.  Then
+it can be quickly navigated thanks to the **Brief** of each version which is
+visible from the [**Index**](#index), the **Return to Index ↑** buttons at the
+end of each version, and the text in **bold** that **sum-up the escence** of the
+tutorial.
+
+Each version of the templates has an assigned directory in the
+[**projects**](projects) directory, to play with a Makefile simply run:
+
+```bash
+git clone git@github.com:clemedon/Makefile_tutor.git
+cd Makefile_tutor && cd project
+```
+
+```bash
+cd <template_version>
+make <any_rule>
+```
 
 # Glossary
 
@@ -99,7 +112,7 @@ Equal signs:
 - `:=` **simply expand** the defined variable (like C equal sign)
 - `=` **recursively expand** the defined variable (the expression is expanded afterward, when
   the variable is used)
-  
+
 # Index
 
 [**Version 1**](#version-1)
@@ -580,5 +593,11 @@ run: re
 - [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
 - [**gnu.org/make/manual**](https://www.gnu.org/software/make/manual/html_node)
 - [**makefiletutorial.com**](https://makefiletutorial.com/)
+
+# Contact
+
+```
+clemedon icloud
+```
 
 <sub><i>Copyright 2022 Clément Vidon. All Rights Reserved.</i></sub>
