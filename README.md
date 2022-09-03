@@ -29,7 +29,7 @@ of making them more digestible and even tasty 🍔
 
 [**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)
 
-**TL;DR** Confer to the **bold** text.
+**TL;DR** Confer to the bold text.
 
 <hr>
 
@@ -50,7 +50,7 @@ of making them more digestible and even tasty 🍔
 
 This tutorial is designed to be read line by line **linearly at first**.  Then
 it can be quickly navigated thanks to the **Brief** of each version which is
-visible from the [**Index**](#index), the **Return to Index ↑** buttons at the
+visible from the [**Index**](#index), the [**Return to Index ↑**](#index) buttons at the
 end of each version, and the text in **bold** that **sum-up the escence** of the
 tutorial.
 
