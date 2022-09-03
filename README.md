@@ -27,35 +27,39 @@ Initially intended to help 42 students to step up their Makefile skills through
 a **documented template** that evolves gradually, **step by step**. With the aim
 of making them more digestible and even tasty 🍔
 
-[**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)
-
 **TL;DR** Confer to the bold text.
+
+[**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)
+[**→ GitHub Repo ←**](https://github.com/clemedon/Makefile_tutor/)
 
 <hr>
 
 ***[ DONE ]***
 
-- Update text to **bold** with the logic which reading bold text only is still
+- Update text to bold with the logic which reading **bold text** only is still
   intelligible, making it a more brief version (TLDR).
 - Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version.
 - Add [**projets**](projects) directory with the templates **ready to try**.
 
 ***[ SOON ]***
 
-- Add Auto-Dependency Generation.
-- Add C++.
-- Update portability (GNU/BSD and POSIX compliance).
+- Add **Auto-Dependency** Generation.
+- Add **C++**.
+- Update **portability** (GNU/BSD and POSIX compliance).
 
 # Usage
 
-This tutorial is designed to be read line by line **linearly at first**.  Then
-it can be quickly navigated thanks to the **Brief** of each version which is
-visible from the [**Index**](#index), the [**Return to Index ↑**](#index) buttons at the
-end of each version, and the text in **bold** that **sum-up the escence** of the
-tutorial.
+This tutorial is designed to be read line by line **linearly at first**.
+
+Then it can be quickly navigated thanks to the:
+
+- **Brief** of each version which is visible from the [**Index**](#index).
+- **Return to Index ↑** buttons at the end of each version.
+- **Text in bold** that compile **the escence** of this tutorial.
 
 Each version of the templates has an assigned directory in the
-[**projects**](projects) directory, to play with a Makefile simply run:
+[**projects**](projects) directory of the repository, to play with a Makefile
+open a terminal and run:
 
 ```bash
 git clone git@github.com:clemedon/Makefile_tutor.git
@@ -90,7 +94,7 @@ What we call a `rule` is made of:
 
 - `targets`         Name of an **action or a file** we want to make.
 - `prerequisites`   Files required (**targets dependencies**) for the `rule` to execute.
-- `recipe`          Lines that **begins with a `TAB` character**, appear in a rule context.
+- `recipe`          Lines that **begins with a `TAB`** character, appear in a rule context.
 
 ```
 target: prerequisite
@@ -126,7 +130,7 @@ Equal signs:
 > - preprocessor's flags
 > - output of a descriptive message
 > - implicit C compilation rule is overwritten
-> - the `dash` suppresses errors
+> - the `-` character suppresses errors
 > - `.SILENT:` silences the rules
 
 [**Version 3**](#version-3)
@@ -160,6 +164,7 @@ before build:        after build:
 - the `.PHONY:` special target
 - The implicit C compilation
 - Illustration of a `make all`
+- 42 C coding style conventions
 
 ###     Template
 
@@ -210,8 +215,12 @@ fclean: clean
 
 all: $(NAME)
 
-re: fclean all
+re: | fclean all
+```
 
+- **The `|` symbol** TODO
+
+```make
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
@@ -221,7 +230,6 @@ re: fclean all
 
 - The prerequisites of **the `.PHONY:` special target** become targets that make
   will run regardless of whether a file with that name exists.
-
 
 ```make
 ####################################### END_1 ####
@@ -255,13 +263,17 @@ written.*
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
-`sources` that require... a `programmer`.  In other words `all` creates `icecream`
-with the `.o` created with the `.c` that you are supposed to create.
+`sources` that require... a `programmer`.  In other words `all` creates
+`icecream` with the `.o` created with the `.c` that you are supposed to create.
 
 Make will first trace his path to the lower level where there is the raw
 material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
-direction while building each resource that is required by the direct upper level
-`0 → 1 → 2 → 3`.
+direction while building each resource that is required by the direct upper
+level `0 → 1 → 2 → 3`.
+
+- The choice of the `CC` and `CFLAGS` values, as well as the `$(NAME)`, `clean`,
+  `fclean`, `all` and `re` rules are based on **42 C coding style conventions**,
+  don't hesitate to put those of your choice.
 
 [**Return to Index ↑**](#index)
 
@@ -353,7 +365,7 @@ fclean: clean
 
 all: $(NAME)
 
-re: fclean all
+re: | fclean all
 ```
 
 - The **output of a descriptive message** is operated by the `echo` statements
@@ -372,7 +384,7 @@ run: re
     -./$(NAME)
 ```
 
-- **The `dash`** at the start of `-./$(NAME)` **suppresses errors** triggered by
+- **The `-` symbol** at the start of `-./$(NAME)` **suppresses errors** triggered by
   non-zero status code.  In effect, make is interrupted by any recipe line that
   return a non-zero value.
 
@@ -526,13 +538,13 @@ fclean: clean
 
 all: $(NAME)
 
-re: fclean all
+re: | fclean all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
    since our structure **uses multiple source directories**.
 
-- **`@D`** is an automatic variable that **expands to the directory part of the
+- **`@D`** is an *automatic variable* that **expands to the directory part of the
   target file name**, to create the `OBJ_DIR` structure:
 
 ```
