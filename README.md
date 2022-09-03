@@ -29,8 +29,7 @@ of making them more digestible and even tasty 🍔
 
 **TL;DR** Confer to the bold text.
 
-[**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)
-
+[**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)<br>
 [**→ GitHub Repo ←**](https://github.com/clemedon/Makefile_tutor/)
 
 <hr>
