@@ -16,7 +16,7 @@
 	<a href="#Todo">Todo</a>
 </h3>
 
-## Summary
+# Summary
 
 Addressed to beginners and not to newcomers, the idea behind this tutorial is to
 focus on the essentials. The basics such as syntax specifications or anything
@@ -41,7 +41,7 @@ making them more digestible and even tasty 🍔
 - Auto-Dependency Generation
 - C++
 
-## Glossary
+# Glossary
 
 Our template will be composed of the following parts:
 
@@ -66,7 +66,7 @@ target: prerequisite
     ...
 ```
 
-## Syntax
+# Syntax
 
 Like every makefile our template use a combination of *makefile syntax* and
 *shell script syntax*.  The *shell script syntax* is reserved and limited to
@@ -80,13 +80,13 @@ Equal signs:
 - `=` recursively expand the defined variable (the expression is expanded afterward, when
   the variable is used)
 
-## Template
+# Template
 
 - [**1 Makefile for basic C project**](#1-Makefile-for-basic-C-project)
 - [**2 Makefile for basic C project**](#2-Makefile-for-basic-C-project)
 - [**3 Makefile for basic C project**](#3-Makefile-for-basic-C-project)
 
-###     1 Makefile for basic C project.
+##     1 Makefile for basic C project.
 
 The simplest Makefile, made for projects with the following structure:
 
@@ -199,7 +199,7 @@ direction while building each resource that is required by the direct upper leve
 - The prerequisites of the `.PHONY:` special target become targets that make
   will run regardless of whether a file with that name exists.
 
-###     2 Makefile for basic C project.
+##     2 Makefile for basic C project.
 
 As above but for a project including *header files* with the addition of
 `CPPFLAGS` dedicated to preprocessor's flags like `-I <include_dir>`.
@@ -320,7 +320,7 @@ run: re
 *To silence at the line level we can prefix the wanted recipes line with an `@`
 symbol.*
 
-###     3 Makefile for basic C project.
+##     3 Makefile for basic C project.
 
 As above but a more complex project structure that uses dedicated directories
 for their source `.c` and header `.h` files:
@@ -495,13 +495,13 @@ run: re
 ####################################### END_3 ####
 ```
 
-## Sources
+# Sources
 
 - [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
 - [**gnu.org/make/manual**](https://www.gnu.org/software/make/manual/html_node)
 - [**makefiletutorial.com**](https://makefiletutorial.com/)
 
-## Todo
+# Todo
 
 - C++
 - Auto-Dependency Generation
