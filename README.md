@@ -92,30 +92,10 @@ Our **template** will be composed of the following parts:
 - `SPECIAL`         Make **special targets**.
 - `#### END`        Mark the template **end**.
 
-What we call a `rule` is made of:
+What we call a **`rule`** is made of:
 
 - `targets`         Name of an **action or a file** we want to make.
 - `prerequisites`   Files required (**targets dependencies**) for the `rule` to execute.
-
-TODO
-
-- A normal prerequisite makes two statements: first, it imposes an order in
-which recipes will be invoked: the recipes for all prerequisites of a target
-will be completed before the recipe for the target is run. Second, it imposes a
-dependency relationship: if any prerequisite is newer than the target, then the
-target is considered out-of-date and must be rebuilt.
-
-- Order-only prerequisite impose a specific ordering on the rules to be invoked
-without forcing the target to be updated if one of those rules is executed.
-
-Prerequisites in Makefile have two functions:
-1. They are checked and, if necessary, are built before the target
-2. If any of the prerequisites gets rebuilt (or is simply newer than the target)
-   then the target will also be rebuilt.
-
-Order-only prerequisites do only:
-1. (ie. impose build-order)
-
 - `recipe`          Lines that **begins with a `TAB`** character, appear in a rule context.
 
 ```
@@ -133,7 +113,7 @@ lines, by default those lines have to **start with a `TAB`** character to be
 differentiated by make (and passed to the shell).  The **makefile syntax** is
 used for **all the other lines**.
 
-Equal signs:
+**Equal** signs:
 
 - `:=` **simply expand** the defined variable (like C equal sign)
 - `=` **recursively expand** the defined variable (the expression is expanded afterward, when
@@ -146,13 +126,14 @@ Equal signs:
 > - the `.PHONY:` special target
 > - The implicit C compilation
 > - Illustration of a `make all`
+> - 42 C coding style conventions
 
 [**Version 2**](#version-2)
 
 > - preprocessor's flags
 > - output of a descriptive message
 > - implicit C compilation rule is overwritten
-> - the `-` character suppresses errors
+> - the `dash` suppresses errors
 > - `.SILENT:` silences the rules
 
 [**Version 3**](#version-3)
@@ -240,9 +221,10 @@ all: $(NAME)
 re: | fclean all
 ```
 
-- **The `|` symbol** TODO
+- **The `|` symbol** defines the prerequisites on its right as `order-only`.  TODO
 
 ```make
+
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
