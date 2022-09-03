@@ -3,15 +3,15 @@
 </h1>
 
 <h3 align="center">
-	<a href="#Summary">Summary</a>
+	<a href="#summary">Summary</a>
 	<span> · </span>
-	<a href="#Glossary">Glossary</a>
+	<a href="#slossary">Glossary</a>
 	<span> · </span>
-	<a href="#Syntax">Syntax</a>
+	<a href="#syntax">Syntax</a>
 	<span> · </span>
-	<a href="#Template">Template</a>
+	<a href="#semplate">Template</a>
 	<span> · </span>
-	<a href="#Sources">Sources</a>
+	<a href="#sources">Sources</a>
 </h3>
 
 # Summary
@@ -25,9 +25,9 @@ Initially intended to help 42 students to step up their Makefile skills through
 a **documented template** that evolves gradually, **step by step**. With the aim
 of making them more digestible and even tasty 🍔
 
-***TL;DR*** Confer **bold** text.
+[**Website version**](https://clemedon.github.io/Makefile_tutor/)
 
-[**→ Page**](https://clemedon.github.io/Makefile_tutor/)
+***TL;DR*** Confer to the **bold** text.
 
 <hr>
 
@@ -41,7 +41,8 @@ of making them more digestible and even tasty 🍔
 - Add [**Syntax**](#syntax) section.
 - Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version.
 - Add [**Template**](#template)
-- Add [**Summary**](#Summary) [**Glossary**](#Glossary) [**Sources**](#Sources)
+- Add [**projets**](projects) folder with the templates ready to try.
+- Add [**Summary**](#summary) [**Glossary**](#glossary) [**Sources**](#sources)
 
 ***[ SOON ]***
 
@@ -49,7 +50,18 @@ of making them more digestible and even tasty 🍔
 - Add C++.
 - Update portability (GNU/BSD and POSIX compliance).
 
+# Usage
+
+Each version of the templates has assigned folder in [**projects**](projects) folder, to play with a Makefile simply run `git clone git@github.com:clemedon/Makefile_tutor.git && cd Makefile_tutor && cd project` and `cd` to the version of your choice and finally `make` the rules of your choise. 
+
 # Glossary
+
+Each **version** of our template has **3 sections**:
+
+- **Structure** the project structure type.
+- **Brief** compilation of the bold text from the template comments.
+- **Template** our Makefile with comments (that are always placed at the end of
+  the template part that concerns them).
 
 Our **template** will be composed of the following parts:
 
@@ -87,24 +99,16 @@ Equal signs:
 - `:=` **simply expand** the defined variable (like C equal sign)
 - `=` **recursively expand** the defined variable (the expression is expanded afterward, when
   the variable is used)
+  
+# Index
 
-# Template
-
-Each version has **3 sections**:
-- **Structure** the project structure type.
-- **Brief** compile all the bold text from the template comments.
-- **Template** our Makefile with comments (that are always placed at the end of
-  the template part that concerns them).
-
-##  Index
-
-[**Version 1**](#Version-1)
+[**Version 1**](#version-1)
 
 > - the `.PHONY:` special target
 > - The implicit C compilation
 > - Illustration of a `make all`
 
-[**Version 2**](#Version-2)
+[**Version 2**](#version-2)
 
 > - preprocessor's flags
 > - output of a descriptive message
@@ -112,7 +116,7 @@ Each version has **3 sections**:
 > - the `dash` suppresses errors
 > - `.SILENT:` silences the rules
 
-[**Version 3**](#Version-3)
+[**Version 3**](#version-3)
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
@@ -246,7 +250,7 @@ material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
 direction while building each resource that is required by the direct upper level
 `0 → 1 → 2 → 3`.
 
-[**Return to Index ↑**](#Index)
+[**Return to Index ↑**](#index)
 
 ##  Version 2
 
@@ -380,7 +384,7 @@ symbol.*
 ####################################### END_2 ####
 ```
 
-[**Return to Index ↑**](#Index)
+[**Return to Index ↑**](#index)
 
 ##  Version 3
 
@@ -569,7 +573,7 @@ run: re
 
 *This will work the same with every possible kind of src directory structure.*
 
-[**Return to Index ↑**](#Index)
+[**Return to Index ↑**](#index)
 
 # Sources
 
