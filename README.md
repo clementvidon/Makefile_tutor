@@ -160,7 +160,7 @@ re: fclean all
 ####################################### END_1 ####
 ```
 
-- The C compilation is operated by the following *implicit rule*:
+- **The C compilation** is operated by the following *implicit rule*:
 
 ```make
 %.o: %.c
@@ -174,7 +174,7 @@ prerequisite (which is `%.c`) and `$@` to the name of the target being generated
 *As their name implies implicit rules are implicit and do not need to be
 written.*
 
-- Illustration of a `make all`:
+- **Illustration of a `make all`**:
 
 ```make
 %.o: %.c                                1 ← 0
@@ -196,7 +196,7 @@ material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
 direction while building each resource that is required by the direct upper level
 `0 → 1 → 2 → 3`.
 
-- The prerequisites of the `.PHONY:` special target become targets that make
+- The prerequisites of **the `.PHONY:` special target** become targets that make
   will run regardless of whether a file with that name exists.
 
 ##     2 Makefile for basic C project.
@@ -219,10 +219,10 @@ before build:        after build:
 
 We add the following features:
 
-- Basic rules informative message printing.
-- The use of `.SILENT:` to prevent rules from printing their recipe before its
+- Basic rules informative **message printing**.
+- The use of **`.SILENT:`** to prevent rules from printing their recipe before its
   execution.
-- First custom rule that make and run our program with a simple `make run`.
+- First **custom rule** that make and run our program with a simple `make run`.
 
 ```make
 ####################################### BEG_2 ####
@@ -284,7 +284,7 @@ all: $(NAME)
 re: fclean all
 ```
 
-- The implicit C compilation rule is overwritten with an explicit version that
+- The **implicit C compilation rule is overwritten** with an explicit version that
   comes with an `echo` statement.
 
 ```make
@@ -297,9 +297,9 @@ run: re
     -./$(NAME)
 ```
 
-- The dash at the start of `-./$(NAME)` suppresses the errors of non-zero status
-  code.  In effect, make is interrupted by any line that return a non-zero
-  value.
+- The dash at the start of `-./$(NAME)` **suppresses the errors of non-zero
+  status** code.  In effect, make is interrupted by any line that return a
+  non-zero value.
 
 ```make
 #------------------------------------------------#
@@ -312,10 +312,10 @@ run: re
 ####################################### END_2 ####
 ```
 
-- Normally make prints each line of a rule's recipe before it is executed.  The
-  special target `.SILENT:` silence the rules passed to it as prerequisites,
-  when it is used without prerequisites it silents all the rules (implicit ones
-  like C compilation included).
+- Normally make prints each line of a rule's recipe before it is executed.
+  **The special target `.SILENT:`** silence the rules passed to it as
+  prerequisites, when it is used without prerequisites it silents all the rules
+  (implicit ones like C compilation included).
 
 *To silence at the line level we can prefix the wanted recipes line with an `@`
 symbol.*
@@ -355,13 +355,13 @@ before build:        after build:
                                    water.c
 ```
 
-- For this result we add basic automations that facilitate the scaling up to a
+- For this result we add **basic automations** that facilitate the scaling up to a
   larger project with the use of *substitution reference* to automatically
   generate the `obj` directory based on the `src` directory structure.
 
 *This will work the same with every possible kind of src directory structure.*
 
-- We add the useful custom rule `info` that prints each lines of the build
+- We add the useful **custom rule** `info` that prints each lines of the build
   recipe (without executing them).
 
 ```make
@@ -396,8 +396,8 @@ SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 ```
 
-- By ending it with a `backslash` we can split the line to increase the
-  visibility of `SRCS` content and facilitate its modification.
+- By ending it with a `backslash` we can split the line to **increase the
+  visibility** of `SRCS` content and facilitate its modification.
 
 - A *substitution reference* substitutes the value of a variable with the
   specified alterations.  `$(SRCS:%=$(SRC_DIR)/%)` means that each item of
@@ -447,7 +447,7 @@ re: fclean all
 -  In the compilation rule `.o: %.c` becomes  `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
    since our structure uses directories.
 
-- The compilation rule uses `@D`, an *automatic variable* that expands to the
+- The compilation rule uses **`@D`, an automatic variable** that expands to the
   directory part of the target file name, to create the `OBJ_DIR` structure:
 
 ```
@@ -479,10 +479,10 @@ run: re
     -./$(NAME)
 ```
 
-- The `info` rule will execute a simple `make` command with `--dry-run` to print
-  the recipe without executing it, `--always-make` to `make` even if the targets
-  already exist.  The `--no-print-directory` flag and `grep` command are used to
-  clear up the output from unwanted lines.
+- The `info` rule will execute a simple `make` command with `--dry-run` to
+  **print the recipe without executing it**, `--always-make` to `make` even if
+  the targets already exist.  The `--no-print-directory` flag and `grep` command
+  are used to clear up the output from unwanted lines.
 
 ```make
 #------------------------------------------------#
