@@ -11,9 +11,11 @@
 	<span> · </span>
 	<a href="#syntax">Syntax</a>
 	<span> · </span>
-	<a href="#template">Template</a>
+	<a href="#index">Index</a>
 	<span> · </span>
 	<a href="#sources">Sources</a>
+	<span> · </span>
+	<a href="#contact">Contact</a>
 </h3>
 
 # Summary
