@@ -12,16 +12,14 @@
 	<a href="#Template">Template</a>
 	<span> · </span>
 	<a href="#Sources">Sources</a>
-	<span> · </span>
-	<a href="#Todo">Todo</a>
 </h3>
 
 # Summary
 
 Addressed to beginners and not to newcomers, the idea behind this tutorial is to
-focus on the essentials. The basics such as syntax specifications or anything
-not directly related to the template we are going to explore will not be covered
-here.
+**focus on the essentials**. The basics such as exhaustive syntax specifications
+or anything not directly related to the template we are going to explore will
+not be covered here.
 
 Initially intended to help 42 students to step up their Makefile skills through
 a documented template that evolves gradually, step by step. With the aim of
@@ -29,35 +27,39 @@ making them more digestible and even tasty 🍔
 
 <hr>
 
-***[LAST UPDATE]***
+***[ LAST UPDATE ↓ ]***
 - Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version
 - Add [projects](projects) directory
 - Add [Syntax](#syntax) section
-- Add *BEG* and *END* to highlight the template beginning and the end
+- Add `### BEG` and `### END` to highlight the template beginning and the end
 - Update [Todo](#todo) section
+- Add a Brief to each template section
+- Update keywords to bold (with the logic that reading bold text only is still
+  intelligible)
 
-***[NEXT UPDATE]***
+***[ NEXT UPDATE ↓ ]***
 
 - Auto-Dependency Generation
 - C++
+- Portability (GNU/BSD, POSIX compliant)
 
 # Glossary
 
-Our template will be composed of the following parts:
+Our **template** will be composed of the following parts:
 
-- `####### BEG` mark the beginning of the template
-- `INGREDIENTS` variables containing the build ingredients
-- `UTENSILS` variables containing shell command tools
-- `RECIPES` minimum essential set of rules
-- `EXTRA RECIPES` custom rules
-- `SPECIAL` make `special targets`
-- `####### END` mark the end of the template
+- `### BEG`         Mark the template **beginning**.
+- `INGREDIENTS`     Variables containing the **build ingredients**.
+- `UTENSILS`        Variables containing **shell command tools**
+- `RECIPES`         Basic set of **rules**.
+- `EXTRA RECIPES`   **Custom rules**.
+- `SPECIAL`         Make **special targets**.
+- `#### END`        Mark the template **end**.
 
 What we call a `rule` is made of:
 
-- `targets` is the file name we want to make
-- `prerequisites` are files required (dependencies) for the `rule` to execute
-- `recipe` are any lines that begins with a `TAB` and appear in a *rule context*
+- `targets`         Name of an **action or a file** we want to make.
+- `prerequisites`   Files required (**targets dependencies**) for the `rule` to execute.
+- `recipe`          Lines that **begins with a `TAB` character**, appear in a rule context.
 
 ```
 target: prerequisite
@@ -68,27 +70,57 @@ target: prerequisite
 
 # Syntax
 
-Like every makefile our template use a combination of *makefile syntax* and
-*shell script syntax*.  The *shell script syntax* is reserved and limited to
-*recipe lines*, by default those lines have to start with a `TAB` character to
-be differentiated by make (and passed to the shell).  The *makefile syntax* is
-used for all the other lines.
+Like every makefile our template use a combination of makefile syntax and shell
+script syntax.  The **shell script syntax** is reserved and limited to recipe
+lines, by default those lines have to **start with a `TAB`** character to be
+differentiated by make (and passed to the shell).  The **makefile syntax** is
+used for **all the other lines**.
 
 Equal signs:
 
-- `:=` simply expand the defined variable (like C equal sign)
-- `=` recursively expand the defined variable (the expression is expanded afterward, when
+- `:=` **simply expand** the defined variable (like C equal sign)
+- `=` **recursively expand** the defined variable (the expression is expanded afterward, when
   the variable is used)
 
 # Template
 
+Each each of the following sections is divided into 3 parts:
+- An illustration of the **project structure**
+- A **Brief** (that repeats the **bold parts of the template comments**).
+- A **commented template**  (comments are always placed at the end template part
+  that concerns them).
+
 - [**1 Makefile for basic C project**](#1-Makefile-for-basic-C-project)
+
+Brief:
+- the `.PHONY:` special target
+- The implicit C compilation
+- Illustration of a `make all`
+
 - [**2 Makefile for basic C project**](#2-Makefile-for-basic-C-project)
+
+Brief:
+- preprocessor's flags
+- output of a descriptive message
+- implicit C compilation rule is overwritten
+- the `dash` suppresses errors
+- `.SILENT:` silences the rules
+
 - [**3 Makefile for basic C project**](#3-Makefile-for-basic-C-project)
+
+Brief:
+
+- split the line with a `backslash`
+- substitution reference so `main.c` becomes `src/main.c`
+- compilers rule uses multiple source directories
+- `@D` expands to the directory part of the target file name
+- `clean` rule `--recursive`
+- `info` rule print the `$(NAME)` recipe without executing it
+- automation substitution reference `@D`
 
 ##     1 Makefile for basic C project.
 
-The simplest Makefile, made for projects with the following structure:
+The simplest, build a program called `icecream` with the following structure:
 
 ```
 before build:        after build:
@@ -100,7 +132,11 @@ before build:        after build:
                            icecream
 ```
 
-Build a program called `icecream`:
+Brief:
+
+- the `.PHONY:` special target
+- The implicit C compilation
+- Illustration of a `make all`
 
 ```make
 ####################################### BEG_1 ####
@@ -156,11 +192,17 @@ re: fclean all
 #------------------------------------------------#
 
 .PHONY: clean fclean all re run
+```
 
+- The prerequisites of **the `.PHONY:` special target** become targets that make
+  will run regardless of whether a file with that name exists.
+
+
+```make
 ####################################### END_1 ####
 ```
 
-- **The C compilation** is operated by the following *implicit rule*:
+- **The implicit C compilation** is operated by the following *implicit rule*:
 
 ```make
 %.o: %.c
@@ -177,14 +219,14 @@ written.*
 - **Illustration of a `make all`**:
 
 ```make
-%.o: %.c                                1 ← 0
-  $(CC) $(CFLAGS) -c $< -o $@
-  echo "CREATED $@"
+        %.o: %.c                                1 ← 0
+            $(CC) $(CFLAGS) -c $< -o $@
+            echo "CREATED $@"
 
-$(NAME): $(OBJS)                        2 ← 1
-  $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+        $(NAME): $(OBJS)                        2 ← 1
+            $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-all: $(NAME)                            3 ← 2
+        all: $(NAME)                            3 ← 2
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
@@ -196,15 +238,9 @@ material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
 direction while building each resource that is required by the direct upper level
 `0 → 1 → 2 → 3`.
 
-- The prerequisites of **the `.PHONY:` special target** become targets that make
-  will run regardless of whether a file with that name exists.
+##  2 Makefile for basic C project
 
-##     2 Makefile for basic C project.
-
-As above but for a project including *header files* with the addition of
-`CPPFLAGS` dedicated to preprocessor's flags like `-I <include_dir>`.
-
-Thus the project tree changes quite a bit:
+As above but for a project that **includes header files**:
 
 ```
 before build:        after build:
@@ -217,12 +253,13 @@ before build:        after build:
                            icecream
 ```
 
-We add the following features:
+Brief:
 
-- Basic rules informative **message printing**.
-- The use of **`.SILENT:`** to prevent rules from printing their recipe before its
-  execution.
-- First **custom rule** that make and run our program with a simple `make run`.
+- preprocessor's flags
+- output of a descriptive message
+- implicit C compilation rule is overwritten
+- the `dash` suppresses errors
+- `.SILENT:` silences the rules
 
 ```make
 ####################################### BEG_2 ####
@@ -245,7 +282,11 @@ CPPFLAGS    := -I .
 
 SRCS        := main.c
 OBJS        := main.o
+```
 
+- `CPPFLAGS` is dedicated to **preprocessor's flags** like `-I <include_dir>`.
+
+```make
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
@@ -284,6 +325,9 @@ all: $(NAME)
 re: fclean all
 ```
 
+- The **output of a descriptive message** is operated by the `echo` statements
+  in the basic rules.
+
 - The **implicit C compilation rule is overwritten** with an explicit version that
   comes with an `echo` statement.
 
@@ -297,9 +341,9 @@ run: re
     -./$(NAME)
 ```
 
-- The dash at the start of `-./$(NAME)` **suppresses the errors of non-zero
-  status** code.  In effect, make is interrupted by any line that return a
-  non-zero value.
+- **The `dash`** at the start of `-./$(NAME)` **suppresses errors** triggered by
+  non-zero status code.  In effect, make is interrupted by any recipe line that
+  return a non-zero value.
 
 ```make
 #------------------------------------------------#
@@ -308,22 +352,24 @@ run: re
 
 .SILENT:
 .PHONY: clean fclean all re run
-
-####################################### END_2 ####
 ```
 
-- Normally make prints each line of a rule's recipe before it is executed.
-  **The special target `.SILENT:`** silence the rules passed to it as
-  prerequisites, when it is used without prerequisites it silents all the rules
-  (implicit ones like C compilation included).
+- Normally make prints each line of a rule's recipe before it is executed.  The
+  special target **`.SILENT:` silences the rules** passed to it as prerequisites,
+  when it is used without prerequisites it silents all the rules (implicit ones
+  like C compilation included).
 
 *To silence at the line level we can prefix the wanted recipes line with an `@`
 symbol.*
 
-##     3 Makefile for basic C project.
+```make
+####################################### END_2 ####
+```
 
-As above but a more complex project structure that uses dedicated directories
-for their source `.c` and header `.h` files:
+##  3 Makefile for basic C project
+
+As above but a more complex project structure with **multiple source
+directories**:
 
 ```
 before build:        after build:
@@ -355,14 +401,15 @@ before build:        after build:
                                    water.c
 ```
 
-- For this result we add **basic automations** that facilitate the scaling up to a
-  larger project with the use of *substitution reference* to automatically
-  generate the `obj` directory based on the `src` directory structure.
+Brief:
 
-*This will work the same with every possible kind of src directory structure.*
-
-- We add the useful **custom rule** `info` that prints each lines of the build
-  recipe (without executing them).
+- split the line with a `backslash`
+- substitution reference so `main.c` becomes `src/main.c`
+- compilers rule uses multiple source directories
+- `@D` expands to the directory part of the target file name
+- `clean` rule `--recursive`
+- `info` rule print the `$(NAME)` recipe without executing it
+- automation substitution reference `@D`
 
 ```make
 ####################################### BEG_3 ####
@@ -396,13 +443,14 @@ SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 ```
 
-- By ending it with a `backslash` we can split the line to **increase the
-  visibility** of `SRCS` content and facilitate its modification.
+- We can **split the line** by ending it **with a `backslash`** to increase the
+  readability of `SRCS` content and facilitate its modification.
 
-- A *substitution reference* substitutes the value of a variable with the
+- A **substitution reference** substitutes the value of a variable with the
   specified alterations.  `$(SRCS:%=$(SRC_DIR)/%)` means that each item of
   `SRCS` represented by `%` becomes itself `%` plus the `$(SRC_DIR)/`
-  alteration, so the item `main.c` would be turned into `src/main.c`.
+  alteration, so `main.c` becomes `src/main.c`. `OBJS` will then use the same
+  process to convert `src/main.c` into `src/main.o`, dedicated to the `OBJ_DIR`.
 
 ```make
 #------------------------------------------------#
@@ -444,11 +492,11 @@ all: $(NAME)
 re: fclean all
 ```
 
--  In the compilation rule `.o: %.c` becomes  `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
-   since our structure uses directories.
+-  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
+   since our structure **uses multiple source directories**.
 
-- The compilation rule uses **`@D`, an automatic variable** that expands to the
-  directory part of the target file name, to create the `OBJ_DIR` structure:
+- **`@D`** is an automatic variable that **expands to the directory part of the
+  target file name**, to create the `OBJ_DIR` structure:
 
 ```
 -[ ! -d $(@D) ] && mkdir -p $(@D)
@@ -464,7 +512,7 @@ re: fclean all
                                +- of the dir part of the target filename
 ```
 
-- In the `clean` rule we add `--recursive` to `RM` to remove `OBJ_DIR` and its content recursively.
+- In the **`clean` rule** we add **`--recursive`** to `RM` to remove `OBJ_DIR` and its content recursively.
 
 ```make
 #------------------------------------------------#
@@ -479,10 +527,10 @@ run: re
     -./$(NAME)
 ```
 
-- The `info` rule will execute a simple `make` command with `--dry-run` to
-  **print the recipe without executing it**, `--always-make` to `make` even if
-  the targets already exist.  The `--no-print-directory` flag and `grep` command
-  are used to clear up the output from unwanted lines.
+- The **`info` rule** will execute a simple `make` command with `--dry-run` to
+  **print the `$(NAME)` recipe without executing it**, `--always-make` to `make`
+  even if the targets already exist and `--no-print-directory` flag and `grep`
+  command to clean the output from unwanted lines.
 
 ```make
 #------------------------------------------------#
@@ -495,18 +543,16 @@ run: re
 ####################################### END_3 ####
 ```
 
+- The basic **automation** provided by the **substitution reference** and the
+  **`@D`** automatic variable enable the scaling up to a larger project and the
+  generation of the `obj` directory based on the `src` directory structure.
+
+*This will work the same with every possible kind of src directory structure.*
+
 # Sources
 
 - [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
 - [**gnu.org/make/manual**](https://www.gnu.org/software/make/manual/html_node)
 - [**makefiletutorial.com**](https://makefiletutorial.com/)
 
-# Todo
-
-- C++
-- Auto-Dependency Generation
-- Portability (GNU/BSD, POSIX compliant)
-- project that uses a librairy
-- project that is a librairy
-- Change GitHub page theme.
-- Add [GH Page Buttons](https://buttons.github.io/)
+<sub><i>Copyright 2022 Clément Vidon. All Rights Reserved.</i></sub>
