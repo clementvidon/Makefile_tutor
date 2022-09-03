@@ -7,7 +7,7 @@
 	<span> · </span>
 	<a href="#Glossary">Glossary</a>
 	<span> · </span>
-	<a href="#Glossary">Syntax</a>
+	<a href="#Syntax">Syntax</a>
 	<span> · </span>
 	<a href="#Template">Template</a>
 	<span> · </span>
@@ -22,26 +22,28 @@ or anything not directly related to the template we are going to explore will
 not be covered here.
 
 Initially intended to help 42 students to step up their Makefile skills through
-a documented template that evolves gradually, step by step. With the aim of
-making them more digestible and even tasty 🍔
+a **documented template** that evolves gradually, **step by step**. With the aim
+of making them more digestible and even tasty 🍔
 
 <hr>
 
-***[ LAST UPDATE ↓ ]***
-- Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version
-- Add [projects](projects) directory
-- Add [Syntax](#syntax) section
-- Add `### BEG` and `### END` to highlight the template beginning and the end
-- Update [Todo](#todo) section
-- Add a Brief to each template section
-- Update keywords to bold (with the logic that reading bold text only is still
-  intelligible)
+***[ DONE ]***
 
-***[ NEXT UPDATE ↓ ]***
+- Update keywords to **bold** (with the logic which reading bold text only is
+  still intelligible).
+- Add a **Brief** to each template section.
+- Update [**Todo**](#todo) section.
+- Add `### BEG` and `### END` to highlight the template beginning and the end.
+- Add [**Syntax**](#syntax) section.
+- Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version.
+- Add [**Template**](#template)
+- Add [**Summary**](#Summary) [**Glossary**](#Glossary) [**Sources**](#Sources)
 
-- Auto-Dependency Generation
-- C++
-- Portability (GNU/BSD, POSIX compliant)
+***[ SOON ]***
+
+- Add Auto-Dependency Generation.
+- Add C++.
+- Update portability (GNU/BSD and POSIX compliance).
 
 # Glossary
 
@@ -93,6 +95,7 @@ Each each of the following sections is divided into 3 parts:
 - [**1 Makefile for basic C project**](#1-Makefile-for-basic-C-project)
 
 Brief:
+
 - the `.PHONY:` special target
 - The implicit C compilation
 - Illustration of a `make all`
@@ -100,6 +103,7 @@ Brief:
 - [**2 Makefile for basic C project**](#2-Makefile-for-basic-C-project)
 
 Brief:
+
 - preprocessor's flags
 - output of a descriptive message
 - implicit C compilation rule is overwritten
