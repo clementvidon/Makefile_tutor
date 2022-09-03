@@ -30,11 +30,11 @@ making them more digestible and even tasty 🍔
 <hr>
 
 ***[LAST UPDATE]***
-- Add **[GitHub Page](https://clemedon.github.io/Makefile_tutor/)** version
-- Add *[projects](projects)* directory
-- Add *[Syntax](#syntax)* section
+- Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version
+- Add [projects](projects) directory
+- Add [Syntax](#syntax) section
 - Add *BEG* and *END* to highlight the template beginning and the end
-- Update *[Todo](#todo)* section
+- Update [Todo](#todo) section
 
 ***[NEXT UPDATE]***
 
@@ -44,20 +44,20 @@ making them more digestible and even tasty 🍔
 ## Glossary
 
 Our template will be composed of the following parts:
-```
-####### BEG     mark the beginning of the template
-INGREDIENTS     variables containing the build ingredients
-UTENSILS        variables containing shell command tools
-RECIPES         minimum essential set of rules
-EXTRA RECIPES   custom rules
-SPECIAL         make "special targets"
-####### END     mark the end of the template
-```
+
+- ####### BEG &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mark the beginning of the template
+- INGREDIENTS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; variables containing the build ingredients
+- UTENSILS &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; variables containing shell command tools
+- RECIPES &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; minimum essential set of rules
+- EXTRA RECIPES &nbsp;&nbsp;&nbsp; custom rules
+- SPECIAL &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; make `special targets`
+- ####### END &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; mark the end of the template
+
 What we call a `rule` is made of:
 
 - `targets` is the file name we want to make
 - `prerequisites` are files required (dependencies) for the `rule` to execute
-- `recipe` are any lines that begins with a `TAB` and appear in a "rule context"
+- `recipe` are any lines that begins with a `TAB` and appear in a *rule context*
 
 ```
 target: prerequisite
@@ -82,9 +82,9 @@ Equal signs:
 
 ## Template
 
-- **[1 Makefile for basic C project](#1-Makefile-for-basic-C-project)**
-- **[2 Makefile for basic C project](#2-Makefile-for-basic-C-project)**
-- **[3 Makefile for basic C project](#3-Makefile-for-basic-C-project)**
+- [**1 Makefile for basic C project**](#1-Makefile-for-basic-C-project)
+- [**2 Makefile for basic C project**](#2-Makefile-for-basic-C-project)
+- [**3 Makefile for basic C project**](#3-Makefile-for-basic-C-project)
 
 ###     1 Makefile for basic C project.
 
@@ -132,13 +132,11 @@ RM          := rm -f
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# all       build all targets
-# $(NAME)   build $(NAME) target
+# $(NAME)   final target
 # clean     remove objects
-# fclean    remove objects and binary
-# re        remove objects and binary and rebuild all
-
-all: $(NAME)
+# fclean    clean + remove binary
+# all       all targets
+# re        fclean + all
 
 $(NAME): $(OBJS)
     $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
@@ -149,19 +147,18 @@ clean:
 fclean: clean
     $(RM) $(NAME)
 
+all: $(NAME)
+
 re: fclean all
 
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
 
-.PHONY: all clean fclean re run
+.PHONY: clean fclean all re run
 
 ####################################### END_1 ####
 ```
-
-- The prerequisites of the `.PHONY:` special target become targets that make
-  will run regardless of whether a file with that name exists.
 
 - The C compilation is operated by the following *implicit rule*:
 
@@ -180,14 +177,14 @@ written.*
 - Illustration of a `make all`:
 
 ```make
-all: $(NAME)                            3 ← 2
+%.o: %.c                                1 ← 0
+  $(CC) $(CFLAGS) -c $< -o $@
+  echo "CREATED $@"
 
 $(NAME): $(OBJS)                        2 ← 1
   $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-%.o: %.c                                1 ← 0
-  $(CC) $(CFLAGS) -c $< -o $@
-  echo "CREATED $@"
+all: $(NAME)                            3 ← 2
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
@@ -198,6 +195,9 @@ Make will first trace his path to the lower level where there is the raw
 material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
 direction while building each resource that is required by the direct upper level
 `0 → 1 → 2 → 3`.
+
+- The prerequisites of the `.PHONY:` special target become targets that make
+  will run regardless of whether a file with that name exists.
 
 ###     2 Makefile for basic C project.
 
@@ -256,27 +256,21 @@ RM          := rm -f
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# all       build all targets
-# $(NAME)   build $(NAME) target
+# %.o       compilation
+# $(NAME)   final target
 # clean     remove objects
-# fclean    remove objects and binary
-# re        remove objects and binary and rebuild all
+# fclean    clean + remove binary
+# all       all targets
+# re        fclean + all
 
-all: $(NAME)
+%.o: %.c
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+    echo "CREATED $@"
 
 $(NAME): $(OBJS)
     $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
     echo "CREATED $(NAME)"
 
-%.o: %.c
-    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-    echo "CREATED $@"
-```
-
-- The implicit C compilation rule is overwritten with an explicit version that
-  comes with an `echo` statement.
-
-```make
 clean:
     $(RM) $(OBJS)
     echo "REMOVED $(OBJS)"
@@ -285,8 +279,15 @@ fclean: clean
     $(RM) $(NAME)
     echo "REMOVED $(NAME)"
 
-re: fclean all
+all: $(NAME)
 
+re: fclean all
+```
+
+- The implicit C compilation rule is overwritten with an explicit version that
+  comes with an `echo` statement.
+
+```make
 #------------------------------------------------#
 #   EXTRA RECIPES                                #
 #------------------------------------------------#
@@ -306,7 +307,7 @@ run: re
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: all clean fclean re run
+.PHONY: clean fclean all re run
 
 ####################################### END_2 ####
 ```
@@ -414,22 +415,21 @@ RM          := rm -f
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# all       build all targets
-# $(NAME)   build $(NAME) target
+# %.o       compilation
+# $(NAME)   final target
 # clean     remove objects
-# fclean    remove objects and binary
-# re        remove objects and binary and rebuild all
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-    $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
-    echo "CREATED $(NAME)"
+# fclean    clean + remove binary
+# all       all targets
+# re        fclean + all
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
     -[ ! -d $(@D) ] && mkdir -p $(@D)
     $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
     echo "CREATED $@"
+
+$(NAME): $(OBJS)
+    $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
+    echo "CREATED $(NAME)"
 
 clean:
     -[ -d $(OBJ_DIR) ] && $(RM) --recursive $(OBJ_DIR)
@@ -438,6 +438,8 @@ clean:
 fclean: clean
     $(RM) $(NAME)
     echo "REMOVED $(NAME)"
+
+all: $(NAME)
 
 re: fclean all
 ```
@@ -488,16 +490,16 @@ run: re
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: all clean fclean re run info
+.PHONY: clean fclean all re run info
 
 ####################################### END_3 ####
 ```
 
 ## Sources
 
-- **[docs.w3cub.com/make](https://docs.w3cub.com/gnu_make/)**
-- **[gnu.org/make/manual](https://www.gnu.org/software/make/manual/html_node)**
-- **[makefiletutorial.com](https://makefiletutorial.com/)**
+- [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
+- [**gnu.org/make/manual**](https://www.gnu.org/software/make/manual/html_node)
+- [**makefiletutorial.com**](https://makefiletutorial.com/)
 
 ## Todo
 
