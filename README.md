@@ -127,9 +127,20 @@ used for **all the other lines**.
 
 **Equal** signs:
 
-- `:=` **simply expand** the defined variable (like C equal sign)
+- `:=` **simply expand** the defined variable (like C equal sign).
 - `=` **recursively expand** the defined variable (the expression is expanded afterward, when
-  the variable is used)
+  the variable is used).
+
+```make
+A  = You ${C}
+B := You ${C}
+
+C  = underestood.
+
+all:
+    echo ${A} # echoes "You"
+    echo ${B} # echoes "You understood"
+```
 
 # Index
 
@@ -264,14 +275,13 @@ written.*
 - **Illustration of a `make all`**:
 
 ```make
-        %.o: %.c                                1 ← 0
-            $(CC) $(CFLAGS) -c $< -o $@
-            echo "CREATED $@"
+%.o: %.c                                1 ← 0
+    $(CC) $(CFLAGS) -c $< -o $@
 
-        $(NAME): $(OBJS)                        2 ← 1
-            $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+$(NAME): $(OBJS)                        2 ← 1
+    $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-        all: $(NAME)                            3 ← 2
+all: $(NAME)                            3 ← 2
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
@@ -396,9 +406,10 @@ run: re
     -./$(NAME)
 ```
 
-- **The dash symbol** at the start of `-./$(NAME)` **suppresses errors** triggered by
-  non-zero status code.  In effect, make is interrupted by any recipe line that
-  return a non-zero value.
+- **The dash symbol** at the start of `-./$(NAME)` **suppresses errors**
+  triggered by non-zero status code that a shell command may return.  We use it
+  here to prevent make from terminating with an error in case our program
+  returns an non-zero value.
 
 ```make
 #------------------------------------------------#
