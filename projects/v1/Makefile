@@ -1,3 +1,5 @@
+####################################### BEG_1 ####
+
 NAME        := icecream
 
 #------------------------------------------------#
@@ -25,13 +27,11 @@ RM          := rm -f
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# all       build all targets
-# $(NAME)   build $(NAME) target
+# $(NAME)   final target
 # clean     remove objects
-# fclean    remove objects and binary
-# re        remove objects and binary and rebuild all
-
-all: $(NAME)
+# fclean    clean + remove binary
+# all       all targets
+# re        fclean + all
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
@@ -42,10 +42,14 @@ clean:
 fclean: clean
 	$(RM) $(NAME)
 
-re: fclean all
+all: $(NAME)
+
+re: | fclean all
 
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
 
-.PHONY: all clean fclean re run
+.PHONY: clean fclean all re run
+
+####################################### END_1 ####

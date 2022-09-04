@@ -1,3 +1,5 @@
+####################################### BEG_2 ####
+
 NAME        := icecream
 
 #------------------------------------------------#
@@ -27,21 +29,20 @@ RM          := rm -f
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# all       build all targets
-# $(NAME)   build $(NAME) target
+# %.o       compilation
+# $(NAME)   final target
 # clean     remove objects
-# fclean    remove objects and binary
-# re        remove objects and binary and rebuild all
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
-	echo "CREATED $(NAME)"
+# fclean    clean + remove binary
+# all       all targets
+# re        fclean + all
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	echo "CREATED $@"
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
+	echo "CREATED $(NAME)"
 
 clean:
 	$(RM) $(OBJS)
@@ -51,7 +52,9 @@ fclean: clean
 	$(RM) $(NAME)
 	echo "REMOVED $(NAME)"
 
-re: fclean all
+all: $(NAME)
+
+re: | fclean all
 
 #------------------------------------------------#
 #   EXTRA RECIPES                                #
@@ -66,4 +69,6 @@ run: re
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: all clean fclean re run
+.PHONY: clean fclean all re run
+
+####################################### END_2 ####

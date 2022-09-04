@@ -224,7 +224,6 @@ re: | fclean all
 - **The `|` symbol** defines the prerequisites on its right as `order-only`.  TODO
 
 ```make
-
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#

@@ -1,7 +1,9 @@
+####################################### BEG_3 ####
+
 NAME        := icecream
 
 #------------------------------------------------#
-#   VARIABLES                                    #
+#   INGREDIENTS                                  #
 #------------------------------------------------#
 # CC        compilers
 # CFLAGS    compiler flags
@@ -19,39 +21,38 @@ CPPFLAGS    := -I include
 SRC_DIR     := src
 OBJ_DIR     := obj
 SRCS        := \
-	main.c \
-	arom/coco.c \
-	base/milk.c \
+	main.c          \
+	arom/coco.c     \
+	base/milk.c     \
 	base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 #------------------------------------------------#
-#   TOOLS                                        #
+#   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
 
 RM          := rm -f
 
 #------------------------------------------------#
-#   BASIC RULES                                  #
+#   RECIPES                                      #
 #------------------------------------------------#
-# all       build all targets
-# $(NAME)   build $(NAME) target
+# %.o       compilation
+# $(NAME)   final target
 # clean     remove objects
-# fclean    remove objects and binary
-# re        remove objects and binary and rebuild all
+# fclean    clean + remove binary
+# all       all targets
+# re        fclean + all
 
-all: $(NAME)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	-[ ! -d $(@D) ] && mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	echo "CREATED $@"
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
 	echo "CREATED $(NAME)"
-
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	-[ ! -d $(@D) ] && mkdir -p  $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-	echo "CREATED $@"
 
 clean:
 	-[ -d $(OBJ_DIR) ] && $(RM) --recursive $(OBJ_DIR)
@@ -61,10 +62,12 @@ fclean: clean
 	$(RM) $(NAME)
 	echo "REMOVED $(NAME)"
 
-re: fclean all
+all: $(NAME)
+
+re: | fclean all
 
 #------------------------------------------------#
-#   CUSTOM RULES                                 #
+#   EXTRA RECIPES                                #
 #------------------------------------------------#
 # run           run the program
 
@@ -75,8 +78,10 @@ run: re
 	-./$(NAME)
 
 #------------------------------------------------#
-#   SPECIAL TARGETS                              #
+#   SPECIAL                                      #
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: all clean fclean re run
+.PHONY: clean fclean all re run info
+
+####################################### END_3 ####
