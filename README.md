@@ -73,6 +73,8 @@ cd <template_version>
 make <any_rule>
 ```
 
+*The template versions are not meant to be copied and pasted but to understand their features so you can apply them to your own.*
+
 # Glossary
 
 Each **version** of our template has **3 sections**:
