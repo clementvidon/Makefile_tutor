@@ -39,7 +39,7 @@ of making them more digestible and even tasty 🍔
 ***[ DONE ]***
 
 - [GitHub Page](https://clemedon.github.io/Makefile_tutor/).
-- [projets](projects) to [try](#usage) each template version.
+- projetcs directory to [**try**](#usage) each template version.
 - Bold text that compile the whole tutorial into a quick summary.
 
 - v1 Minimal Makefile.
