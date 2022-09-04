@@ -1,5 +1,5 @@
 <h1 align="center">
-	MAKEFILE TUTOR
+	MAKEFILE TUTOR (UNIX)
 </h1>
 
 <h3 align="center">
@@ -38,16 +38,26 @@ of making them more digestible and even tasty 🍔
 
 ***[ DONE ]***
 
-- Add bold text that compile the whole tutorial into a quick summary.
-- Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/).
-- Add [**projets**](projects) to [**try**](#usage) each template version.
+- [GitHub Page](https://clemedon.github.io/Makefile_tutor/).
+- [projets](projects) to [try](#usage) each template version.
+- Bold text that compile the whole tutorial into a quick summary.
+
+- v1 Minimal Makefile.
+- v2 Include directory.
+- v3 Multiple source directories.
+- v3 Corresponding target directories for objects.
+- v3 Creation of target directories when they don't exist.
 
 ***[ SOON ]***
 
-- Add **Auto-Dependency** Generation.
-- Add **C++**.
-- Add **BSD** compatibility.
-- Parallel execution.
+- v4 Auto-dependency generation.
+- v4 Dependency management (build only the necessary)
+- v4 C++ compatibility.
+- v4 Parallelization.
+- v4 Add BSD compatibility (and POSIX compliance).
+- v5 Make with a library/framework.
+- v6 Make a library.
+- v7 Fully automated
 
 # Usage
 
@@ -142,7 +152,7 @@ used for **all the other lines**.
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
-> - compilers rule uses multiple source directories
+> - compilers rule uses multiple source and object directories
 > - `@D` expands to the directory part of the target file name
 > - `clean` rule `--recursive`
 > - `info` rule print the `$(NAME)` recipe without executing it
@@ -229,8 +239,9 @@ re: fclean all
 .PHONY: clean fclean all re run
 ```
 
-- The prerequisites of **the `.PHONY:` special target** become targets that make
-  will run regardless of whether a file with that name exists.
+- The prerequisites given to **the `.PHONY:` special target** become targets
+  that make will run regardless of whether a file with that name exists.  In
+  short these prerequisites are our targets that don't bear the name of a file.
 
 ```make
 ####################################### END_1 ####
@@ -417,7 +428,7 @@ symbol.*
 ###     Structure
 
 As above but a more complex project structure with **multiple source
-directories**:
+directories** and their **corresponding object directories**:
 
 ```
 before build:        after build:
@@ -453,7 +464,7 @@ before build:        after build:
 
 - split the line with a `backslash`
 - substitution reference so `main.c` becomes `src/main.c`
-- compilers rule uses multiple source directories
+- compilers rule uses multiple source and object directories
 - `@D` expands to the directory part of the target file name
 - `clean` rule `--recursive`
 - `info` rule print the `$(NAME)` recipe without executing it
@@ -543,7 +554,7 @@ re: fclean all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
-   since our structure **uses multiple source directories**.
+   since our structure **uses multiple source and object directories**.
 
 - **`@D`** is an *automatic variable* that **expands to the directory part of the
   target file name**, to create the `OBJ_DIR` structure:

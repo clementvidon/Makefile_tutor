@@ -44,8 +44,6 @@ fclean: clean
 
 all: $(NAME)
 
-#.NOTPARALLEL: clean fclean
-
 re: fclean all
 
 #------------------------------------------------#
