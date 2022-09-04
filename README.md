@@ -65,8 +65,8 @@ This tutorial is designed to be read line by line **linearly at first**.
 Then it can be quickly navigated thanks to the:
 
 - **Brief** of each version which is visible from the [**Index**](#index).
-- [**Return to Index ↑**](#index) buttons at the end of each version.
 - **Text in bold** that compile **the essence** of this tutorial.
+- [**Return to Index ↑**](#index) buttons at the end of each version.
 
 Each version of the templates has an assigned directory in the
 [**projects**](projects) directory of the repository, to play with a Makefile
