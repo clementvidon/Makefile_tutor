@@ -21,7 +21,7 @@
 # Summary
 
 Addressed to beginners and not to newcomers, the idea behind this tutorial is to
-**focus on the essentials**. The basics such as exhaustive syntax specifications
+**focus on the essential**. The basics such as exhaustive syntax specifications
 or anything not directly related to the template we are going to explore will
 not be covered here.
 
@@ -38,10 +38,9 @@ of making them more digestible and even tasty 🍔
 
 ***[ DONE ]***
 
-- Update text to bold with the logic which reading **bold text** only is still
-  intelligible, making it a more brief version (TLDR).
-- Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/) version.
-- Add [**projets**](projects) directory with the templates **ready to try**.
+- Add bold text that compile the whole tutorial into a quick summary.
+- Add [**GitHub Page**](https://clemedon.github.io/Makefile_tutor/).
+- Add [**projets**](projects) to [**try**](#usage) each template version.
 
 ***[ SOON ]***
 
