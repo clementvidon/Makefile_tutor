@@ -27,7 +27,7 @@ RM          := rm -f
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# $(NAME)   final target
+# $(NAME)   default goal
 # clean     remove objects
 # fclean    clean + remove binary
 # all       all targets
@@ -44,7 +44,9 @@ fclean: clean
 
 all: $(NAME)
 
-re: | fclean all
+#.NOTPARALLEL: clean fclean
+
+re: fclean all
 
 #------------------------------------------------#
 #   SPECIAL                                      #

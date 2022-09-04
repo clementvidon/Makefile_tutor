@@ -46,7 +46,8 @@ of making them more digestible and even tasty 🍔
 
 - Add **Auto-Dependency** Generation.
 - Add **C++**.
-- Update **portability** (GNU/BSD and POSIX compliance).
+- Add **BSD** compatibility.
+- Parallel execution.
 
 # Usage
 
@@ -56,7 +57,7 @@ Then it can be quickly navigated thanks to the:
 
 - **Brief** of each version which is visible from the [**Index**](#index).
 - [**Return to Index ↑**](#index) buttons at the end of each version.
-- **Text in bold** that compile **the escence** of this tutorial.
+- **Text in bold** that compile **the essence** of this tutorial.
 
 Each version of the templates has an assigned directory in the
 [**projects**](projects) directory of the repository, to play with a Makefile
@@ -145,7 +146,7 @@ used for **all the other lines**.
 > - `@D` expands to the directory part of the target file name
 > - `clean` rule `--recursive`
 > - `info` rule print the `$(NAME)` recipe without executing it
-> - automation substitution reference `@D`
+> - automation substitution reference `@D` automatic variable
 
 ##  Version 1
 
@@ -202,7 +203,7 @@ RM          := rm -f
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# $(NAME)   final target
+# $(NAME)   default goal
 # clean     remove objects
 # fclean    clean + remove binary
 # all       all targets
@@ -219,12 +220,8 @@ fclean: clean
 
 all: $(NAME)
 
-re: | fclean all
-```
+re: fclean all
 
-- **The `|` symbol** defines the prerequisites on its right as `order-only`.  TODO
-
-```make
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
@@ -267,13 +264,13 @@ written.*
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
-`sources` that require... a `programmer`.  In other words `all` creates
-`icecream` with the `.o` created with the `.c` that you are supposed to create.
+`sources` that require... a programmer.  In other words `all` creates `icecream`
+with the `.o` created with the `.c` that you are supposed to create.
 
-Make will first trace his path to the lower level where there is the raw
-material `3 → 2 → 1 → 0` (`source files`) and then do it in the opposite
-direction while building each resource that is required by the direct upper
-level `0 → 1 → 2 → 3`.
+Make will first trace its path to the lower level where it finds a raw material
+`3 → 2 → 1 → 0` (`source files`) and then do it in the opposite direction while
+building each resource that is required by the direct upper level `0 → 1 → 2 →
+3` (`target`).
 
 - The choice of the `CC` and `CFLAGS` values, as well as the `$(NAME)`, `clean`,
   `fclean`, `all` and `re` rules are based on **42 C coding style conventions**,
@@ -345,7 +342,7 @@ RM          := rm -f
 #   RECIPES                                      #
 #------------------------------------------------#
 # %.o       compilation
-# $(NAME)   final target
+# $(NAME)   default goal
 # clean     remove objects
 # fclean    clean + remove binary
 # all       all targets
@@ -369,7 +366,7 @@ fclean: clean
 
 all: $(NAME)
 
-re: | fclean all
+re: fclean all
 ```
 
 - The **output of a descriptive message** is operated by the `echo` statements
@@ -388,7 +385,7 @@ run: re
     -./$(NAME)
 ```
 
-- **The `-` symbol** at the start of `-./$(NAME)` **suppresses errors** triggered by
+- **The dash symbol** at the start of `-./$(NAME)` **suppresses errors** triggered by
   non-zero status code.  In effect, make is interrupted by any recipe line that
   return a non-zero value.
 
@@ -460,7 +457,7 @@ before build:        after build:
 - `@D` expands to the directory part of the target file name
 - `clean` rule `--recursive`
 - `info` rule print the `$(NAME)` recipe without executing it
-- automation substitution reference `@D`
+- automation substitution reference `@D` automatic variable
 
 ###     Template
 
@@ -517,7 +514,7 @@ RM          := rm -f
 #   RECIPES                                      #
 #------------------------------------------------#
 # %.o       compilation
-# $(NAME)   final target
+# $(NAME)   default goal
 # clean     remove objects
 # fclean    clean + remove binary
 # all       all targets
@@ -542,7 +539,7 @@ fclean: clean
 
 all: $(NAME)
 
-re: | fclean all
+re: fclean all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
@@ -597,7 +594,7 @@ run: re
 ```
 
 - The basic **automation** provided by the **substitution reference** and the
-  **`@D`** automatic variable enable the scaling up to a larger project and the
+  **`@D` automatic variable** enable the scaling up to a larger project and the
   generation of the `obj` directory based on the `src` directory structure.
 
 *This will work the same with every possible kind of src directory structure.*
@@ -606,8 +603,8 @@ run: re
 
 # Sources
 
-- [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
 - [**gnu.org/make/manual**](https://www.gnu.org/software/make/manual/html_node)
+- [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
 - [**makefiletutorial.com**](https://makefiletutorial.com/)
 - [**well worth a look**](https://stackoverflow.com/a/68584653)
 
