@@ -153,7 +153,7 @@ all:
 
 ## Index
 
-*The first part focuses on building a functional Makefile in 3 steps.*
+***The first part focuses on building a functional Makefile in 3 steps.***
 
 [**Version 1**](#version-1)
 
@@ -180,7 +180,7 @@ all:
 > - `info` rule print the `$(NAME)` recipe without executing it
 > - automation substitution reference `@D` automatic variable
 
-*The second part presents various useful Makefiles and more advanced features.*
+***The second part presents various useful Makefiles and more advanced features.***
 
 [**Version 4**](#version-4)
 
