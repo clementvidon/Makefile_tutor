@@ -1,5 +1,5 @@
 <h1 align="center">
-	MAKEFILE TUTOR (UNIX)
+	MAKEFILE TUTOR (GNU UNIX C)
 </h1>
 
 <h3 align="center">
@@ -27,7 +27,7 @@ not be covered here.
 
 Initially intended to help 42 students to step up their Makefile skills through
 a **documented template** that evolves gradually, **step by step**. With the aim
-of making them more digestible and even tasty 🍔
+of making them more digestible and even tasty 🍷
 
 **TL;DR** Confer to the bold text.
 
@@ -39,7 +39,7 @@ of making them more digestible and even tasty 🍔
 ***[ DONE ]***
 
 - [GitHub Page](https://clemedon.github.io/Makefile_tutor/).
-- projetcs directory to [try](#usage) each template version.
+- projects directory to [try](#usage) each template version.
 - Bold text that compile the whole tutorial into a quick summary.
 - v1 Minimal Makefile.
 - v2 Include directory.
@@ -49,14 +49,22 @@ of making them more digestible and even tasty 🍔
 
 ***[ SOON ]***
 
+- v4 Make a library.
 - v4 Auto-dependency generation.
-- v4 Dependency management (build only the necessary)
-- v4 C++ compatibility.
-- v4 Parallelization.
-- v4 Add BSD compatibility (and POSIX compliance).
+- v4 Dependency management (build only the necessary).
+- v4 Build directory for objects and deps.
+- v5 Make with a library.
+- v5 Parallelization.
+- v6 Make C and C++.
+- v7 Bloated automations and scalability.
+- BSD compatibility (and POSIX compliance).
+- DOS compatibility.
+
+***[ TODO ]***
+
 - v5 Make with a library/framework.
-- v6 Make a library.
-- v7 Fully automated
+- v7 Make C++.
+- v8 Fully automated
 
 # Usage
 
@@ -141,7 +149,11 @@ all:
     echo ${B} # echoes "You understood"
 ```
 
-# Index
+# Template
+
+## Index
+
+*The first part focuses on building a functional Makefile in 3 steps.*
 
 [**Version 1**](#version-1)
 
@@ -155,7 +167,7 @@ all:
 > - preprocessor's flags
 > - output of a descriptive message
 > - implicit C compilation rule is overwritten
-> - the `dash` suppresses errors
+> - the `hyphen` prevent make from complaining
 > - `.SILENT:` silences the rules
 
 [**Version 3**](#version-3)
@@ -167,6 +179,12 @@ all:
 > - `clean` rule `--recursive`
 > - `info` rule print the `$(NAME)` recipe without executing it
 > - automation substitution reference `@D` automatic variable
+
+*The second part presents various useful Makefiles and more advanced features.*
+
+[**Version 4**](#version-4)
+
+TODO
 
 ##  Version 1
 
@@ -218,7 +236,7 @@ OBJS        := main.o
 #------------------------------------------------#
 # RM        cleaning command
 
-RM          := rm -f
+RM          := rm --force
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -320,7 +338,7 @@ before build:        after build:
 - preprocessor's flags
 - output of a descriptive message
 - implicit C compilation rule is overwritten
-- the `dash` suppresses errors
+- the `hyphen` prevent make from complaining
 - `.SILENT:` silences the rules
 
 ###     Template
@@ -356,7 +374,7 @@ OBJS        := main.o
 #------------------------------------------------#
 # RM        cleaning command
 
-RM          := rm -f
+RM          := rm --force
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -405,10 +423,10 @@ run: re
     -./$(NAME)
 ```
 
-- **The dash symbol** at the start of `-./$(NAME)` **suppresses errors**
-  triggered by non-zero status code that a shell command may return.  We use it
-  here to prevent make from terminating with an error in case our program
-  returns an non-zero value.
+- **The hyphen symbol** at the start of `-./$(NAME)` **prevent make from
+  complaining** when a non-zero status code is encountered.  We use it here
+  because we don't want make to stop its execution if our binary returns a
+  non-zero value.
 
 ```make
 #------------------------------------------------#
@@ -529,7 +547,7 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 #------------------------------------------------#
 # RM        cleaning command
 
-RM          := rm -f
+RM          := rm --force
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -621,6 +639,150 @@ run: re
 *This will work the same with every possible kind of src directory structure.*
 
 [**Return to Index ↑**](#index)
+
+##  Version 4
+
+##  Version 5
+
+###     Structure
+
+As above but without `main.c` and a the **`.build`** directory which replaces
+the `obj` folder and which will contain, in addition to objects, the
+**dependencies**.
+
+```
+before build:        after build:
+
+\---Project:         \---Project:
+    | Makefile           | Makefile
+    |                    | icecream.a
+    |                    |
+    +---include:         +---include:
+    |     icecream.h     |     icecream.h
+    |                    |
+    \---src:             +---obj:
+        |                |   |
+        +---arom:        |   +---arom:
+        |     coco.c     |   |     coco.o
+        |                |   |     coco.d
+        \---base:        |   |
+              milk.c     |   \---base:
+              water.c    |         milk.o
+                         |         milk.d
+                         |         water.o
+                         |         water.d
+                         \---src:
+                             | main.c
+                             |
+                             +---arom:
+                             |     coco.c
+                             |
+                             \---base:
+                                   milk.c
+                                   water.c
+```
+
+###     Brief
+
+TODO
+
+###     Template
+
+TODO
+
+```make
+    ####################################### BEG_4 ####
+
+    NAME        := icecream.a
+
+    #------------------------------------------------#
+    #   INGREDIENTS                                  #
+    #------------------------------------------------#
+    # CC        compilers
+    # CFLAGS    compiler flags
+    # CPPFLAGS  preprocessor flags
+    #
+    # SRC_DIR   source directory
+    # BUILD_DIR	object directory
+    # SRCS      source files
+    # OBJS      object files
+    # DEPS      dependency files
+    # NODEPS    files without dependency
+
+    CC          := clang
+    CFLAGS      := -Wall -Wextra -Werror -c
+    CPPFLAGS    := -MMD -MP -I include
+
+    SRC_DIR     := src
+    BUILD_DIR	:= .build
+    SRCS        := \
+    	arom/coco.c		\
+    	base/milk.c		\
+    	base/water.c
+    SRCS        := $(SRCS:%=$(SRC_DIR)/%)
+    OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+    DEPS        := $(OBJS:.o=.d)
+    NODEPS		:= fclean clean
+    ifneq ($(MAKECMDGOALS), NODEPS)
+    	-include $(DEPS)
+    endif
+```
+
+TODO About libs
+TODO About deps
+
+```make
+    #------------------------------------------------#
+    #   UTENSILS                                     #
+    #------------------------------------------------#
+    # RM        cleaning command
+
+    RM          := rm --force
+
+    #------------------------------------------------#
+    #   RECIPES                                      #
+    #------------------------------------------------#
+    # %.o       compilation
+    # $(NAME)   default goal
+    # clean     remove objects
+    # fclean    clean + remove binary
+    # all       all targets
+    # re        fclean + all
+
+    $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+    	-[ ! -d $(@D) ] && mkdir -p $(@D)
+    	@$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
+    	echo "CREATED $@"
+
+    $(NAME): $(OBJS)
+    	@ar rcs $(NAME) $(OBJS)
+    	echo "CREATED $(NAME)"
+
+    clean:
+    	-[ -d $(BUILD_DIR) ] && $(RM) --recursive $(BUILD_DIR)
+
+    fclean: clean
+    	$(RM) $(NAME)
+
+    all: $(NAME)
+
+    re: fclean all
+```
+
+TODO About libs
+
+```make
+#------------------------------------------------#
+#   SPECIAL                                      #
+#------------------------------------------------#
+
+.SILENT:
+.PHONY: clean fclean all re
+
+    ####################################### END_4 ####
+```
+
+TODO About deps
 
 # Sources
 
