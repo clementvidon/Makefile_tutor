@@ -97,13 +97,13 @@ Each **version** of our template has **3 sections**:
 - **Template** our Makefile with comments (that are always placed at the end of
   the template part that concerns them).
 
-Our **template** will be composed of the following parts:
+Our **template** will be articulated around the following parts:
 
 - `### BEG`         Mark the template **beginning**.
 - `INGREDIENTS`     Variables containing the **build ingredients**.
 - `UTENSILS`        Variables containing **shell command tools**
-- `RECIPES`         Basic set of **rules**.
-- `EXTRA RECIPES`   **Custom rules**.
+- `RECIPES`         **Basic** set of **recipes**.
+- `EXTRA RECIPES`   **Optional recipes**.
 - `SPECIAL`         Make **special targets**.
 - `#### END`        Mark the template **end**.
 
@@ -163,7 +163,7 @@ all:
 > - preprocessor's flags
 > - output of a descriptive message
 > - implicit C compilation rule is overwritten
-> - the `hyphen` prevent make from complaining
+> - rules are written in their order of execution
 > - `.SILENT:` silences the rules
 
 [**Version 3**](#version-3)
@@ -173,18 +173,22 @@ all:
 > - compilers rule uses multiple source and object directories
 > - `@D` expands to the directory part of the target file name
 > - `clean` rule `--recursive`
-> - `info` rule print the `$(NAME)` recipe without executing it
 > - automation substitution reference `@D` automatic variable
 
 ***The second part presents various useful Makefiles and more advanced features.***
 
 [**Version 4**](#version-4)
 
-TODO
+> - ***SOON*** 3
+
+[**Bonus**](#Bonus)
+
+> - `make` and `run` the default goal
+> - `info` rule print the `$(NAME)` recipe without executing it
 
 ##  Version 1
 
-###     Structure
+###     Structure v1
 
 The simplest, build a program called `icecream` with the following structure:
 
@@ -198,14 +202,14 @@ before build:        after build:
                            icecream
 ```
 
-###     Brief
+###     Brief v1
 
 - the `.PHONY:` special target
 - The implicit C compilation
 - Illustration of a `make all`
 - 42 C coding style conventions
 
-###     Template
+###     Template v1
 
 ```make
 ####################################### BEG_1 ####
@@ -237,10 +241,10 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# $(NAME)   default goal
-# clean     remove objects
+# $(NAME)   linking .o -> binary
+# clean     remove .o
 # fclean    clean + remove binary
-# all       all targets
+# all       build all
 # re        fclean + all
 
 $(NAME): $(OBJS)
@@ -254,13 +258,15 @@ fclean: clean
 
 all: $(NAME)
 
-re: fclean all
+re:
+	make --no-print-directory clean
+	make --no-print-directory all
 
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
 
-.PHONY: clean fclean all re run
+.PHONY: clean fclean all re
 ```
 
 - The prerequisites given to **the `.PHONY:` special target** become targets
@@ -306,15 +312,18 @@ Make will first trace its path to the lower level where it finds a raw material
 building each resource that is required by the direct upper level `0 → 1 → 2 →
 3` (`target`).
 
-- The choice of the `CC` and `CFLAGS` values, as well as the `$(NAME)`, `clean`,
-  `fclean`, `all` and `re` rules are based on **42 C coding style conventions**,
-  don't hesitate to put those of your choice.
+- The choice of the `CC` and `CFLAGS` values, `$(NAME)`, `clean`, `fclean`,
+  `all` and `re` as the basic rules as well as not using a wildcard to
+  auto-detect source files are specific to the **42 C coding style
+  conventions**, do not hesitate to do whatever you want from these like
+  renaming `clean` and `fclean` to the GNU conventional `mostlyclean` and
+  `clean` respectively.
 
 [**Return to Index ↑**](#index)
 
 ##  Version 2
 
-###     Structure
+###     Structure v2
 
 As above but for a project that **includes header files**:
 
@@ -329,15 +338,15 @@ before build:        after build:
                            icecream
 ```
 
-###     Brief
+###     Brief v2
 
 - preprocessor's flags
 - output of a descriptive message
 - implicit C compilation rule is overwritten
-- the `hyphen` prevent make from complaining
+- rules are written in their order of execution
 - `.SILENT:` silences the rules
 
-###     Template
+###     Template v2
 
 ```make
 ####################################### BEG_2 ####
@@ -375,11 +384,11 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# %.o       compilation
-# $(NAME)   default goal
-# clean     remove objects
+# %.o       compilation .c -> .o
+# $(NAME)   linking .o -> binary
+# clean     remove .o
 # fclean    clean + remove binary
-# all       all targets
+# all       build all
 # re        fclean + all
 
 %.o: %.c
@@ -392,15 +401,15 @@ $(NAME): $(OBJS)
 
 clean:
     $(RM) $(OBJS)
-    echo "REMOVED $(OBJS)"
 
 fclean: clean
     $(RM) $(NAME)
-    echo "REMOVED $(NAME)"
 
 all: $(NAME)
 
-re: fclean all
+re:
+	make --no-print-directory clean
+	make --no-print-directory all
 ```
 
 - The **output of a descriptive message** is operated by the `echo` statements
@@ -409,20 +418,10 @@ re: fclean all
 - The **implicit C compilation rule is overwritten** with an explicit version that
   comes with an `echo` statement.
 
-```make
-#------------------------------------------------#
-#   EXTRA RECIPES                                #
-#------------------------------------------------#
-# run           run the program
-
-run: re
-    -./$(NAME)
-```
-
-- **The hyphen symbol** at the start of `-./$(NAME)` **prevent make from
-  complaining** when a non-zero status code is encountered.  We use it here
-  because we don't want make to stop its execution if our binary returns a
-  non-zero value.
+- The order in which **the rules are written** does not matter, but I decided to
+  write them in their **order of execution**, in effect we start with the
+  compiler `%.o` followed by the linker, then we have `clean` that passes before
+  `fclean` because `fclean` is invoked only if `clean` completed.
 
 ```make
 #------------------------------------------------#
@@ -430,7 +429,7 @@ run: re
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: clean fclean all re run
+.PHONY: clean fclean all re
 ```
 
 - Normally make prints each line of a rule's recipe before it is executed.  The
@@ -449,7 +448,7 @@ symbol.*
 
 ##  Version 3
 
-###     Structure
+###     Structure v2
 
 As above but a more complex project structure with **multiple source
 directories** and their **corresponding object directories**:
@@ -484,17 +483,16 @@ before build:        after build:
                                    water.c
 ```
 
-###     Brief
+###     Brief v2
 
 - split the line with a `backslash`
 - substitution reference so `main.c` becomes `src/main.c`
 - compilers rule uses multiple source and object directories
 - `@D` expands to the directory part of the target file name
 - `clean` rule `--recursive`
-- `info` rule print the `$(NAME)` recipe without executing it
 - automation substitution reference `@D` automatic variable
 
-###     Template
+###     Template v2
 
 ```make
 ####################################### BEG_3 ####
@@ -548,11 +546,11 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# %.o       compilation
-# $(NAME)   default goal
-# clean     remove objects
+# %.o       compilation .c -> .o
+# $(NAME)   linking .o -> binary
+# clean     remove .o
 # fclean    clean + remove binary
-# all       all targets
+# all       build all
 # re        fclean + all
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -566,15 +564,15 @@ $(NAME): $(OBJS)
 
 clean:
     -[ -d $(OBJ_DIR) ] && $(RM) --recursive $(OBJ_DIR)
-    echo "REMOVED $(OBJ_DIR)"
 
 fclean: clean
     $(RM) $(NAME)
-    echo "REMOVED $(NAME)"
 
 all: $(NAME)
 
-re: fclean all
+re:
+	make --no-print-directory clean
+	make --no-print-directory all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
@@ -601,29 +599,11 @@ re: fclean all
 
 ```make
 #------------------------------------------------#
-#   EXTRA RECIPES                                #
-#------------------------------------------------#
-# run           run the program
-
-info:
-    make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
-
-run: re
-    -./$(NAME)
-```
-
-- The **`info` rule** will execute a simple `make` command with `--dry-run` to
-  **print the `$(NAME)` recipe without executing it**, `--always-make` to `make`
-  even if the targets already exist and `--no-print-directory` flag and `grep`
-  command to clean the output from unwanted lines.
-
-```make
-#------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: clean fclean all re run info
+.PHONY: clean fclean all re
 
 ####################################### END_3 ####
 ```
@@ -638,7 +618,7 @@ run: re
 
 ##  Version 4
 
-###     Structure
+###     Structure v4
 
 As above but without `main.c` and a the **`.build`** directory which replaces
 the `obj` folder and which will contain, in addition to objects, the
@@ -676,13 +656,11 @@ before build:        after build:
                                    water.c
 ```
 
-###     Brief
+###     Brief v4
 
-TODO
+***SOON*** 2
 
-###     Template
-
-TODO
+###     Template v4
 
 ```make
     ####################################### BEG_4 ####
@@ -701,10 +679,10 @@ TODO
     # SRCS      source files
     # OBJS      object files
     # DEPS      dependency files
-    # NODEPS    files without dependency
+    # NODEPS    no-dependency files
 
     CC          := clang
-    CFLAGS      := -Wall -Wextra -Werror -c
+    CFLAGS      := -Wall -Wextra -Werror
     CPPFLAGS    := -MMD -MP -I include
 
     SRC_DIR     := src
@@ -722,48 +700,50 @@ TODO
     endif
 ```
 
-TODO About libs
-TODO About deps
+***SOON*** 1
 
 ```make
-    #------------------------------------------------#
-    #   UTENSILS                                     #
-    #------------------------------------------------#
-    # RM        cleaning command
+#------------------------------------------------#
+#   UTENSILS                                     #
+#------------------------------------------------#
+# RM        cleaning command
 
-    RM          := rm --force
+RM          := rm --force
 
-    #------------------------------------------------#
-    #   RECIPES                                      #
-    #------------------------------------------------#
-    # %.o       compilation
-    # $(NAME)   default goal
-    # clean     remove objects
-    # fclean    clean + remove binary
-    # all       all targets
-    # re        fclean + all
+#------------------------------------------------#
+#   RECIPES                                      #
+#------------------------------------------------#
+# %.o       compilation .c -> .o
+# $(NAME)   linking .o -> binary
+# clean     remove .o
+# fclean    clean + remove binary
+# all       build all
+# re        fclean + all
 
-    $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-    	-[ ! -d $(@D) ] && mkdir -p $(@D)
-    	@$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
-    	echo "CREATED $@"
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	-[ ! -d $(@D) ] && mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	echo "CREATED $@"
 
-    $(NAME): $(OBJS)
-    	@ar rcs $(NAME) $(OBJS)
-    	echo "CREATED $(NAME)"
+$(NAME): $(OBJS)
+    @ar rcs $(NAME) $(OBJS)
+    echo "CREATED $(NAME)"
 
-    clean:
-    	-[ -d $(BUILD_DIR) ] && $(RM) --recursive $(BUILD_DIR)
+clean:
+    -[ -d $(BUILD_DIR) ] && $(RM) --recursive $(BUILD_DIR)
 
-    fclean: clean
-    	$(RM) $(NAME)
+fclean: clean
+    $(RM) $(NAME)
 
-    all: $(NAME)
+all: $(NAME)
 
-    re: fclean all
+re: fclean all
 ```
 
-TODO About libs
+***SOON*** 0
+
+```make
+
 
 ```make
 #------------------------------------------------#
@@ -776,14 +756,43 @@ TODO About libs
     ####################################### END_4 ####
 ```
 
-TODO About deps
+[**Return to Index ↑**](#index)
+
+##  Bonus
+
+###     Extra recipes
+
+```make
+#------------------------------------------------#
+#   EXTRA RECIPES                                #
+#------------------------------------------------#
+# run           run the program
+# info          print the default goal recipe
+
+run: re
+    -./$(NAME)
+
+info:
+    make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
+```
+
+- `run` is a simple rule that **`make` and `run` the default goal**.  We the initial
+  hyphen symbol here to prevent make from interrupting its execution if our
+  binary execution returns a non-zero value.
+
+- The **`info` rule** will execute a simple `make` command with `--dry-run` to
+  **print the `$(NAME)` recipe without executing it**, `--always-make` to `make`
+  even if the targets already exist and `--no-print-directory` flag and `grep`
+  command to clean the output from unwanted lines.
 
 # Sources
 
 - [**gnu.org manual**](https://www.gnu.org/software/make/manual/html_node)
 - [**w3cub.com doc**](https://docs.w3cub.com/gnu_make/)
-- [**order-only exquisite**](https://stackoverflow.com/a/68584653)
 - [**a richer tutorial**](https://makefiletutorial.com/)
+- [**order-only exquisite**](https://stackoverflow.com/a/68584653)
+- [**gnu conventional rules**](https://www.gnu.org/software/make/manual/html_node/Goals.html)
+- [**c libraries**](https://docencia.ac.upc.edu/FIB/USO/Bibliografia/unix-c-libraries.html#creating_static_archive)
 
 # Contact
 

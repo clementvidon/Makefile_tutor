@@ -25,10 +25,10 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# $(NAME)   default goal
-# clean     remove objects
+# $(NAME)   linking .o -> binary
+# clean     remove .o
 # fclean    clean + remove binary
-# all       all targets
+# all       build all
 # re        fclean + all
 
 $(NAME): $(OBJS)
@@ -42,10 +42,12 @@ fclean: clean
 
 all: $(NAME)
 
-re: fclean all
+re:
+	make --no-print-directory clean
+	make --no-print-directory all
 
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
 
-.PHONY: clean fclean all re run
+.PHONY: clean fclean all re

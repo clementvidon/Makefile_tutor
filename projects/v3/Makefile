@@ -36,11 +36,11 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# %.o       compilation
-# $(NAME)   default goal
-# clean     remove objects
+# %.o       compilation .c -> .o
+# $(NAME)   linking .o -> binary
+# clean     remove .o
 # fclean    clean + remove binary
-# all       all targets
+# all       build all
 # re        fclean + all
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -54,30 +54,19 @@ $(NAME): $(OBJS)
 
 clean:
 	-[ -d $(OBJ_DIR) ] && $(RM) --recursive $(OBJ_DIR)
-	echo "REMOVED $(OBJ_DIR)"
 
 fclean: clean
 	$(RM) $(NAME)
-	echo "REMOVED $(NAME)"
 
 all: $(NAME)
 
-re: fclean all
-
-#------------------------------------------------#
-#   EXTRA RECIPES                                #
-#------------------------------------------------#
-# run           run the program
-
-info:
-	make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
-
-run: re
-	-./$(NAME)
+re:
+	make --no-print-directory clean
+	make --no-print-directory all
 
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: clean fclean all re run info
+.PHONY: clean fclean all re

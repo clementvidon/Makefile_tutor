@@ -8,7 +8,6 @@ NAME        := icecream.a
 # CPPFLAGS  preprocessor flags
 #
 # SRC_DIR   source directory
-# TODO deps
 # BUILD_DIR	object directory
 # SRCS      source files
 # OBJS      object files
@@ -16,22 +15,18 @@ NAME        := icecream.a
 # NODEPS    files without dependency
 
 CC          := clang
-# TODO lib
-CFLAGS      := -Wall -Wextra -Werror -c
-# TODO deps
+CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := -MMD -MP -I include
 
 SRC_DIR     := src
-# TODO lib (hidden folder)
 BUILD_DIR	:= .build
 SRCS        := \
-	arom/coco.c		\
-	base/milk.c		\
+	arom/coco.c	\
+	base/milk.c	\
 	base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 
-# TODO
 DEPS        := $(OBJS:.o=.d)
 NODEPS		:= fclean clean
 ifneq ($(MAKECMDGOALS), NODEPS)
@@ -57,12 +52,11 @@ RM          := rm --force
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	-[ ! -d $(@D) ] && mkdir -p $(@D)
-	# TODO lib
-	@$(CC) $(CFLAGS) $(CPPFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	echo "CREATED $@"
 
 $(NAME): $(OBJS)
-	@ar rcs $(NAME) $(OBJS)
+	ar rcs $(NAME) $(OBJS)
 	echo "CREATED $(NAME)"
 
 clean:

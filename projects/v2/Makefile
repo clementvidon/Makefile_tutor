@@ -27,11 +27,11 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# %.o       compilation
-# $(NAME)   default goal
-# clean     remove objects
+# %.o       compilation .c -> .o
+# $(NAME)   linking .o -> binary
+# clean     remove .o
 # fclean    clean + remove binary
-# all       all targets
+# all       build all
 # re        fclean + all
 
 %.o: %.c
@@ -44,27 +44,19 @@ $(NAME): $(OBJS)
 
 clean:
 	$(RM) $(OBJS)
-	echo "REMOVED $(OBJS)"
 
 fclean: clean
 	$(RM) $(NAME)
-	echo "REMOVED $(NAME)"
 
 all: $(NAME)
 
-re: fclean all
-
-#------------------------------------------------#
-#   EXTRA RECIPES                                #
-#------------------------------------------------#
-# run           run the program
-
-run: re
-	-./$(NAME)
+re:
+	make --no-print-directory clean
+	make --no-print-directory all
 
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
 
 .SILENT:
-.PHONY: clean fclean all re run
+.PHONY: clean fclean all re
