@@ -642,8 +642,6 @@ run: re
 
 ##  Version 4
 
-##  Version 5
-
 ###     Structure
 
 As above but without `main.c` and a the **`.build`** directory which replaces
