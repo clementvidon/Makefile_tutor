@@ -104,7 +104,7 @@ Our **template** will be articulated around the following parts:
 - `UTENSILS`        Variables containing **shell command tools**
 - `RECIPES`         **Basic** set of **recipes**.
 - `EXTRA RECIPES`   **Optional recipes**.
-- `SPECIAL`         Make **special targets**.
+- `SPECIAL`         Make **special built-in targets**.
 - `#### END`        Mark the template **end**.
 
 What we call a **`rule`** is made of:
