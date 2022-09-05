@@ -183,7 +183,7 @@ all:
 
 [**Bonus**](#Bonus)
 
-> - `make` and `run` the default goal
+> - `make` and `run` the *default goal*
 > - `info` rule print the `$(NAME)` recipe without executing it
 
 ##  Version 1
