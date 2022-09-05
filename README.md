@@ -21,9 +21,8 @@
 # Summary
 
 Addressed to beginners and not to newcomers, the idea behind this tutorial is to
-**focus on the essential**. The basics such as exhaustive syntax specifications
-or anything not directly related to the template we are going to explore will
-not be covered here.
+**focus on the essential**.  Anything that is not directly related to the
+template we are going to explore will not be covered here.
 
 Initially intended to help 42 students to step up their Makefile skills through
 a **documented template** that evolves gradually, **step by step**. With the aim
@@ -53,18 +52,15 @@ of making them more digestible and even tasty 🍷
 - v4 Auto-dependency generation.
 - v4 Dependency management (build only the necessary).
 - v4 Build directory for objects and deps.
+
+***[ TODO ]***
+
 - v5 Make with a library.
 - v5 Parallelization.
 - v6 Make C and C++.
 - v7 Bloated automations and scalability.
 - BSD compatibility (and POSIX compliance).
 - DOS compatibility.
-
-***[ TODO ]***
-
-- v5 Make with a library/framework.
-- v7 Make C++.
-- v8 Fully automated
 
 # Usage
 
@@ -784,14 +780,15 @@ TODO About deps
 
 # Sources
 
-- [**gnu.org/make/manual**](https://www.gnu.org/software/make/manual/html_node)
-- [**docs.w3cub.com/make**](https://docs.w3cub.com/gnu_make/)
-- [**makefiletutorial.com**](https://makefiletutorial.com/)
-- [**well worth a look**](https://stackoverflow.com/a/68584653)
+- [**gnu.org manual**](https://www.gnu.org/software/make/manual/html_node)
+- [**w3cub.com doc**](https://docs.w3cub.com/gnu_make/)
+- [**order-only exquisite**](https://stackoverflow.com/a/68584653)
+- [**a richer tutorial**](https://makefiletutorial.com/)
 
 # Contact
 
 ```
+cvidon   42
 clemedon icloud
 ```
 
