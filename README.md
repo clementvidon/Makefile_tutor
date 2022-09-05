@@ -188,7 +188,7 @@ all:
 
 ##  Version 1
 
-###     Structure v1
+###     v1 Structure
 
 The simplest, build a program called `icecream` with the following structure:
 
@@ -202,14 +202,14 @@ before build:        after build:
                            icecream
 ```
 
-###     Brief v1
+###     v1 Brief
 
 - the `.PHONY:` special target
 - The implicit C compilation
 - Illustration of a `make all`
 - 42 C coding style conventions
 
-###     Template v1
+###     v1 Template
 
 ```make
 ####################################### BEG_1 ####
@@ -323,7 +323,7 @@ building each resource that is required by the direct upper level `0 → 1 → 2
 
 ##  Version 2
 
-###     Structure v2
+###     v2 Structure
 
 As above but for a project that **includes header files**:
 
@@ -338,7 +338,7 @@ before build:        after build:
                            icecream
 ```
 
-###     Brief v2
+###     v2 Brief
 
 - preprocessor's flags
 - output of a descriptive message
@@ -346,7 +346,7 @@ before build:        after build:
 - rules are written in their order of execution
 - `.SILENT:` silences the rules
 
-###     Template v2
+###     v2 Template
 
 ```make
 ####################################### BEG_2 ####
@@ -448,7 +448,7 @@ symbol.*
 
 ##  Version 3
 
-###     Structure v2
+###     v3 Structure
 
 As above but a more complex project structure with **multiple source
 directories** and their **corresponding object directories**:
@@ -483,7 +483,7 @@ before build:        after build:
                                    water.c
 ```
 
-###     Brief v2
+###     v3 Brief
 
 - split the line with a `backslash`
 - substitution reference so `main.c` becomes `src/main.c`
@@ -492,7 +492,7 @@ before build:        after build:
 - `clean` rule `--recursive`
 - automation substitution reference `@D` automatic variable
 
-###     Template v2
+###     v3 Template
 
 ```make
 ####################################### BEG_3 ####
@@ -618,7 +618,7 @@ re:
 
 ##  Version 4
 
-###     Structure v4
+###     v4 Structure
 
 As above but without `main.c` and a the **`.build`** directory which replaces
 the `obj` folder and which will contain, in addition to objects, the
@@ -656,11 +656,11 @@ before build:        after build:
                                    water.c
 ```
 
-###     Brief v4
+###     v4 Brief
 
 ***SOON*** 2
 
-###     Template v4
+###     v4 Template
 
 ```make
     ####################################### BEG_4 ####
