@@ -181,7 +181,7 @@ all:
 
 > - ***SOON*** 3
 
-[**Bonus**](#Bonus)
+[**Bonus**](#bonus)
 
 > - `make` and `run` the *default goal*
 > - `info` rule print the `$(NAME)` recipe without executing it
