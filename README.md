@@ -135,14 +135,14 @@ used for **all the other lines**.
   the variable is used).
 
 ```make
-A  = You ${C}
-B := You ${C}
+A  = Yes ${C}
+B := Yes ${C}
 
-C  = underestood.
+C  = you got it
 
 all:
-    echo ${A} # echoes "You"
-    echo ${B} # echoes "You understood"
+    echo ${A} # echoes "Yes"
+    echo ${B} # echoes "Yes you got it"
 ```
 
 # Template
