@@ -1,5 +1,5 @@
 <h1 align="center">
-	MAKEFILE TUTOR (GNU UNIX C)
+	MAKEFILE TUTOR (GNU UNIX)
 </h1>
 
 <h3 align="center">
@@ -86,7 +86,8 @@ cd <template_version>
 make <any_rule>
 ```
 
-*The template versions are not meant to be copied and pasted but to understand their features so you can apply them to your own.*
+PS **`C++` users** can replace `CC = clang` with `CXX = g++` and `CPPFLAGS` with
+`CXXFLAGS`.
 
 # Glossary
 
