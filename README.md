@@ -178,7 +178,7 @@ all:
 
 ***The second part presents various useful makefiles and more advanced features.***
 
-[**Version 4**](#version-4)
+[**Version 4 | build a library**](#version-4)
 
 > - when a header file is modified the executable will rebuild
 > - automatically generate a list of dependencies
@@ -186,7 +186,7 @@ all:
 > - dependency files must be included
 > - prevents `*.d` to be included for rules that dont require it
 > - hyphen symbol to prevent make from complaining
-> - creates static library
+> - creates a static library
 
 [**Bonus**](#bonus)
 
@@ -688,7 +688,7 @@ before build:        after build:
 - dependency files must be included
 - prevents `*.d` to be included for rules that dont require it
 - hyphen symbol to prevent make from complaining
-- creates static library
+- creates a static library
 
 ###     v4 Template
 
@@ -813,7 +813,7 @@ re:
 ```
 
 - A library is not a binary but a collection of object files therefor the linker
-  will use the archiver `ar` that **creates static library** with `r` to replace
+  will use the archiver `ar` that **creates a static library** with `r` to replace
   older object files with the new ones and `c` to create the library if it does
   not exist.
 
