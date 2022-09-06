@@ -52,12 +52,14 @@ of making them more digestible and even tasty  🍔
 
 ***[ SOON ]***
 
-- v5 Make with a library.
+- v5 Make with library.
+- v5 Make with frameworks.
+- v5 Fully automated and auto scalability.
 
 ***[ TODO ]***
 
 - v6 Make C and C++.
-- v7 Bloated automations and scalability.
+- v7 Makefile generator.
 - BSD compatibility (and POSIX compliance).
 - DOS compatibility.
 
