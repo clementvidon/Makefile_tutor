@@ -3,7 +3,7 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compilers
+# CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
 #
@@ -51,7 +51,7 @@ fclean: clean
 all: $(NAME)
 
 re:
-	make --no-print-directory clean
+	make --no-print-directory fclean
 	make --no-print-directory all
 
 #------------------------------------------------#

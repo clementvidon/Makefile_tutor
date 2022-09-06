@@ -24,7 +24,7 @@ Addressed to beginners and not to newcomers, the idea behind this tutorial is to
 **focus on the essential**.  Anything that is not directly related to the
 template we are going to explore will not be covered here.
 
-Initially intended to help 42 students to step up their Makefile skills through
+Initially intended to help 42 students to step up their makefile skills through
 a **documented template** that evolves gradually, **step by step**. With the aim
 of making them more digestible and even tasty 🍷
 
@@ -40,23 +40,22 @@ of making them more digestible and even tasty 🍷
 - [GitHub Page](https://clemedon.github.io/Makefile_tutor/).
 - projects directory to [try](#usage) each template version.
 - Bold text that compile the whole tutorial into a quick summary.
-- v1 Minimal Makefile.
+- v1 Minimal makefile.
 - v2 Include directory.
 - v3 Multiple source directories.
 - v3 Corresponding target directories for objects.
 - v3 Creation of target directories when they don't exist.
-
-***[ SOON ]***
-
 - v4 Make a library.
 - v4 Auto-dependency generation.
 - v4 Dependency management (build only the necessary).
 - v4 Build directory for objects and deps.
 
-***[ TODO ]***
+***[ SOON ]***
 
 - v5 Make with a library.
-- v5 Parallelization.
+
+***[ TODO ]***
+
 - v6 Make C and C++.
 - v7 Bloated automations and scalability.
 - BSD compatibility (and POSIX compliance).
@@ -73,7 +72,7 @@ Then it can be quickly navigated thanks to the:
 - [**Return to Index ↑**](#index) buttons at the end of each version.
 
 Each version of the templates has an assigned directory in the
-[**projects**](projects) directory of the repository, to play with a Makefile
+[**projects**](projects) directory of the repository, to play with a makefile
 open a terminal and run:
 
 ```bash
@@ -94,7 +93,7 @@ Each **version** of our template has **3 sections**:
 
 - **Structure** the project structure type.
 - **Brief** compilation of the bold text from the template comments.
-- **Template** our Makefile with comments (that are always placed at the end of
+- **Template** our makefile with comments (that are always placed at the end of
   the template part that concerns them).
 
 Our **template** will be articulated around the following parts:
@@ -109,7 +108,7 @@ Our **template** will be articulated around the following parts:
 
 What we call a **`rule`** is made of:
 
-- `targets`         Name of an **action or a file** we want to make.
+- `targets`         Name of a **goal** (action or a file) we want to make.
 - `prerequisites`   Files required (**targets dependencies**) for the `rule` to execute.
 - `recipe`          Lines that **begins with a `TAB`** character, appear in a rule context.
 
@@ -122,7 +121,7 @@ target: prerequisite
 
 # Syntax
 
-Like every makefile our template use a combination of makefile syntax and shell
+Like every makefile our template uses a combination of makefile syntax and shell
 script syntax.  The **shell script syntax** is reserved and limited to recipe
 lines, by default those lines have to **start with a `TAB`** character to be
 differentiated by make (and passed to the shell).  The **makefile syntax** is
@@ -149,10 +148,11 @@ all:
 
 ## Index
 
-***The first part focuses on building a functional Makefile in 3 steps.***
+***The first part focuses on building a functional makefile in 3 steps.***
 
 [**Version 1**](#version-1)
 
+> - multi-threaded `make` with `--jobs`
 > - the `.PHONY:` special target
 > - The implicit C compilation
 > - Illustration of a `make all`
@@ -176,11 +176,17 @@ all:
 > - `clean` rule `--recursive`
 > - automation substitution reference `@D` automatic variable
 
-***The second part presents various useful Makefiles and more advanced features.***
+***The second part presents various useful makefiles and more advanced features.***
 
 [**Version 4**](#version-4)
 
-> - TODO 3
+> - when a header file is modified the executable will rebuild
+> - automatically generate a list of dependencies
+> - build directory
+> - dependency files must be included
+> - prevents `*.d` to be included for rules that dont require it
+> - hyphen symbol to prevent make from complaining
+> - creates static library
 
 [**Bonus**](#bonus)
 
@@ -205,6 +211,7 @@ before build:        after build:
 
 ###     v1 Brief
 
+- multi-threaded `make` with `--jobs`
 - the `.PHONY:` special target
 - The implicit C compilation
 - Illustration of a `make all`
@@ -220,7 +227,7 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compilers
+# CC        compiler
 # CFLAGS    compiler flags
 #
 # SRCS      source files
@@ -260,9 +267,16 @@ fclean: clean
 all: $(NAME)
 
 re:
-	make --no-print-directory clean
+	make --no-print-directory fclean
 	make --no-print-directory all
+```
 
+- For the `re` command we have no choice but make an external call to our
+  makefile because we should not rely on the order in which prerequisites are
+  specified.  For example `re: fclean all` wouldn't work with a **multi-threaded
+  `make` with `--jobs`** option.
+
+```make
 #------------------------------------------------#
 #   SPECIAL                                      #
 #------------------------------------------------#
@@ -358,7 +372,7 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compilers
+# CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
 #
@@ -410,7 +424,7 @@ fclean: clean
 all: $(NAME)
 
 re:
-	make --no-print-directory clean
+	make --no-print-directory fclean
 	make --no-print-directory all
 ```
 
@@ -511,7 +525,7 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compilers
+# CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
 #
@@ -538,11 +552,12 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 - We can **split the line** by ending it **with a `backslash`** to increase the
   readability of `SRCS` content and facilitate its modification.
 
-- A **substitution reference** substitutes the value of a variable with the
-  specified alterations.  `$(SRCS:%=$(SRC_DIR)/%)` means that each item of
-  `SRCS` represented by `%` becomes itself `%` plus the `$(SRC_DIR)/`
-  alteration, so `main.c` becomes `src/main.c`. `OBJS` will then use the same
-  process to convert `src/main.c` into `src/main.o`, dedicated to the `OBJ_DIR`.
+- A string **substitution reference** substitutes the value of each item of a
+  variable with the specified alterations.  `$(SRCS:%=$(SRC_DIR)/%)` means that
+  each item of `SRCS` represented by `%` becomes itself `%` plus the
+  `$(SRC_DIR)/` alteration, so `main.c` becomes `src/main.c`. `OBJS` will then
+  use the same process to convert `src/main.c` into `src/main.o`, dedicated to
+  the `OBJ_DIR`.
 
 ```make
 #------------------------------------------------#
@@ -580,7 +595,7 @@ fclean: clean
 all: $(NAME)
 
 re:
-	make --no-print-directory clean
+	make --no-print-directory fclean
 	make --no-print-directory all
 ```
 
@@ -667,7 +682,13 @@ before build:        after build:
 
 ###     v4 Brief
 
-TODO 2 brief
+- when a header file is modified the executable will rebuild
+- automatically generate a list of dependencies
+- build directory
+- dependency files must be included
+- prevents `*.d` to be included for rules that dont require it
+- hyphen symbol to prevent make from complaining
+- creates static library
 
 ###     v4 Template
 
@@ -679,7 +700,7 @@ TODO 2 brief
     #------------------------------------------------#
     #   INGREDIENTS                                  #
     #------------------------------------------------#
-    # CC        compilers
+    # CC        compiler
     # CFLAGS    compiler flags
     # CPPFLAGS  preprocessor flags
     #
@@ -709,18 +730,47 @@ TODO 2 brief
     endif
 ```
 
-TODO
- - The `-MMD -MP` to
- - The hidden .build directory
- - The purpose of the initial **hyphen symbol** is to **prevent make from
-   complaining** when a non-zero status code is encountered.
- - MAKECMDGOALS, what is a **goal**, what is the **default goal**, DEFAULT_GOAL.
-https://stackoverflow.com/questions/2057689/how-does-make-app-know-default-target-to-build-if-no-target-is-specified
-(why compilation rule cant be default goal even tho it doesnt startt with dot)
-"Defining and Redefining Pattern Rules" https://web.mit.edu/gnu/doc/html/make_10.html#SEC91
-- does *order of execution* should mention DEFAULT_GOAL?
+- Unlike source files, **when a header file is modified** make has no way of
+  knowing this and will not consider **the executable** to be out of date, and
+  therefor **will** not **rebuild** it.  In order to change this behavior we
+  should add the appropriate header files as a additional prerequisites:
 
-> - the `hyphen` prevent make from complaining
+```make
+#before                     #after
+main.o: main.c              main.o: main.c icecream.h
+    clang -c $< -o $@           clang -c $< -o $@
+```
+
+- Doing this manually for multiple sources and headers is both tedious and error
+  prone.  By adding `-MMD` to `CPPFLAGS` our compiler will **automatically
+  generate a list of dependencies** for each object file encountered during the
+  compilation.  The `-MP` option prevents errors that are triggered if a header
+  file has been deleted or renamed.
+
+- We change our old `OBJ_DIR = obj` for a `BUILD_DIR = .build`, a hidden **build
+  directory** that will contain our object files as well as our dependency
+  files.
+
+- **Dependency files** are written in the make language and **must be included**
+  into our makefile to be read.  The include directive work the same as C
+  include, it tells make to suspend the current makefile reading and read the
+  included files before continuing.  We obtain the name of the dependencies by
+  duplicating `.o` into `.d` using substitution reference on the `OBJS` content.
+
+- Finally the `ifneq ($(MAKECMDGOALS), NODEPS)` prevents targets listed by
+  `NODEPS` from invoking the `*.d` targets since they will not be included.
+  This system **prevents `*.d` to be included for rules that dont require it**.
+
+```
+ifneq ($(MAKECMDGOALS), NODEPS)
++--------|--------------|------ 'if not equal' statement
+         +--------------|------ list of goals specified from commandline
+                        +------ no dependency targets
+```
+
+- The purpose of the initial **hyphen symbol** is **to prevent make from
+  complaining** when a non-zero status code is encountered, which can be caused
+  here by a missing files from our generated dependency files list.
 
 ```make
 #------------------------------------------------#
@@ -734,7 +784,7 @@ RM          := rm --force
 #   RECIPES                                      #
 #------------------------------------------------#
 # %.o       compilation .c -> .o
-# $(NAME)   linking .o -> binary
+# $(NAME)   link .o -> archive
 # clean     remove .o
 # fclean    clean + remove binary
 # all       build all
@@ -757,13 +807,15 @@ fclean: clean
 
 all: $(NAME)
 
-re: fclean all
+re:
+	make --no-print-directory fclean
+	make --no-print-directory all
 ```
 
-- A library is not a binary but a collection of object files therefor instead of
-  the linker we use the archiver `ar` that **creates a static library** with `r` to
-  replace older object files with the new ones and `c` to create the library if
-  it does not exist.
+- A library is not a binary but a collection of object files therefor the linker
+  will use the archiver `ar` that **creates static library** with `r` to replace
+  older object files with the new ones and `c` to create the library if it does
+  not exist.
 
 ```make
 #------------------------------------------------#
@@ -796,9 +848,9 @@ info:
     make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
 ```
 
-- `run` is a simple rule that **`make` and `run` the default goal**.  We the initial
-  hyphen symbol here to prevent make from interrupting its execution if our
-  binary execution returns a non-zero value.
+- `run` is a simple rule that **`make` and `run` the default goal**.  We start
+  the shell command with the `hyphen` symbol to prevent make from interrupting
+  its execution if our program execution returns a non-zero value.
 
 - The **`info` rule** will execute a simple `make` command with `--dry-run` to
   **print the `$(NAME)` recipe without executing it**, `--always-make` to `make`
@@ -807,12 +859,15 @@ info:
 
 # Sources
 
-- [**gnu.org manual**](https://www.gnu.org/software/make/manual/html_node)
-- [**w3cub.com doc**](https://docs.w3cub.com/gnu_make/)
-- [**a richer tutorial**](https://makefiletutorial.com/)
-- [**order-only exquisite**](https://stackoverflow.com/a/68584653)
-- [**gnu conventional rules**](https://www.gnu.org/software/make/manual/html_node/Goals.html)
-- [**c libraries**](https://docencia.ac.upc.edu/FIB/USO/Bibliografia/unix-c-libraries.html#creating_static_archive)
+- [**doc @ w3cub**](https://docs.w3cub.com/gnu_make/)
+- [**manual @ gnu**](https://www.gnu.org/software/make/manual/html_node)
+- [**a richer tutorial @ makefiletutorial**](https://makefiletutorial.com/)
+- [**order-only exquisite @ stackoverflow**](https://stackoverflow.com/a/68584653)
+- [**c libraries @ docencia**](https://docencia.ac.upc.edu/FIB/USO/Bibliografia/unix-c-libraries.html#creating_static_archive)
+- [**auto-deps gen @ mad-scientist**](http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/)
+- [**auto-deps gen @ scottmcpeak**](https://scottmcpeak.com/autodepend/autodepend.html)
+- [**auto-deps gen @ microhowto**](http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
+- [**include statement**](https://www.gnu.org/software/make/manual/html_node/Include.html)
 
 # Contact
 

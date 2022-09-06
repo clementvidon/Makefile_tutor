@@ -3,7 +3,7 @@ NAME        := icecream.a
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compilers
+# CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
 #
@@ -21,8 +21,8 @@ CPPFLAGS    := -MMD -MP -I include
 SRC_DIR     := src
 BUILD_DIR	:= .build
 SRCS        := \
-	arom/coco.c		\
-	base/milk.c		\
+	arom/coco.c	\
+	base/milk.c	\
 	base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
@@ -66,7 +66,9 @@ fclean: clean
 
 all: $(NAME)
 
-re: fclean all
+re:
+	make --no-print-directory fclean
+	make --no-print-directory all
 
 #------------------------------------------------#
 #   SPECIAL                                      #
