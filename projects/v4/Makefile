@@ -1,3 +1,6 @@
+# @author   clemedon (Clément Vidon)
+####################################### BEG_4 ####
+
 NAME        := icecream.a
 
 #------------------------------------------------#
@@ -12,25 +15,23 @@ NAME        := icecream.a
 # SRCS      source files
 # OBJS      object files
 # DEPS      dependency files
-# NODEPS    no-dependency files
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := -MMD -MP -I include
+AR          := ar
+ARFLAGS     := -r -c -s
 
 SRC_DIR     := src
 BUILD_DIR	:= .build
 SRCS        := \
-	arom/coco.c	\
-	base/milk.c	\
+	arom/coco.c \
+	base/milk.c \
 	base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
-NODEPS		:= fclean clean
-ifneq ($(MAKECMDGOALS), NODEPS)
-	-include $(DEPS)
-endif
+-include $(DEPS)
 
 #------------------------------------------------#
 #   UTENSILS                                     #
@@ -42,37 +43,42 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
+# all       default goal
 # %.o       compilation .c -> .o
-# $(NAME)   linking .o -> binary
+# $(NAME)   link .o -> library
 # clean     remove .o
-# fclean    clean + remove binary
-# all       build all
-# re        fclean + all
+# fclean    remove .o + binary
+# re        remake default goal
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	echo "CREATED $(NAME)"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	-[ ! -d $(@D) ] && mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	echo "CREATED $@"
 
-$(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
-	echo "CREATED $(NAME)"
-
+.PHONY: clean
 clean:
-	-[ -d $(BUILD_DIR) ] && $(RM) --recursive $(BUILD_DIR)
+	$(RM) --recursive $(BUILD_DIR)
 
+.PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
 
-all: $(NAME)
-
+.PHONY: re
 re:
 	make --no-print-directory fclean
 	make --no-print-directory all
 
 #------------------------------------------------#
-#   SPECIAL                                      #
+#   SPEC                                         #
 #------------------------------------------------#
+# .SILENT   silences the rules
 
 .SILENT:
-.PHONY: clean fclean all re
+
+####################################### END_4 ####

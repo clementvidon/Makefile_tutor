@@ -1,3 +1,5 @@
+####################################### BEG_1 ####
+
 NAME        := icecream
 
 #------------------------------------------------#
@@ -25,29 +27,28 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
+# all       default goal
 # $(NAME)   linking .o -> binary
 # clean     remove .o
-# fclean    clean + remove binary
-# all       build all
-# re        fclean + all
+# fclean    remove .o + binary
+# re        remake default goal
+
+all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
+.PHONY: clean
 clean:
 	$(RM) $(OBJS)
 
+.PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
 
-all: $(NAME)
-
+.PHONY: re
 re:
 	make --no-print-directory fclean
 	make --no-print-directory all
 
-#------------------------------------------------#
-#   SPECIAL                                      #
-#------------------------------------------------#
-
-.PHONY: clean fclean all re
+####################################### END_1 ####

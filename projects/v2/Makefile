@@ -1,3 +1,6 @@
+# @author   clemedon (Clément Vidon)
+####################################### BEG_2 ####
+
 NAME        := icecream
 
 #------------------------------------------------#
@@ -27,36 +30,41 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
+# all       default goal
 # %.o       compilation .c -> .o
 # $(NAME)   linking .o -> binary
 # clean     remove .o
-# fclean    clean + remove binary
-# all       build all
-# re        fclean + all
+# fclean    remove .o + binary
+# re        remake default goal
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-	echo "CREATED $@"
+all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
 	echo "CREATED $(NAME)"
 
+%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	echo "CREATED $@"
+
+.PHONY: clean
 clean:
 	$(RM) $(OBJS)
 
+.PHONY: flean
 fclean: clean
 	$(RM) $(NAME)
 
-all: $(NAME)
-
+.PHONY: re
 re:
 	make --no-print-directory fclean
 	make --no-print-directory all
 
 #------------------------------------------------#
-#   SPECIAL                                      #
+#   SPEC                                         #
 #------------------------------------------------#
+# .SILENT   silences the rules
 
 .SILENT:
-.PHONY: clean fclean all re
+
+####################################### END_2 ####
