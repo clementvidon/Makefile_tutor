@@ -160,6 +160,7 @@ all:
 
 [**Version 2**](#version-2)
 
+> - C compilation recap
 > - preprocessor's flags
 > - output of a descriptive message
 > - implicit C compilation rule is overwritten
@@ -179,7 +180,7 @@ all:
 
 [**Version 4**](#version-4)
 
-> - ***SOON*** 3
+> - TODO 3
 
 [**Bonus**](#bonus)
 
@@ -340,6 +341,7 @@ before build:        after build:
 
 ###     v2 Brief
 
+- C build recap
 - preprocessor's flags
 - output of a descriptive message
 - implicit C compilation rule is overwritten
@@ -412,16 +414,23 @@ re:
 	make --no-print-directory all
 ```
 
+- **C build recap** `%.o` target compile the `.c` into `.o`, the `-c`
+  tells to compile the `.c` without linking the `.o` and the `-o` indicate how
+  to name the `.o` resulting from the `.c`.  Afterward the `$(NAME)` is in
+  charge of linking the `.o` into a binary `$(NAME)` file whose name is
+  specified with the `-o` flag.
+
 - The **output of a descriptive message** is operated by the `echo` statements
   in the basic rules.
 
 - The **implicit C compilation rule is overwritten** with an explicit version that
   comes with an `echo` statement.
 
-- The order in which **the rules are written** does not matter, but I decided to
-  write them in their **order of execution**, in effect we start with the
-  compiler `%.o` followed by the linker, then we have `clean` that passes before
-  `fclean` because `fclean` is invoked only if `clean` completed.
+- The order in which **the rules are written** does not matter as long as the
+  *default goal* appears (triggered by a simple `make` command) first, but I
+  decided to write them in their **order of execution**, in effect we start with
+  the compiler `%.o` followed by the linker, then we have `clean` that passes
+  before `fclean` because `fclean` is invoked only if `clean` completed.
 
 ```make
 #------------------------------------------------#
@@ -658,7 +667,7 @@ before build:        after build:
 
 ###     v4 Brief
 
-***SOON*** 2
+TODO 2 brief
 
 ###     v4 Template
 
@@ -700,7 +709,18 @@ before build:        after build:
     endif
 ```
 
-***SOON*** 1
+TODO
+ - The `-MMD -MP` to
+ - The hidden .build directory
+ - The purpose of the initial **hyphen symbol** is to **prevent make from
+   complaining** when a non-zero status code is encountered.
+ - MAKECMDGOALS, what is a **goal**, what is the **default goal**, DEFAULT_GOAL.
+https://stackoverflow.com/questions/2057689/how-does-make-app-know-default-target-to-build-if-no-target-is-specified
+(why compilation rule cant be default goal even tho it doesnt startt with dot)
+"Defining and Redefining Pattern Rules" https://web.mit.edu/gnu/doc/html/make_10.html#SEC91
+- does *order of execution* should mention DEFAULT_GOAL?
+
+> - the `hyphen` prevent make from complaining
 
 ```make
 #------------------------------------------------#
@@ -740,10 +760,10 @@ all: $(NAME)
 re: fclean all
 ```
 
-***SOON*** 0
-
-```make
-
+- A library is not a binary but a collection of object files therefor instead of
+  the linker we use the archiver `ar` that **creates a static library** with `r` to
+  replace older object files with the new ones and `c` to create the library if
+  it does not exist.
 
 ```make
 #------------------------------------------------#
@@ -800,5 +820,6 @@ info:
 cvidon   42
 clemedon icloud
 ```
+
 
 <sub><i>Copyright 2022 Clément Vidon. All Rights Reserved.</i></sub>

@@ -12,7 +12,7 @@ NAME        := icecream.a
 # SRCS      source files
 # OBJS      object files
 # DEPS      dependency files
-# NODEPS    files without dependency
+# NODEPS    no-dependency files
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
@@ -21,12 +21,11 @@ CPPFLAGS    := -MMD -MP -I include
 SRC_DIR     := src
 BUILD_DIR	:= .build
 SRCS        := \
-	arom/coco.c	\
-	base/milk.c	\
+	arom/coco.c		\
+	base/milk.c		\
 	base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
-
 DEPS        := $(OBJS:.o=.d)
 NODEPS		:= fclean clean
 ifneq ($(MAKECMDGOALS), NODEPS)
@@ -43,11 +42,11 @@ RM          := rm --force
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
-# %.o       compilation
-# $(NAME)   default goal
-# clean     remove objects
+# %.o       compilation .c -> .o
+# $(NAME)   linking .o -> binary
+# clean     remove .o
 # fclean    clean + remove binary
-# all       all targets
+# all       build all
 # re        fclean + all
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
