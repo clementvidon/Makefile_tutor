@@ -45,8 +45,7 @@ DEPS        := $(OBJS:.o=.d)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
-CPPFLAGS    := -MMD -MP
-CPPFLAGS    += $(addprefix -I,$(INCS))
+CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
 LDFLAGS     := $(addprefix -L,$(LIBS))
 LDLIBS      := $(addprefix -l,$(notdir $(LIBS)))
 LDLIBS      += -lm
