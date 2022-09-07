@@ -54,6 +54,7 @@ of making them more digestible and even tasty  🍔
 
 - v5 Make with library.
 - v5 Fully automated and auto scalability.
+- v5 Use string functions instead substitution.
 
 ***[ TODO ]***
 
@@ -151,7 +152,7 @@ all:
 
 ***The first part focuses on building a functional makefile in 3 steps.***
 
-[**Version 1**](#version-1)
+[**Version 1 / base**](#version-1)
 
 > - the `.PHONY:` special target
 > - multi-threaded `make` with `--jobs`
@@ -159,7 +160,7 @@ all:
 > - Illustration of a `make all`
 > - 42 C coding style conventions
 
-[**Version 2**](#version-2)
+[**Version 2 / simple**](#version-2)
 
 > - C compilation recap
 > - preprocessor's flags
@@ -168,7 +169,7 @@ all:
 > - rules are written in their order of execution
 > - `.SILENT:` silences the rules
 
-[**Version 3**](#version-3)
+[**Version 3 / structured**](#version-3)
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
@@ -179,7 +180,7 @@ all:
 
 ***The second part presents various useful makefiles and more advanced features.***
 
-[**Version 4 | build a library**](#version-4)
+[**Version 4 / for library**](#version-4)
 
 > - creates a static library
 > - when a header file is modified the executable will rebuild
@@ -187,6 +188,10 @@ all:
 > - build directory
 > - dependency files must be included
 > - hyphen symbol to prevent make from complaining
+
+[**Version 5 / with libraries**](#version-5)
+
+***TODO***
 
 [**Bonus**](#bonus)
 
