@@ -205,6 +205,8 @@ all:
 
 > - `make` and `run` the *default goal*
 > - `info` rule print the `$(NAME)` recipe without executing it
+> - `print-<variable>` rule prints the value of the given variable
+> - `update` rule update the repository
 
 ##  Version 1
 
@@ -1004,6 +1006,16 @@ info:
   even if the targets already exist and `--no-print-directory` flag and `grep`
   command to clean the output from unwanted lines.
 
+
+```make
+  print-%: FORCE
+    echo '$*'='$($*)'
+.PHONY: FORCE
+```
+
+- The **`print-<variable>` rule prints the value of the given variable**, for
+  example `print-CC` will output `CC=clang`.
+
 ```make
 update:
     git stash
@@ -1016,16 +1028,6 @@ update:
 - The **`update` rule** will **update the repository** to its last version, as well
   as its submodules. `stash` commands saves eventual uncommitted changes and put
   them back in place once the update is done.
-
-```make
-  print-%: FORCE
-    echo '$*'='$($*)'
-.PHONY: FORCE
-```
-
-- The `print-<variable>` rule will print the value of the given variable, for
-  example `print-CC` will output `CC=clang.
-
 
 # Sources
 
