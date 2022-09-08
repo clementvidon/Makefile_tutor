@@ -4,7 +4,7 @@
 NAME        := icecream
 
 #------------------------------------------------#
-#   VARS                                         #
+#   INGREDIENTS                                  #
 #------------------------------------------------#
 # LIBS_NAME	local lib name
 # LIBS_PATH	local lib path
@@ -46,7 +46,7 @@ LDFLAGS     := $(addprefix -L,$(LIBS_PATH))
 LDLIBS      := $(addprefix -l,$(LIBS_NAME))
 
 #------------------------------------------------#
-#   TOOLS                                        #
+#   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
 
@@ -91,7 +91,7 @@ re:
 	$(MAKE) all
 
 #------------------------------------------------#
-#   OPTIONS                                      #
+#   SPEC                                         #
 #------------------------------------------------#
 # .SILENT       silences all the rules
 
