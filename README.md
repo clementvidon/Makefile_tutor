@@ -95,10 +95,10 @@ PS **`C++` users** can replace `CC = clang` with `CXX = g++` and `CPPFLAGS` with
 
 Each **version** of our template has **3 sections**:
 
-- **Structure** the project structure type.
-- **Brief** compilation of the bold text from the template comments.
-- **Template** our makefile with comments (that are always placed at the end of
-  the template part that concerns them).
+- **Structure** the **project structure** type.
+- **Brief** compilation of the **bold text** from the template comments.
+- **Template** our makefile **with comments** (that are always placed at the end
+  of the template part that concerns them).
 
 Our **template** will be articulated around the following parts:
 
