@@ -149,11 +149,11 @@ all:
 
 **Automatic Variables** expansion:
 
-- `$<` leftmost prerequisite
-- `$@` first target
-- `$^` all prerequisites
-- `@D` directory part of the file name of the target
-- `@F` file part of the file name of the target
+- `$<` **leftmost prerequisite**
+- `$@` **first target**
+- `$^` **all prerequisites**
+- `@D` **directory part** of the file name of the target
+- `@F` **file part** of the file name of the target
 
 # Template
 
