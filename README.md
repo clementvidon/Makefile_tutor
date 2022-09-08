@@ -316,10 +316,8 @@ Where `%.o` evaluates to each object, `%.c` to each source, `$@` to the first
 target (which is `%.o`) and `$<` to the leftmost prerequisite (which is `%.c`).
 
 *As their name implies implicit rules are implicit and do not need to be
-written.*
-
-All the *implicit rules* can be found in the data-base, accessible with a `make -p
--f/dev/null | less` shell command.
+written.  All the implicit rules can be found in the data-base, accessible
+with a `make -p -f/dev/null | less` shell command.*
 
 - **Illustration of a `make all`**:
 
