@@ -8,6 +8,7 @@ NAME        := icecream
 #------------------------------------------------#
 # SRCS      source files
 # OBJS      object files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 
@@ -38,17 +39,20 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $^ -o $@
 
-.PHONY: clean
 clean:
 	$(RM) $(OBJS)
 
-.PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
 
-.PHONY: re
 re:
 	make --no-print-directory fclean
 	make --no-print-directory all
+
+#------------------------------------------------#
+#   SPEC                                         #
+#------------------------------------------------#
+
+.PHONY: clean fclean re
 
 ####################################### END_1 ####

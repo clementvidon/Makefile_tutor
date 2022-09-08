@@ -8,13 +8,17 @@ NAME        := icecream
 #------------------------------------------------#
 # LIBS_NAME	local lib name
 # LIBS_PATH	local lib path
+#
 # INC_DIR   include directory
 # INCS		include directories
+#
 # SRC_DIR   source directory
 # SRCS      source files
+#
 # BUILD_DIR build directory
 # OBJS      object files
 # DEPS      dependency files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -75,17 +79,14 @@ $(BUILD_DIR)%.o: $(SRC_DIR)%.c
 	-[ ! -d $(@D) ] && mkdir -p  $(@D)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-.PHONY: clean
 clean:
 	for f in $(LIBS_PATH); do $(MAKE) -C $$f clean; done
 	$(RM) --recursive $(BUILD_DIR)
 
-.PHONY: fclean
 fclean: clean
 	for f in $(LIBS_PATH); do $(MAKE) -C $$f fclean; done
 	$(RM) $(NAME)
 
-.PHONY: re
 re:
 	$(MAKE) fclean
 	$(MAKE) all
@@ -93,6 +94,8 @@ re:
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT       silences all the rules
 
+.PHONY: clean fclean re
 .SILENT:
+
+####################################### END_5 ####

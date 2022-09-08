@@ -9,8 +9,10 @@ NAME        := libbase.a
 # SRC_DIR   source directory
 # BUILD_DIR	object directory
 # SRCS      source files
+#
 # OBJS      object files
 # DEPS      dependency files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -60,15 +62,12 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	echo "CREATED $@"
 
-.PHONY: clean
 clean:
 	$(RM) --recursive $(BUILD_DIR)
 
-.PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
 
-.PHONY: re
 re:
 	make --no-print-directory fclean
 	make --no-print-directory all
@@ -76,8 +75,8 @@ re:
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT   silences the rules
 
+.PHONY: clean fclean re
 .SILENT:
 
 ####################################### END_4 ####

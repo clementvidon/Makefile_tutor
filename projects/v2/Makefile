@@ -8,6 +8,7 @@ NAME        := icecream
 #------------------------------------------------#
 # SRCS      source files
 # OBJS      object files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -48,15 +49,12 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	echo "CREATED $@"
 
-.PHONY: clean
 clean:
 	$(RM) $(OBJS)
 
-.PHONY: flean
 fclean: clean
 	$(RM) $(NAME)
 
-.PHONY: re
 re:
 	$(MAKE) fclean
 	$(MAKE) all
@@ -64,8 +62,8 @@ re:
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT   silences the rules
 
+.PHONY: clean fclean re
 .SILENT:
 
 ####################################### END_2 ####

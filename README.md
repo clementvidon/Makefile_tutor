@@ -95,9 +95,9 @@ PS **`C++` users** can replace `CC = clang` with `CXX = g++` and `CPPFLAGS` with
 
 Each **version** of our template has **3 sections**:
 
-- **Structure** the **project structure** type.
-- **Brief** compilation of the **bold text** from the template comments.
-- **Template** our makefile **with comments** (that are always placed at the end
+- **Structure** The **project structure** type.
+- **Brief** Compilation of the **bold text** from the template comments.
+- **Template** Our makefile **with comments** (that are always placed at the end
   of the template part that concerns them).
 
 Our **template** will be articulated around the following parts:
@@ -163,18 +163,18 @@ all:
 
 [**Version 1 / base**](#version-1)
 
-> - the `.PHONY:` special target
-> - multi-threaded `make` with `--jobs`
-> - The implicit C compilation
+> - 42 C coding style conventions
+> - The C compilation implicit rule
 > - Illustration of a `make all`
 > - C build recap
-> - 42 C coding style conventions
+> - multi-threaded `make` with `--jobs`
+> - the `.PHONY:` special target
 
 [**Version 2 / simple**](#version-2)
 
 > - preprocessor's flags
 > - output of a descriptive message
-> - implicit C compilation rule is overwritten
+> - C compilation implicit rule is overwritten
 > - rules are written in their order of execution
 > - `.SILENT:` silences the rules
 
@@ -213,23 +213,22 @@ all:
 The simplest, build a program called `icecream` with the following structure:
 
 ```
-before build:        after build:
-
-\---Project:         \---Project:
-      Makefile             Makefile
-      main.c               main.c
-                           main.o
-                           icecream
+    before build:    after build:
+    .                .
+    ├── Makefile     ├── Makefile
+    └── main.c       ├── main.o
+                     ├── main.c
+                     └── icecream
 ```
 
 ###     v1 Brief
 
-- the `.PHONY:` special target
-- multi-threaded `make` with `--jobs`
-- The implicit C compilation
+- 42 C coding style conventions
+- The C compilation implicit rule
 - Illustration of a `make all`
 - C build recap
-- 42 C coding style conventions
+- multi-threaded `make` with `--jobs`
+- the `.PHONY:` special target
 
 ###     v1 Template
 
@@ -243,6 +242,7 @@ NAME        := icecream
 #------------------------------------------------#
 # SRCS      source files
 # OBJS      object files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 
@@ -273,39 +273,33 @@ all: $(NAME)
 $(NAME): $(OBJS)
     $(CC) $^ -o $@
 
-.PHONY: clean
 clean:
     $(RM) $(OBJS)
 
-.PHONY: fclean
 fclean: clean
     $(RM) $(NAME)
 
-.PHONY: re
 re:
     make --no-print-directory fclean
     make --no-print-directory all
 
+#------------------------------------------------#
+#   SPEC                                         #
+#------------------------------------------------#
+
+.PHONY: clean fclean re
+
 ####################################### END_1 ####
 ```
-- The prerequisites given to **the `.PHONY:` special target** become targets
-  that make will run regardless of whether a file with that name exists.  In
-  short these prerequisites are our targets that don't bear the name of a file.
 
-  Try to remove the `.PHONY: re`, create a file named `re` in your project
-  directory and run `make re`.  It won't work.
+- The choice of the `CC` and `CFLAGS` values, `$(NAME)`, `clean`, `fclean`,
+  `all` and `re` as the basic rules as well as not using a wildcard to
+  auto-detect source files are specific to the **42 C coding style
+  conventions**, do not hesitate to disagree and change it (like renaming
+  `clean` and `fclean` to the more GNU conventional `mostlyclean` and `clean`
+  respectively).
 
-  Now if you do the same with `all` it won't cause any problem, as we know
-  prerequisites are completed before their target and `all` has the sole action
-  of invoking `$(NAME)`, as long as a rule doesn't have a recipe, `.PHONY` is
-  not necessary.
-
-- For the `re` command we have no choice but make an external call to our
-  makefile because we should not rely on the order in which prerequisites are
-  specified.  For example `re: fclean all` wouldn't work with a **multi-threaded
-  `make` with `--jobs`** option.
-
-- **The implicit C compilation** is operated by the following *implicit rule*:
+- **The C compilation implicit rule** looks like this:
 
 ```make
 %.o: %.c
@@ -346,12 +340,22 @@ building each resource that is required by the direct upper level `0 → 1 → 2
   charge of linking the `.o` into a binary `$(NAME)` file whose name is
   specified with the `-o` flag.
 
-- The choice of the `CC` and `CFLAGS` values, `$(NAME)`, `clean`, `fclean`,
-  `all` and `re` as the basic rules as well as not using a wildcard to
-  auto-detect source files are specific to the **42 C coding style
-  conventions**, do not hesitate to disagree and change it (like renaming
-  `clean` and `fclean` to the more GNU conventional `mostlyclean` and `clean`
-  respectively).
+- For the `re` command we have no choice but make an external call to our
+  makefile because we should not rely on the order in which prerequisites are
+  specified.  For example `re: fclean all` wouldn't work with a **multi-threaded
+  `make` with `--jobs`** option.
+
+- The prerequisites given to **the `.PHONY:` special target** become targets
+  that make will run regardless of whether a file with that name exists.  In
+  short these prerequisites are our targets that don't bear the name of a file.
+
+  Try to remove the `.PHONY: re`, create a file named `re` in your project
+  directory and run `make re`.  It won't work.
+
+  Now if you do the same with `all` it won't cause any problem, as we know
+  prerequisites are completed before their target and `all` has the sole action
+  of invoking `$(NAME)`, as long as a rule doesn't have a recipe, `.PHONY` is
+  not necessary.
 
 [**Return to Index ↑**](#index)
 
@@ -362,21 +366,20 @@ building each resource that is required by the direct upper level `0 → 1 → 2
 As above but for a project that **includes header files**:
 
 ```
-before build:        after build:
-
-\---Project:         \---Project:
-      Makefile             Makefile
-      main.c               main.c
-      icecream.h           main.o
-                           icecream.h
-                           icecream
+    before build:     after build:
+    .                 .
+    ├── Makefile      ├── Makefile
+    ├── main.c        ├── main.o
+    └── icecream.h    ├── main.c
+                      ├── icecream.h
+                      └── icecream
 ```
 
 ###     v2 Brief
 
 - preprocessor's flags
 - output of a descriptive message
-- implicit C compilation rule is overwritten
+- C compilation implicit rule is overwritten
 - *default goal* `all` appears first
 - `.SILENT:` silences the rules
 
@@ -392,6 +395,7 @@ NAME        := icecream
 #------------------------------------------------#
 # SRCS      source files
 # OBJS      object files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -436,15 +440,12 @@ $(NAME): $(OBJS)
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     echo "CREATED $@"
 
-.PHONY: clean
 clean:
     $(RM) $(OBJS)
 
-.PHONY: flean
 fclean: clean
     $(RM) $(NAME)
 
-.PHONY: re
 re:
     $(MAKE) fclean
     $(MAKE) all
@@ -453,8 +454,8 @@ re:
 - The **output of a descriptive message** is operated by the `echo` statements
   in the basic rules.
 
-- The **implicit C compilation rule is overwritten** with an explicit version that
-  comes with an `echo` statement.
+- The **C compilation implicit rule is overwritten** with an explicit version in
+  which we can add an `echo` statement.
 
 - The order in which the rules are written does not matter as long as our
   **default goal `all` appears first** (the rule that will be triggered by a
@@ -464,8 +465,8 @@ re:
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT   silences the rules
 
+.PHONY: clean fclean re
 .SILENT:
 ```
 
@@ -491,33 +492,26 @@ As above but a more complex project structure with **multiple source
 directories** and their **corresponding object directories**:
 
 ```
-before build:        after build:
-
-\---Project:         \---Project:
-    | Makefile           | Makefile
-    |                    | icecream
-    |                    |
-    +---include:         +---include:
-    |     icecream.h     |     icecream.h
-    |                    |
-    \---src:             +---obj:
-        | main.c         |   | main.o
-        |                |   |
-        +---arom:        |   +---arom:
-        |     coco.c     |   |     coco.o
-        |                |   |
-        \---base:        |   \---base:
-              milk.c     |         milk.o
-              water.c    |         water.o
-                         \---src:
-                             | main.c
-                             |
-                             +---arom:
-                             |     coco.c
-                             |
-                             \---base:
-                                   milk.c
-                                   water.c
+    before build:          after build:
+    .                      .
+    ├── src                ├── src
+    │   ├── base           │   ├── base
+    │   │   ├── water.c    │   │   ├── water.c
+    │   │   └── milk.c     │   │   └── milk.c
+    │   ├── arom           │   ├── arom
+    │   │   └── coco.c     │   │   └── coco.c
+    │   └── main.c         │   └── main.c
+    ├── include            ├── obj
+    │   └── icecream.h     │   ├── base
+    └── Makefile           │   │   ├── water.o
+                           │   │   └── milk.o
+                           │   ├── arom
+                           │   │   └── coco.o
+                           │   └── main.o
+                           ├── include
+                           │   └── icecream.h
+                           ├── Makefile
+                           └── icecream
 ```
 
 ###     v3 Brief
@@ -542,6 +536,7 @@ NAME        := icecream
 # OBJ_DIR   object directory
 # SRCS      source files
 # OBJS      object files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -602,16 +597,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     echo "CREATED $@"
 
-.PHONY: clean
 clean:
     $(RM) --recursive $(OBJ_DIR)
 
-.PHONY: fclean
 fclean: clean
     $(RM) $(NAME)
 
 
-.PHONY: re
 re:
     $(MAKE) fclean
     $(MAKE) all
@@ -624,16 +616,16 @@ re:
 
 ```
 -[ ! -d $(@D) ] && mkdir -p $(@D)
-|| |  |    |    |  |      |    |
-+|-|--|----|----|--|------|----|- suppress make non-zero status errors
- +-|--|----|----|--|------|----|- if
-   +--|----|----|--|------|----|- doesn't exist
-      +----|----|--|------|----|- as a directory
-           +----|--|------|----|- the dir part of the target filename
-                +--|------|----|- then
-                   +------|----|- create the directory
-                          +----|- and the parents directories if missing
-                               +- of the dir part of the target filename
+
+└│─│──│────│────│──│──────│────│─  suppress make non-zero status errors
+ └─│──│────│────│──│──────│────│─  if
+   └──│────│────│──│──────│────│─  doesn't exist
+      └────│────│──│──────│────│─  as a directory
+           └────│──│──────│────│─  the dir part of the target filename
+                └──│──────│────│─  then
+                   └──────│────│─  create the directory
+                          └────│─  and the parents directories if missing
+                               └-  of the dir part of the target filename
 ```
 
 The basic automation provided by the substitution reference and the `@D`
@@ -647,8 +639,8 @@ automatic variable enable the scaling up to a larger project.
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT   silences the rules
 
+.PHONY: clean fclean re
 .SILENT:
 
 ####################################### END_3 ####
@@ -660,40 +652,31 @@ automatic variable enable the scaling up to a larger project.
 
 ###     v4 Structure
 
-As above but a **library**, without `main.c` and with an `obj` directory
-replaced with a `.build` directory that contains the generated **dependencies**
-in addition to the objects.
+Builds a **library** so we remove `main.c`.  We generate **dependencies** that
+are stored with the object files thu we rename `obj` directory into `.build`.
 
 ```
-before build:        after build:
-
-\---Project:         \---Project:
-    | Makefile           | Makefile
-    |                    | icecream.a
-    |                    |
-    +---include:         +---include:
-    |     icecream.h     |     icecream.h
-    |                    |
-    \---src:             +---obj:
-        |                |   |
-        +---arom:        |   +---arom:
-        |     coco.c     |   |     coco.o
-        |                |   |     coco.d
-        \---base:        |   |
-              milk.c     |   \---base:
-              water.c    |         milk.o
-                         |         milk.d
-                         |         water.o
-                         |         water.d
-                         \---src:
-                             | main.c
-                             |
-                             +---arom:
-                             |     coco.c
-                             |
-                             \---base:
-                                   milk.c
-                                   water.c
+    before build:          after build:
+    .                      .
+    ├── src                ├── src
+    │   ├── base           │   ├── base
+    │   │   ├── water.c    │   │   ├── water.c
+    │   │   └── milk.c     │   │   └── milk.c
+    │   └── arom           │   └── arom
+    │       └── coco.c     │       └── coco.c
+    ├── include            ├── include
+    │   └── icecream.h     │   └── icecream.h
+    └── Makefile           ├── .build
+                           │   ├── base
+                           │   │   ├── water.o
+                           │   │   ├── water.d
+                           │   │   ├── milk.o
+                           │   │   └── milk.d
+                           │   └── arom
+                           │       ├── coco.o
+                           │       └── coco.d
+                           ├── Makefile
+                           └── icecream.a
 ```
 
 ###     v4 Brief
@@ -717,9 +700,11 @@ NAME        := icecream.a
 #------------------------------------------------#
 # SRC_DIR   source directory
 # SRCS      source files
+#
 # BUILD_DIR object directory
 # OBJS      object files
 # DEPS      dependency files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -813,15 +798,12 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     echo "CREATED $@"
 
-.PHONY: clean
 clean:
     $(RM) --recursive $(BUILD_DIR)
 
-.PHONY: fclean
 fclean: clean
     $(RM) $(NAME)
 
-.PHONY: re
 re:
     $(MAKE) fclean
     $(MAKE) all
@@ -829,8 +811,8 @@ re:
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT   silences the rules
 
+.PHONY: clean fclean re
 .SILENT:
 
 ####################################### END_4 ####
@@ -842,7 +824,49 @@ re:
 
 ###     v5 Structure
 
-***SOON***
+Builds a an `icecream` **program that uses** a `libbase` and `libarom`
+**libraries**.  Both libraries are v4 based.
+
+```
+    before build:              after build:
+    .                          .
+    ├── src                    ├── src
+    │   └── main.c             │   └── main.c
+    ├── lib                    ├── lib
+    │   ├── libbase            │   ├── libbase
+    │   │   ├── src            │   │   ├── src
+    │   │   │   ├── water.c    │   │   │   ├── water.c
+    │   │   │   └── milk.c     │   │   │   └── milk.c
+    │   │   ├── include        │   │   ├── include
+    │   │   │   └── base.h     │   │   │   └── base.h
+    │   │   └── Makefile       │   │   ├── .build
+    │   └── libarom            │   │   │   ├── water.o
+    │       ├── src            │   │   │   ├── water.d
+    │       │   ├── coco.c     │   │   │   ├── milk.o
+    │       │   └── cherry.c   │   │   │   └── milk.d
+    │       ├── include        │   │   ├── Makefile
+    │       │   └── arom.h     │   │   └── libbase.a
+    │       └── Makefile       │   └── libarom
+    ├── include                │       ├── src
+    │   └── icecream.h         │       │   ├── coco.c
+    └── Makefile               │       │   └── cherry.c
+                               │       ├── include
+                               │       │   └── arom.h
+                               │       ├── .build
+                               │       │   ├── coco.o
+                               │       │   ├── coco.d
+                               │       │   ├── cherry.o
+                               │       │   └── cherry.d
+                               │       ├── Makefile
+                               │       └── libarom.a
+                               ├── include
+                               │   └── icecream.h
+                               ├── .build
+                               │   ├── main.o
+                               │   └── main.d
+                               ├── Makefile
+                               └── icecream
+```
 
 ###     v5 Brief
 
@@ -860,13 +884,17 @@ NAME        := icecream
 #------------------------------------------------#
 # LIBS_NAME local lib name
 # LIBS_PATH local lib path
+#
 # INC_DIR   include directory
 # INCS      include directories
+#
 # SRC_DIR   source directory
 # SRCS      source files
+#
 # BUILD_DIR build directory
 # OBJS      object files
 # DEPS      dependency files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -927,17 +955,14 @@ $(BUILD_DIR)%.o: $(SRC_DIR)%.c
     -[ ! -d $(@D) ] && mkdir -p  $(@D)
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
-.PHONY: clean
 clean:
     for f in $(LIBS_PATH); do $(MAKE) -C $$f clean; done
     $(RM) --recursive $(BUILD_DIR)
 
-.PHONY: fclean
 fclean: clean
     for f in $(LIBS_PATH); do $(MAKE) -C $$f fclean; done
     $(RM) $(NAME)
 
-.PHONY: re
 re:
     $(MAKE) fclean
     $(MAKE) all
@@ -945,9 +970,11 @@ re:
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT       silences all the rules
 
+.PHONY: clean fclean re
 .SILENT:
+
+####################################### END_5 ####
 ```
 
 [**Return to Index ↑**](#index)
@@ -957,9 +984,9 @@ re:
 ###     Extra rules
 
 ```make
-.PHONY: run
 run: re
     -./$(NAME)
+.PHONY: run
 ```
 
 - `run` is a simple rule that **`make` and `run` the default goal**.  We start
@@ -967,15 +994,38 @@ run: re
   its execution if our program execution returns a non-zero value.
 
 ```make
-.PHONY: info
 info:
-    make --dry-run --always-make --no-print-directory | grep -v "echo \| mkdir"
+    make --dry-run --always-make --no-print-directory | grep -v "echo"
+.PHONY: info
 ```
 
 - The **`info` rule** will execute a simple `make` command with `--dry-run` to
   **print the `$(NAME)` recipe without executing it**, `--always-make` to `make`
   even if the targets already exist and `--no-print-directory` flag and `grep`
   command to clean the output from unwanted lines.
+
+```make
+update:
+    git stash
+    git pull
+    git submodule update --init
+    git stash pop
+.PHONY: update
+```
+
+- The **`update` rule** will **update the repository** to its last version, as well
+  as its submodules. `stash` commands saves eventual uncommitted changes and put
+  them back in place once the update is done.
+
+```make
+  print-%: FORCE
+    echo '$*'='$($*)'
+.PHONY: FORCE
+```
+
+- The `print-<variable>` rule will print the value of the given variable, for
+  example `print-CC` will output `CC=clang.
+
 
 # Sources
 

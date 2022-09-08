@@ -10,6 +10,7 @@ NAME        := icecream
 # OBJ_DIR   object directory
 # SRCS      source files
 # OBJS      object files
+#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
@@ -58,16 +59,13 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	echo "CREATED $@"
 
-.PHONY: clean
 clean:
 	$(RM) --recursive $(OBJ_DIR)
 
-.PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
 
 
-.PHONY: re
 re:
 	$(MAKE) fclean
 	$(MAKE) all
@@ -75,8 +73,8 @@ re:
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
-# .SILENT   silences the rules
 
+.PHONY: clean fclean re
 .SILENT:
 
 ####################################### END_3 ####
