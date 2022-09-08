@@ -1,39 +1,50 @@
 # @author   clemedon (Clément Vidon)
-####################################### BEG_2 ####
+####################################### BEG_4 ####
 
-NAME        := icecream
+NAME        := libbase.a
 
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
+# SRC_DIR   source directory
+# BUILD_DIR	object directory
 # SRCS      source files
 # OBJS      object files
+# DEPS      dependency files
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
 
-SRCS        := main.c
-OBJS        := main.o
+SRC_DIR     := src
+BUILD_DIR	:= .build
+SRCS        := \
+	milk.c \
+	water.c
+
+SRCS        := $(SRCS:%=$(SRC_DIR)/%)
+OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+DEPS        := $(OBJS:.o=.d)
+-include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
-CPPFLAGS    := -I .
+CPPFLAGS    := -MMD -MP -I include
+AR          := ar
+ARFLAGS     := -r -c -s
 
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
-# MAKE      make command
 
 RM          := rm --force
-MAKE        := make --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
 # %.o       compilation .c -> .o
-# $(NAME)   linking .o -> binary
+# $(NAME)   link .o -> library
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
@@ -41,25 +52,26 @@ MAKE        := make --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
+	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
 	echo "CREATED $(NAME)"
 
-%.o: %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+	-[ ! -d $(@D) ] && mkdir -p $(@D)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 	echo "CREATED $@"
 
 .PHONY: clean
 clean:
-	$(RM) $(OBJS)
+	$(RM) --recursive $(BUILD_DIR)
 
-.PHONY: flean
+.PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
 
 .PHONY: re
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+	make --no-print-directory fclean
+	make --no-print-directory all
 
 #------------------------------------------------#
 #   SPEC                                         #
@@ -68,4 +80,4 @@ re:
 
 .SILENT:
 
-####################################### END_2 ####
+####################################### END_4 ####

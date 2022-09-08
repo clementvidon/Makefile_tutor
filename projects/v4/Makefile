@@ -6,15 +6,26 @@ NAME        := icecream.a
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
+# SRC_DIR   source directory
+# SRCS      source files
+# BUILD_DIR	object directory
+# OBJS      object files
+# DEPS      dependency files
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
-#
-# SRC_DIR   source directory
-# BUILD_DIR	object directory
-# SRCS      source files
-# OBJS      object files
-# DEPS      dependency files
+
+SRC_DIR     := src
+SRCS        :=  \
+	arom/coco.c \
+	base/milk.c \
+	base/water.c
+SRCS        := $(SRCS:%=$(SRC_DIR)/%)
+
+BUILD_DIR	:= .build
+OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+DEPS        := $(OBJS:.o=.d)
+-include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
@@ -22,23 +33,14 @@ CPPFLAGS    := -MMD -MP -I include
 AR          := ar
 ARFLAGS     := -r -c -s
 
-SRC_DIR     := src
-BUILD_DIR	:= .build
-SRCS        := \
-	arom/coco.c \
-	base/milk.c \
-	base/water.c
-SRCS        := $(SRCS:%=$(SRC_DIR)/%)
-OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
-DEPS        := $(OBJS:.o=.d)
--include $(DEPS)
-
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
+# MAKE      make command
 
 RM          := rm --force
+MAKE        := make --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -53,12 +55,12 @@ RM          := rm --force
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	$(AR) $(ARFLAGS) $@ $<
 	echo "CREATED $(NAME)"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	-[ ! -d $(@D) ] && mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	echo "CREATED $@"
 
 .PHONY: clean
@@ -71,8 +73,8 @@ fclean: clean
 
 .PHONY: re
 re:
-	make --no-print-directory fclean
-	make --no-print-directory all
+	$(MAKE) fclean
+	$(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #

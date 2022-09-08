@@ -2,9 +2,10 @@
 # define ICECREAM_H
 
 #include <unistd.h>
+#include <stdio.h>
+#include <math.h>
 
-void	coco(void);
-void	milk(void);
-void	water(void);
+#include "arom.h"
+#include "base.h"
 
 #endif

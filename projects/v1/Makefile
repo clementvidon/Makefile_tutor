@@ -1,3 +1,4 @@
+# @author   clemedon (Clément Vidon)
 ####################################### BEG_1 ####
 
 NAME        := icecream
@@ -5,17 +6,16 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compiler
-# CFLAGS    compiler flags
-#
 # SRCS      source files
 # OBJS      object files
-
-CC          := clang
-CFLAGS      := -Wall -Wextra -Werror
+# CC        compiler
+# CFLAGS    compiler flags
 
 SRCS        := main.c
 OBJS        := main.o
+
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
 
 #------------------------------------------------#
 #   UTENSILS                                     #
@@ -36,7 +36,7 @@ RM          := rm --force
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $^ -o $@
 
 .PHONY: clean
 clean:

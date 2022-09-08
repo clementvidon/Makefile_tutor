@@ -22,10 +22,11 @@
 
 Addressed to beginners and not to newcomers, the idea behind this tutorial is to
 **focus on the essential**.  Anything that is not directly related to the
-template we are going to explore will not be covered here.
+template we are going to explore will not be covered here.  On the other hand
+everything is covered in this tutorial will be carefully detailed.
 
 Initially intended to help 42 students to step up their makefile skills through
-a **documented template** that evolves gradually, **step by step**. With the aim
+a **documented template** that evolves gradually, **step by step**.  With the aim
 of making them more digestible and even tasty  🍔
 
 **TL;DR** Confer to the bold text.
@@ -146,6 +147,14 @@ all:
     echo ${B} # echoes "Yes you got it"
 ```
 
+**Automatic Variables** expansion:
+
+- `$<` leftmost prerequisite
+- `$@` first target
+- `$^` all prerequisites
+- `@D` directory part of the file name of the target
+- `@F` file part of the file name of the target
+
 # Template
 
 ## Index
@@ -158,11 +167,11 @@ all:
 > - multi-threaded `make` with `--jobs`
 > - The implicit C compilation
 > - Illustration of a `make all`
+> - C build recap
 > - 42 C coding style conventions
 
 [**Version 2 / simple**](#version-2)
 
-> - C compilation recap
 > - preprocessor's flags
 > - output of a descriptive message
 > - implicit C compilation rule is overwritten
@@ -173,21 +182,20 @@ all:
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
-> - compilers rule uses multiple source and object directories
-> - `@D` expands to the directory part of the target file name
+> - compilation rule uses multiple source and object directories
+> - generates the `OBJ_DIR` based on `SRC_DIR`
 > - `clean` rule `--recursive`
-> - automation substitution reference `@D` automatic variable
 
 ***The second part presents various useful makefiles and more advanced features.***
 
 [**Version 4 / for library**](#version-4)
 
-> - creates a static library
 > - when a header file is modified the executable will rebuild
 > - automatically generate a list of dependencies
 > - build directory
 > - dependency files must be included
 > - hyphen symbol to prevent make from complaining
+> - creates a static library
 
 [**Version 5 / with libraries**](#version-5)
 
@@ -220,6 +228,7 @@ before build:        after build:
 - multi-threaded `make` with `--jobs`
 - The implicit C compilation
 - Illustration of a `make all`
+- C build recap
 - 42 C coding style conventions
 
 ###     v1 Template
@@ -232,17 +241,16 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compiler
-# CFLAGS    compiler flags
-#
 # SRCS      source files
 # OBJS      object files
-
-CC          := clang
-CFLAGS      := -Wall -Wextra -Werror
+# CC        compiler
+# CFLAGS    compiler flags
 
 SRCS        := main.c
 OBJS        := main.o
+
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
 
 #------------------------------------------------#
 #   UTENSILS                                     #
@@ -263,7 +271,7 @@ RM          := rm --force
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $^ -o $@
 
 .PHONY: clean
 clean:
@@ -301,15 +309,17 @@ re:
 
 ```make
 %.o: %.c
-    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 ```
 
-Where `%.o` evaluates to each object, `%.c` to each source, `$<` to the first
-prerequisite (which is `%.c`) and `$@` to the name of the target being generated
-(which is `%.o`).
+Where `%.o` evaluates to each object, `%.c` to each source, `$@` to the first
+target (which is `%.o`) and `$<` to the leftmost prerequisite (which is `%.c`).
 
 *As their name implies implicit rules are implicit and do not need to be
 written.*
+
+All the *implicit rules* can be found in the data-base, accessible with a `make -p
+-f/dev/null | less` shell command.
 
 - **Illustration of a `make all`**:
 
@@ -317,14 +327,14 @@ written.*
 all: $(NAME)                            3 ← 2
 
 $(NAME): $(OBJS)                        2 ← 1
-    $(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $^ -o $@
 
 %.o: %.c                                1 ← 0
-    $(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c -o $@ $<
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
-`sources` that require... a programmer.  In other words `all` creates `icecream`
+`sources` that require...  a programmer.  In other words `all` creates `icecream`
 with the `.o` created with the `.c` that you are supposed to create.
 
 Make will first trace its path to the lower level where it finds a raw material
@@ -332,12 +342,18 @@ Make will first trace its path to the lower level where it finds a raw material
 building each resource that is required by the direct upper level `0 → 1 → 2 →
 3` (`target`).
 
+- **C build recap** `%.o` target compile the `.c` into `.o`, the `-c`
+  tells to compile the `.c` without linking the `.o` and the `-o` indicate how
+  to name the `.o` resulting from the `.c`.  Afterward the `$(NAME)` is in
+  charge of linking the `.o` into a binary `$(NAME)` file whose name is
+  specified with the `-o` flag.
+
 - The choice of the `CC` and `CFLAGS` values, `$(NAME)`, `clean`, `fclean`,
   `all` and `re` as the basic rules as well as not using a wildcard to
   auto-detect source files are specific to the **42 C coding style
   conventions**, do not hesitate to disagree and change it (like renaming
-  `clean` and `fclean` to the GNU conventional `mostlyclean` and `clean`
-  respectively.
+  `clean` and `fclean` to the more GNU conventional `mostlyclean` and `clean`
+  respectively).
 
 [**Return to Index ↑**](#index)
 
@@ -360,7 +376,6 @@ before build:        after build:
 
 ###     v2 Brief
 
-- C build recap
 - preprocessor's flags
 - output of a descriptive message
 - implicit C compilation rule is overwritten
@@ -377,19 +392,18 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
+# SRCS      source files
+# OBJS      object files
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
-#
-# SRCS      source files
-# OBJS      object files
+
+SRCS        := main.c
+OBJS        := main.o
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := -I .
-
-SRCS        := main.c
-OBJS        := main.o
 ```
 
 - `CPPFLAGS` is dedicated to **preprocessor's flags** like `-I <include_dir>`.
@@ -399,8 +413,10 @@ OBJS        := main.o
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
+# MAKE      make command
 
 RM          := rm --force
+MAKE        := make --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -415,11 +431,11 @@ RM          := rm --force
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $^ -o $@
     echo "CREATED $(NAME)"
 
 %.o: %.c
-    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     echo "CREATED $@"
 
 .PHONY: clean
@@ -432,15 +448,9 @@ fclean: clean
 
 .PHONY: re
 re:
-	make --no-print-directory fclean
-	make --no-print-directory all
+	$(MAKE) fclean
+	$(MAKE) all
 ```
-
-- **C build recap** `%.o` target compile the `.c` into `.o`, the `-c`
-  tells to compile the `.c` without linking the `.o` and the `-o` indicate how
-  to name the `.o` resulting from the `.c`.  Afterward the `$(NAME)` is in
-  charge of linking the `.o` into a binary `$(NAME)` file whose name is
-  specified with the `-o` flag.
 
 - The **output of a descriptive message** is operated by the `echo` statements
   in the basic rules.
@@ -516,10 +526,9 @@ before build:        after build:
 
 - split the line with a `backslash`
 - substitution reference so `main.c` becomes `src/main.c`
-- compilers rule uses multiple source and object directories
-- `@D` expands to the directory part of the target file name
+- compilation rule uses multiple source and object directories
+- generates the `OBJ_DIR` based on `SRC_DIR`
 - `clean` rule `--recursive`
-- automation substitution reference `@D` automatic variable
 
 ###     v3 Template
 
@@ -531,18 +540,13 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# CC        compiler
-# CFLAGS    compiler flags
-# CPPFLAGS  preprocessor flags
-#
 # SRC_DIR   source directory
 # OBJ_DIR   object directory
 # SRCS      source files
 # OBJS      object files
-
-CC          := clang
-CFLAGS      := -Wall -Wextra -Werror
-CPPFLAGS    := -I include
+# CC        compiler
+# CFLAGS    compiler flags
+# CPPFLAGS  preprocessor flags
 
 SRC_DIR     := src
 OBJ_DIR     := obj
@@ -553,6 +557,10 @@ SRCS        := \
     base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
+CPPFLAGS    := -I include
 ```
 
 - We can **split the line** by ending it **with a `backslash`** to increase the
@@ -570,8 +578,10 @@ OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
+# MAKE      make command
 
 RM          := rm --force
+MAKE        := make --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -586,12 +596,12 @@ RM          := rm --force
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $(CFLAGS) $(CPPFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $^ -o $@
     echo "CREATED $(NAME)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
     -[ ! -d $(@D) ] && mkdir -p $(@D)
-    $(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     echo "CREATED $@"
 
 .PHONY: clean
@@ -605,15 +615,14 @@ fclean: clean
 
 .PHONY: re
 re:
-	make --no-print-directory fclean
-	make --no-print-directory all
+	$(MAKE) fclean
+	$(MAKE) all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
    since our structure **uses multiple source and object directories**.
 
-- **`@D`** is an *automatic variable* that **expands to the directory part of the
-  target file name**, to create the `OBJ_DIR` structure:
+- The following line **generates the `OBJ_DIR` based on `SRC_DIR`** structure.
 
 ```
 -[ ! -d $(@D) ] && mkdir -p $(@D)
@@ -629,6 +638,11 @@ re:
                                +- of the dir part of the target filename
 ```
 
+The basic automation provided by the substitution reference and the `@D`
+automatic variable enable the scaling up to a larger project.
+
+*This will work the same with every possible kind of src directory structure.*
+
 - In the **`clean` rule** we add **`--recursive`** to `RM` to remove `OBJ_DIR` and its content recursively.
 
 ```make
@@ -642,21 +656,15 @@ re:
 ####################################### END_3 ####
 ```
 
-- The basic **automation** provided by the **substitution reference** and the
-  **`@D` automatic variable** enable the scaling up to a larger project and the
-  generation of the `obj` directory based on the `src` directory structure.
-
-*This will work the same with every possible kind of src directory structure.*
-
 [**Return to Index ↑**](#index)
 
 ##  Version 4
 
 ###     v4 Structure
 
-As above but without `main.c` and a the **`.build`** directory which replaces
-the `obj` folder and which will contain, in addition to objects, the
-**dependencies**.
+As above but a **library**, without `main.c` and with an `obj` directory
+replaced with a `.build` directory that contains the generated **dependencies**
+in addition to the objects.
 
 ```
 before build:        after build:
@@ -692,12 +700,12 @@ before build:        after build:
 
 ###     v4 Brief
 
-- creates a static library
 - when a header file is modified the executable will rebuild
 - automatically generate a list of dependencies
 - build directory
 - dependency files must be included
 - hyphen symbol to prevent make from complaining
+- creates a static library
 
 ###     v4 Template
 
@@ -709,39 +717,33 @@ NAME        := icecream.a
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
+# SRC_DIR   source directory
+# SRCS      source files
+# BUILD_DIR	object directory
+# OBJS      object files
+# DEPS      dependency files
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
-#
-# SRC_DIR   source directory
-# BUILD_DIR	object directory
-# SRCS      source files
-# OBJS      object files
-# DEPS      dependency files
+
+SRC_DIR     := src
+SRCS        :=  \
+	arom/coco.c \
+	base/milk.c \
+	base/water.c
+SRCS        := $(SRCS:%=$(SRC_DIR)/%)
+
+BUILD_DIR	:= .build
+OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
+DEPS        := $(OBJS:.o=.d)
+-include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := -MMD -MP -I include
 AR          := ar
 ARFLAGS     := -r -c -s
-
-SRC_DIR     := src
-BUILD_DIR	:= .build
-SRCS        := \
-    arom/coco.c \
-    base/milk.c \
-    base/water.c
-SRCS        := $(SRCS:%=$(SRC_DIR)/%)
-OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
-DEPS        := $(OBJS:.o=.d)
--include $(DEPS)
 ```
-
-- A library is not a binary but a collection of object files so we use `ar`
-  **creates a static library** during the linking step of the build. `-r` to
-  replace the older object files with the new ones; `-c` to create the library
-  if it does not exist and `-s` to write an index into the archive or update an
-  existing one.
 
 - Unlike source files, **when a header file is modified** make has no way of
   knowing this and will not consider **the executable** to be out of date, and
@@ -775,13 +777,22 @@ main.o: main.c              main.o: main.c icecream.h
   which can be caused here by a missing files from our generated dependency
   files list.
 
+- A library is not a binary but a collection of object files so we use `ar`
+  **creates a static library** during the linking step of the build. `-r` to
+  replace the older object files with the new ones; `-c` to create the library
+  if it does not exist and `-s` to write an index into the archive or update an
+  existing one.
+
+
 ```make
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
+# MAKE      make command
 
 RM          := rm --force
+MAKE        := make --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -796,12 +807,12 @@ RM          := rm --force
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	$(AR) $(ARFLAGS) $@ $<
     echo "CREATED $(NAME)"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	-[ ! -d $(@D) ] && mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	echo "CREATED $@"
 
 .PHONY: clean
@@ -814,8 +825,8 @@ fclean: clean
 
 .PHONY: re
 re:
-	make --no-print-directory fclean
-	make --no-print-directory all
+	$(MAKE) fclean
+	$(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #
@@ -825,6 +836,120 @@ re:
 .SILENT:
 
 ####################################### END_4 ####
+```
+
+[**Return to Index ↑**](#index)
+
+##  Version 5
+
+###     v1 Structure
+
+***SOON***
+
+###     v1 Brief
+
+***SOON***
+
+###     v1 Template
+
+```make
+####################################### BEG_5 ####
+
+NAME        := icecream
+
+#------------------------------------------------#
+#   VARS                                         #
+#------------------------------------------------#
+# LIBS_NAME	local lib name
+# LIBS_PATH	local lib path
+# INC_DIR   include directory
+# INCS		include directories
+# SRC_DIR   source directory
+# SRCS      source files
+# BUILD_DIR build directory
+# OBJS      object files
+# DEPS      dependency files
+# CC        compiler
+# CFLAGS    compiler flags
+# CPPFLAGS  preprocessor flags
+# LDFLAGS   linker flags
+# LDLIBS    library names
+
+LIBS_NAME	:= base arom m
+LIBS_PATH	:= $(addsuffix /,$(wildcard lib/*))
+
+INC_DIR     := include/
+INCS        := $(INC_DIR) $(LIBS_PATH)
+INCS        := $(INCS) $(addsuffix $(INC_DIR),$(LIBS_PATH))
+
+SRC_DIR     := src/
+SRCS        := main.c
+SRCS        := $(addprefix $(SRC_DIR),$(SRCS))
+
+BUILD_DIR   := .build/
+OBJS        := $(subst .c,.o,$(SRCS))
+OBJS        := $(subst $(SRC_DIR),$(BUILD_DIR),$(OBJS))
+
+DEPS        := $(subst .o,.d,$(OBJS))
+-include $(DEPS)
+
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
+CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
+LDFLAGS     := $(addprefix -L,$(LIBS_PATH))
+LDLIBS      := $(addprefix -l,$(LIBS_NAME))
+
+#------------------------------------------------#
+#   TOOLS                                        #
+#------------------------------------------------#
+# RM        cleaning command
+
+RM          := rm --force
+MAKE        := make --silent --jobs --no-print-directory
+
+#------------------------------------------------#
+#   RECIPES                                      #
+#------------------------------------------------#
+# all       default goal
+# %.o       compilation .c -> .o
+# $(NAME)   link .o -> archive
+# clean     remove .o
+# fclean    remove .o + binary
+# re        remake default goal
+# run		run the program
+# info		print the default goal recipe
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	for f in $(LIBS_PATH); do $(MAKE) -C $$f; done
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+
+$(BUILD_DIR)%.o: $(SRC_DIR)%.c
+	-[ ! -d $(@D) ] && mkdir -p  $(@D)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+
+.PHONY: clean
+clean:
+	for f in $(LIBS_PATH); do $(MAKE) -C $$f clean; done
+	$(RM) --recursive $(BUILD_DIR)
+
+.PHONY: fclean
+fclean: clean
+	for f in $(LIBS_PATH); do $(MAKE) -C $$f fclean; done
+	$(RM) $(NAME)
+
+.PHONY: re
+re:
+	$(MAKE) fclean
+	$(MAKE) all
+
+#------------------------------------------------#
+#   OPTIONS                                      #
+#------------------------------------------------#
+# .SILENT       silences all the rules
+
+.SILENT:
 ```
 
 [**Return to Index ↑**](#index)
@@ -873,4 +998,4 @@ cvidon   42
 clemedon icloud
 ```
 
-<sub><i>Copyright 2022 Clément Vidon. All Rights Reserved.</i></sub>
+<sub><i>Copyright 2022 Clément Vidon.  All Rights Reserved.</i></sub>

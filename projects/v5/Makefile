@@ -6,49 +6,44 @@ NAME        := icecream
 #------------------------------------------------#
 #   VARS                                         #
 #------------------------------------------------#
-# LIBS      libraries
-# SRCS      source files
-#
-# LIB_DIR   library directory
+# LIBS_NAME	local lib name
+# LIBS_PATH	local lib path
 # INC_DIR   include directory
-# SRC_DIR   source directory
-# BUILD_DIR build directory
-#
 # INCS		include directories
+# SRC_DIR   source directory
+# SRCS      source files
+# BUILD_DIR build directory
 # OBJS      object files
 # DEPS      dependency files
-#
 # CC        compiler
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
-# LDFLAGS   TODO
-# LDLIBS    TODO
+# LDFLAGS   linker flags
+# LDLIBS    library names
 
-LIBS        := lib_one/icecream lib_two/icecream
-SRCS        := 		\
-	main.c          \
-	arom/coco.c     \
-	base/milk.c     \
-	base/water.c	\
+LIBS_NAME	:= base arom m
+LIBS_PATH	:= $(addsuffix /,$(wildcard lib/*))
 
-LIB_DIR     := lib/
 INC_DIR     := include/
+INCS        := $(INC_DIR) $(LIBS_PATH)
+INCS        := $(INCS) $(addsuffix $(INC_DIR),$(LIBS_PATH))
+
 SRC_DIR     := src/
-BUILD_DIR   := .build/
-LIBS        := $(addprefix $(LIB_DIR),$(dir $(LIBS)))
-INCS        := $(INC_DIR) $(LIBS)
+SRCS        := main.c
 SRCS        := $(addprefix $(SRC_DIR),$(SRCS))
+
+BUILD_DIR   := .build/
 OBJS        := $(subst .c,.o,$(SRCS))
 OBJS        := $(subst $(SRC_DIR),$(BUILD_DIR),$(OBJS))
-DEPS        := $(OBJS:.o=.d)
+
+DEPS        := $(subst .o,.d,$(OBJS))
 -include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
-LDFLAGS     := $(addprefix -L,$(LIBS))
-LDLIBS      := $(addprefix -l,$(notdir $(LIBS)))
-LDLIBS      += -lm
+LDFLAGS     := $(addprefix -L,$(LIBS_PATH))
+LDLIBS      := $(addprefix -l,$(LIBS_NAME))
 
 #------------------------------------------------#
 #   TOOLS                                        #
@@ -73,23 +68,21 @@ MAKE        := make --silent --jobs --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	for f in $(LIBS); do $(MAKE) -C $$f; done
-	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME)
-	echo "CREATED $(NAME)"
+	for f in $(LIBS_PATH); do $(MAKE) -C $$f; done
+	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c
 	-[ ! -d $(@D) ] && mkdir -p  $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-	echo "CREATED $@"
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 .PHONY: clean
 clean:
-	for f in $(LIBS); do $(MAKE) -C $$f clean; done
+	for f in $(LIBS_PATH); do $(MAKE) -C $$f clean; done
 	$(RM) --recursive $(BUILD_DIR)
 
 .PHONY: fclean
 fclean: clean
-	for f in $(LIBS); do $(MAKE) -C $$f fclean; done
+	for f in $(LIBS_PATH); do $(MAKE) -C $$f fclean; done
 	$(RM) $(NAME)
 
 .PHONY: re
@@ -103,5 +96,3 @@ re:
 # .SILENT       silences all the rules
 
 .SILENT:
-
-####################################### END_5 ####

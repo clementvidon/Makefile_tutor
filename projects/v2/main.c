@@ -2,6 +2,6 @@
 
 int	main(void)
 {
-	write (1, "icecream\n", 9);
+	write (1, "Lick me\n", 8);
 	return (0);
 }

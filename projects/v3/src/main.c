@@ -2,7 +2,7 @@
 
 int	main(void)
 {
-	write (1, "icecream\n", 9);
+	write (1, "Hello\n", 6);
 	milk();
 	water();
 	coco();
