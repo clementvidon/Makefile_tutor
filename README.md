@@ -840,15 +840,15 @@ re:
 
 ##  Version 5
 
-###     v1 Structure
+###     v5 Structure
 
 ***SOON***
 
-###     v1 Brief
+###     v5 Brief
 
 ***SOON***
 
-###     v1 Template
+###     v5 Template
 
 ```make
 ####################################### BEG_5 ####
@@ -988,6 +988,7 @@ info:
 - [**auto-deps gen / scottmcpeak**](https://scottmcpeak.com/autodepend/autodepend.html)
 - [**auto-deps gen / microhowto**](http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
 - [**include statement / gnu**](https://www.gnu.org/software/make/manual/html_node/Include.html)
+- [**redis makefiel / github**](https://github.com/redis/redis/blob/unstable/src/Makefile)
 
 # Contact
 
