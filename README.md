@@ -1,21 +1,21 @@
 <h1 align="center">
-	MAKEFILE TUTOR (GNU UNIX)
+    MAKEFILE TUTOR (GNU UNIX)
 </h1>
 
 <h3 align="center">
-	<a href="#summary">Summary</a>
-	<span> · </span>
-	<a href="#usage">Usage</a>
-	<span> · </span>
-	<a href="#glossary">Glossary</a>
-	<span> · </span>
-	<a href="#syntax">Syntax</a>
-	<span> · </span>
-	<a href="#index">Index</a>
-	<span> · </span>
-	<a href="#sources">Sources</a>
-	<span> · </span>
-	<a href="#contact">Contact</a>
+    <a href="#summary">Summary</a>
+    <span> · </span>
+    <a href="#usage">Usage</a>
+    <span> · </span>
+    <a href="#glossary">Glossary</a>
+    <span> · </span>
+    <a href="#syntax">Syntax</a>
+    <span> · </span>
+    <a href="#index">Index</a>
+    <span> · </span>
+    <a href="#sources">Sources</a>
+    <span> · </span>
+    <a href="#contact">Contact</a>
 </h3>
 
 # Summary
@@ -271,7 +271,7 @@ RM          := rm --force
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
+    $(CC) $^ -o $@
 
 .PHONY: clean
 clean:
@@ -283,8 +283,8 @@ fclean: clean
 
 .PHONY: re
 re:
-	make --no-print-directory fclean
-	make --no-print-directory all
+    make --no-print-directory fclean
+    make --no-print-directory all
 
 ####################################### END_1 ####
 ```
@@ -309,7 +309,7 @@ re:
 
 ```make
 %.o: %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 ```
 
 Where `%.o` evaluates to each object, `%.c` to each source, `$@` to the first
@@ -325,10 +325,10 @@ with a `make -p -f/dev/null | less` shell command.*
 all: $(NAME)                            3 ← 2
 
 $(NAME): $(OBJS)                        2 ← 1
-	$(CC) $^ -o $@
+    $(CC) $^ -o $@
 
 %.o: %.c                                1 ← 0
-	$(CC) $(CFLAGS) -c -o $@ $<
+    $(CC) $(CFLAGS) -c -o $@ $<
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
@@ -429,11 +429,11 @@ MAKE        := make --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
+    $(CC) $^ -o $@
     echo "CREATED $(NAME)"
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     echo "CREATED $@"
 
 .PHONY: clean
@@ -446,8 +446,8 @@ fclean: clean
 
 .PHONY: re
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+    $(MAKE) fclean
+    $(MAKE) all
 ```
 
 - The **output of a descriptive message** is operated by the `echo` statements
@@ -594,12 +594,12 @@ MAKE        := make --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
+    $(CC) $^ -o $@
     echo "CREATED $(NAME)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
     -[ ! -d $(@D) ] && mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     echo "CREATED $@"
 
 .PHONY: clean
@@ -613,8 +613,8 @@ fclean: clean
 
 .PHONY: re
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+    $(MAKE) fclean
+    $(MAKE) all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
@@ -717,7 +717,7 @@ NAME        := icecream.a
 #------------------------------------------------#
 # SRC_DIR   source directory
 # SRCS      source files
-# BUILD_DIR	object directory
+# BUILD_DIR object directory
 # OBJS      object files
 # DEPS      dependency files
 # CC        compiler
@@ -726,12 +726,12 @@ NAME        := icecream.a
 
 SRC_DIR     := src
 SRCS        :=  \
-	arom/coco.c \
-	base/milk.c \
-	base/water.c
+    arom/coco.c \
+    base/milk.c \
+    base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
-BUILD_DIR	:= .build
+BUILD_DIR   := .build
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 -include $(DEPS)
@@ -805,13 +805,13 @@ MAKE        := make --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $<
+    $(AR) $(ARFLAGS) $@ $<
     echo "CREATED $(NAME)"
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	-[ ! -d $(@D) ] && mkdir -p $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	echo "CREATED $@"
+    -[ ! -d $(@D) ] && mkdir -p $(@D)
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    echo "CREATED $@"
 
 .PHONY: clean
 clean:
@@ -823,8 +823,8 @@ fclean: clean
 
 .PHONY: re
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+    $(MAKE) fclean
+    $(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #
@@ -858,10 +858,10 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# LIBS_NAME	local lib name
-# LIBS_PATH	local lib path
+# LIBS_NAME local lib name
+# LIBS_PATH local lib path
 # INC_DIR   include directory
-# INCS		include directories
+# INCS      include directories
 # SRC_DIR   source directory
 # SRCS      source files
 # BUILD_DIR build directory
@@ -873,8 +873,8 @@ NAME        := icecream
 # LDFLAGS   linker flags
 # LDLIBS    library names
 
-LIBS_NAME	:= base arom m
-LIBS_PATH	:= $(addsuffix /,$(wildcard lib/*))
+LIBS_NAME   := base arom m
+LIBS_PATH   := $(addsuffix /,$(wildcard lib/*))
 
 INC_DIR     := include/
 INCS        := $(INC_DIR) $(LIBS_PATH)
@@ -914,33 +914,33 @@ MAKE        := make --silent --jobs --no-print-directory
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
-# run		run the program
-# info		print the default goal recipe
+# run       run the program
+# info      print the default goal recipe
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	for f in $(LIBS_PATH); do $(MAKE) -C $$f; done
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+    for f in $(LIBS_PATH); do $(MAKE) -C $$f; done
+    $(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 
 $(BUILD_DIR)%.o: $(SRC_DIR)%.c
-	-[ ! -d $(@D) ] && mkdir -p  $(@D)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    -[ ! -d $(@D) ] && mkdir -p  $(@D)
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 .PHONY: clean
 clean:
-	for f in $(LIBS_PATH); do $(MAKE) -C $$f clean; done
-	$(RM) --recursive $(BUILD_DIR)
+    for f in $(LIBS_PATH); do $(MAKE) -C $$f clean; done
+    $(RM) --recursive $(BUILD_DIR)
 
 .PHONY: fclean
 fclean: clean
-	for f in $(LIBS_PATH); do $(MAKE) -C $$f fclean; done
-	$(RM) $(NAME)
+    for f in $(LIBS_PATH); do $(MAKE) -C $$f fclean; done
+    $(RM) $(NAME)
 
 .PHONY: re
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+    $(MAKE) fclean
+    $(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #
