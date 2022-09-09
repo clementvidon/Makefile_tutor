@@ -20,9 +20,6 @@
 
 # Summary
 
-*This project aims to create a crystal clear tutorial on a cryptic looking
-topic.*
-
 Addressed to beginners and not to newcomers, the idea behind this tutorial is to
 **focus on the essential**.  Anything that is not directly related to the
 template we are going to explore will not be covered here.  On the other hand
