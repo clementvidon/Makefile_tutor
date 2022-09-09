@@ -63,7 +63,7 @@ of making them more digestible and even tasty  🍔
 ***[ TODO ]***
 
 - v6 Make C and C++.
-- v7 Makefile generator.
+- Makefile generator.
 - BSD compatibility (and POSIX compliance).
 - DOS compatibility.
 
