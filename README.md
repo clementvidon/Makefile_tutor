@@ -137,8 +137,8 @@ used for **all the other lines**.
   the variable is used).
 
 ```make
-A  = Yes ${C}
-B := Yes ${C}
+A := Yes ${C}
+B = Yes ${C}
 
 C  = you got it
 
