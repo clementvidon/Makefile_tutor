@@ -36,7 +36,8 @@ CPPFLAGS    := -I include
 # MAKE      make command
 
 RM          := rm --force
-MAKE        := make --no-print-directory
+MAKE        := $(MAKE) --no-print-directory
+DIR_DUP		= mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -52,19 +53,18 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $^ -o $@
-	echo "CREATED $(NAME)"
+	$(info CREATED $(NAME))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	-[ ! -d $(@D) ] && mkdir -p $(@D)
+	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	echo "CREATED $@"
+	$(info CREATED $@)
 
 clean:
 	$(RM) --recursive $(OBJ_DIR)
 
 fclean: clean
 	$(RM) $(NAME)
-
 
 re:
 	$(MAKE) fclean

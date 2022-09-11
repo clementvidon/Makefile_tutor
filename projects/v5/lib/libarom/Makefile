@@ -40,6 +40,8 @@ ARFLAGS     := -r -c -s
 # RM        cleaning command
 
 RM          := rm --force
+MAKE        := $(MAKE) --no-print-directory
+DIR_DUP		= mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -55,12 +57,12 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
-	echo "CREATED $(NAME)"
+	$(info CREATED $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	-[ ! -d $(@D) ] && mkdir -p $(@D)
+	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-	echo "CREATED $@"
+	$(info CREATED $@)
 
 clean:
 	$(RM) --recursive $(BUILD_DIR)
@@ -69,8 +71,8 @@ fclean: clean
 	$(RM) $(NAME)
 
 re:
-	make --no-print-directory fclean
-	make --no-print-directory all
+	$(MAKE) fclean
+	$(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #

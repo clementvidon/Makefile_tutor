@@ -55,7 +55,7 @@ of making them more digestible and even tasty  🍔
 
 - v5 Make with library.
 - v5 Fully automated and auto scalability.
-- v5 Use string functions instead substitution.
+- v5 String functions.
 
 ***[ TODO ]***
 
@@ -88,7 +88,7 @@ cd <template_version>
 make <any_rule>
 ```
 
-PS **`C++` users** can replace `CC = clang` with `CXX = g++` and `CPPFLAGS` with
+PS **`C++` users** can replace `CC = clang` with `CXX = g++` and `CFLAGS` with
 `CXXFLAGS`.
 
 # Glossary
@@ -137,23 +137,23 @@ used for **all the other lines**.
   the variable is used).
 
 ```make
-A := Yes ${C}
-B = Yes ${C}
+A := Yes $(C)
+B = Yes $(C)
 
 C  = you got it
 
 all:
-    echo ${A} # echoes "Yes"
-    echo ${B} # echoes "Yes you got it"
+    $(info $(A)) # output "Yes"
+    $(info $(B)) # output "Yes you got it"
 ```
 
 **Automatic Variables** expansion:
 
 - `$<` **leftmost prerequisite**
-- `$@` **first target**
+- `$@` **current target**
 - `$^` **all prerequisites**
-- `@D` **directory part** of the file name of the target
-- `@F` **file part** of the file name of the target
+- `$(@D)` **directory part** of the file name of the target
+- `$(@F)` **file part** of the file name of the target
 
 # Template
 
@@ -164,6 +164,7 @@ all:
 [**Version 1 / base**](#version-1)
 
 > - 42 C coding style conventions
+> - `MAKE` predifined variable
 > - The C compilation implicit rule
 > - Illustration of a `make all`
 > - C build recap
@@ -182,8 +183,8 @@ all:
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
+> - generate the `OBJ_DIR` based on `SRC_DIR`
 > - compilation rule uses multiple source and object directories
-> - generates the `OBJ_DIR` based on `SRC_DIR`
 > - `clean` rule `--recursive`
 
 ***The second part presents various useful makefiles and more advanced features.***
@@ -199,7 +200,7 @@ all:
 
 [**Version 5 / with libraries**](#version-5)
 
-***SOON***
+  ***SOON***
 
 [**Bonus**](#bonus)
 
@@ -226,6 +227,7 @@ The simplest, build a program called `icecream` with the following structure:
 ###     v1 Brief
 
 - 42 C coding style conventions
+- `MAKE` predifined variable
 - The C compilation implicit rule
 - Illustration of a `make all`
 - C build recap
@@ -260,6 +262,7 @@ CFLAGS      := -Wall -Wextra -Werror
 # RM        cleaning command
 
 RM          := rm --force
+MAKE        := $(MAKE) --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -282,8 +285,8 @@ fclean: clean
     $(RM) $(NAME)
 
 re:
-    make --no-print-directory fclean
-    make --no-print-directory all
+    $(MAKE) fclean
+    $(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #
@@ -300,6 +303,11 @@ re:
   conventions**, do not hesitate to disagree and change it (like renaming
   `clean` and `fclean` to the more GNU conventional `mostlyclean` and `clean`
   respectively).
+
+- **`MAKE`** is a **predefined variable** whose value corresponds to the make
+  executable being run, for this reason we pass our options to it by
+  incrementation.  When a makefile is executed from another makefile, the
+  called's `MAKE` variable inherit from the caller's `MAKE` value.
 
 - **The C compilation implicit rule** looks like this:
 
@@ -420,7 +428,7 @@ CPPFLAGS    := -I .
 # MAKE      make command
 
 RM          := rm --force
-MAKE        := make --no-print-directory
+MAKE        := $(MAKE) --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -436,11 +444,11 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
     $(CC) $^ -o $@
-    echo "CREATED $(NAME)"
+    $(info CREATED $(NAME))
 
 %.o: %.c
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-    echo "CREATED $@"
+    $(info CREATED $@)
 
 clean:
     $(RM) $(OBJS)
@@ -453,11 +461,11 @@ re:
     $(MAKE) all
 ```
 
-- The **output of a descriptive message** is operated by the `echo` statements
-  in the basic rules.
+- The use of the `info` function to **output of a descriptive message** in the
+  basic rules.
 
 - The **C compilation implicit rule is overwritten** with an explicit version in
-  which we can add an `echo` statement.
+  which we can add an `info` statement.
 
 - The order in which the rules are written does not matter as long as our
   **default goal `all` appears first** (the rule that will be triggered by a
@@ -520,8 +528,8 @@ directories** and their **corresponding object directories**:
 
 - split the line with a `backslash`
 - substitution reference so `main.c` becomes `src/main.c`
+- generate the `OBJ_DIR` based on `SRC_DIR`
 - compilation rule uses multiple source and object directories
-- generates the `OBJ_DIR` based on `SRC_DIR`
 - `clean` rule `--recursive`
 
 ###     v3 Template
@@ -576,8 +584,17 @@ CPPFLAGS    := -I include
 # MAKE      make command
 
 RM          := rm --force
-MAKE        := make --no-print-directory
+MAKE        := $(MAKE) --no-print-directory
+DIR_DUP     = mkdir -p $(@D)
+```
 
+- `DIR_DUP` will **generate the `OBJ_DIR` based on `SRC_DIR`** structure with
+  `mkdir -p` that create the directory and the parents directories if missing,
+  and `$(@D)` automatic variable that we have already seen.
+
+*This will work with every possible kind of src directory structure.*
+
+```make
 #------------------------------------------------#
 #   RECIPES                                      #
 #------------------------------------------------#
@@ -591,49 +608,27 @@ MAKE        := make --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $^ -o $@
-    echo "CREATED $(NAME)"
+	$(CC) $^ -o $@
+	$(info CREATED $(NAME))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-    -[ ! -d $(@D) ] && mkdir -p $(@D)
-    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-    echo "CREATED $@"
+	$(DIR_DUP)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+	$(info CREATED $@)
 
 clean:
-    $(RM) --recursive $(OBJ_DIR)
+	$(RM) --recursive $(OBJ_DIR)
 
 fclean: clean
-    $(RM) $(NAME)
-
+	$(RM) $(NAME)
 
 re:
-    $(MAKE) fclean
-    $(MAKE) all
+	$(MAKE) fclean
+	$(MAKE) all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
    since our structure **uses multiple source and object directories**.
-
-- The following line **generates the `OBJ_DIR` based on `SRC_DIR`** structure.
-
-```
--[ ! -d $(@D) ] && mkdir -p $(@D)
-
-└│─│──│────│────│──│──────│────│─  suppress make non-zero status errors
- └─│──│────│────│──│──────│────│─  if
-   └──│────│────│──│──────│────│─  doesn't exist
-      └────│────│──│──────│────│─  as a directory
-           └────│──│──────│────│─  the dir part of the target filename
-                └──│──────│────│─  then
-                   └──────│────│─  create the directory
-                          └────│─  and the parents directories if missing
-                               └-  of the dir part of the target filename
-```
-
-The basic automation provided by the substitution reference and the `@D`
-automatic variable enable the scaling up to a larger project.
-
-*This will work the same with every possible kind of src directory structure.*
 
 - In the **`clean` rule** we add **`--recursive`** to `RM` to remove `OBJ_DIR` and its content recursively.
 
@@ -777,7 +772,8 @@ main.o: main.c              main.o: main.c icecream.h
 # MAKE      make command
 
 RM          := rm --force
-MAKE        := make --no-print-directory
+MAKE        := $(MAKE) --no-print-directory
+DIR_DUP		= mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -792,23 +788,23 @@ MAKE        := make --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(AR) $(ARFLAGS) $@ $<
-    echo "CREATED $(NAME)"
+	$(AR) $(ARFLAGS) $@ $<
+	$(info CREATED $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-    -[ ! -d $(@D) ] && mkdir -p $(@D)
-    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-    echo "CREATED $@"
+	$(DIR_DUP)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+	$(info CREATED $@)
 
 clean:
-    $(RM) --recursive $(BUILD_DIR)
+	$(RM) --recursive $(BUILD_DIR)
 
 fclean: clean
-    $(RM) $(NAME)
+	$(RM) $(NAME)
 
 re:
-    $(MAKE) fclean
-    $(MAKE) all
+	$(MAKE) fclean
+	$(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #
@@ -872,112 +868,11 @@ Builds a an `icecream` **program that uses** a `libbase` and `libarom`
 
 ###     v5 Brief
 
-***SOON***
+  ***SOON***
 
 ###     v5 Template
 
-```make
-####################################### BEG_5 ####
-
-NAME        := icecream
-
-#------------------------------------------------#
-#   INGREDIENTS                                  #
-#------------------------------------------------#
-# LIBS_NAME local lib name
-# LIBS_PATH local lib path
-#
-# INC_DIR   include directory
-# INCS      include directories
-#
-# SRC_DIR   source directory
-# SRCS      source files
-#
-# BUILD_DIR build directory
-# OBJS      object files
-# DEPS      dependency files
-#
-# CC        compiler
-# CFLAGS    compiler flags
-# CPPFLAGS  preprocessor flags
-# LDFLAGS   linker flags
-# LDLIBS    library names
-
-LIBS_NAME   := base arom m
-LIBS_PATH   := $(addsuffix /,$(wildcard lib/*))
-
-INC_DIR     := include/
-INCS        := $(INC_DIR) $(LIBS_PATH)
-INCS        := $(INCS) $(addsuffix $(INC_DIR),$(LIBS_PATH))
-
-SRC_DIR     := src/
-SRCS        := main.c
-SRCS        := $(addprefix $(SRC_DIR),$(SRCS))
-
-BUILD_DIR   := .build/
-OBJS        := $(subst .c,.o,$(SRCS))
-OBJS        := $(subst $(SRC_DIR),$(BUILD_DIR),$(OBJS))
-
-DEPS        := $(subst .o,.d,$(OBJS))
--include $(DEPS)
-
-CC          := clang
-CFLAGS      := -Wall -Wextra -Werror
-CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
-LDFLAGS     := $(addprefix -L,$(LIBS_PATH))
-LDLIBS      := $(addprefix -l,$(LIBS_NAME))
-
-#------------------------------------------------#
-#   UTENSILS                                     #
-#------------------------------------------------#
-# RM        cleaning command
-
-RM          := rm --force
-MAKE        := make --silent --jobs --no-print-directory
-
-#------------------------------------------------#
-#   RECIPES                                      #
-#------------------------------------------------#
-# all       default goal
-# %.o       compilation .c -> .o
-# $(NAME)   link .o -> archive
-# clean     remove .o
-# fclean    remove .o + binary
-# re        remake default goal
-# run       run the program
-# info      print the default goal recipe
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-    for f in $(LIBS_PATH); do $(MAKE) -C $$f; done
-    $(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-
-$(BUILD_DIR)%.o: $(SRC_DIR)%.c
-    -[ ! -d $(@D) ] && mkdir -p  $(@D)
-    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-
-clean:
-    for f in $(LIBS_PATH); do $(MAKE) -C $$f clean; done
-    $(RM) --recursive $(BUILD_DIR)
-
-fclean: clean
-    for f in $(LIBS_PATH); do $(MAKE) -C $$f fclean; done
-    $(RM) $(NAME)
-
-re:
-    $(MAKE) fclean
-    $(MAKE) all
-
-#------------------------------------------------#
-#   SPEC                                         #
-#------------------------------------------------#
-
-.PHONY: clean fclean re
-.SILENT:
-
-####################################### END_5 ####
-```
+  ***SOON***
 
 [**Return to Index ↑**](#index)
 
@@ -986,9 +881,9 @@ re:
 ###     Extra rules
 
 ```make
+.PHONY: run
 run: re
     -./$(NAME)
-.PHONY: run
 ```
 
 - `run` is a simple rule that **`make` and `run` the default goal**.  We start
@@ -996,21 +891,19 @@ run: re
   its execution if our program execution returns a non-zero value.
 
 ```make
-info:
-    make --dry-run --always-make --no-print-directory | grep -v "echo"
 .PHONY: info
+info:
+    $(MAKE) --dry-run --always-make | grep -v "info"
 ```
 
 - The **`info` rule** will execute a simple `make` command with `--dry-run` to
   **print the `$(NAME)` recipe without executing it**, `--always-make` to `make`
-  even if the targets already exist and `--no-print-directory` flag and `grep`
-  command to clean the output from unwanted lines.
-
+  even if the targets already exist and filter the output with `grep`.
 
 ```make
-  print-%: FORCE
-    echo '$*'='$($*)'
 .PHONY: FORCE
+print-%: FORCE
+	$(info '$*'='$($*)')
 ```
 
 - The **`print-<variable>` rule prints the value of the given variable**, for

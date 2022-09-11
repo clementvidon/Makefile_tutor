@@ -27,7 +27,7 @@ CPPFLAGS    := -I .
 # MAKE      make command
 
 RM          := rm --force
-MAKE        := make --no-print-directory
+MAKE        := $(MAKE) --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -43,11 +43,11 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $^ -o $@
-	echo "CREATED $(NAME)"
+	$(info CREATED $(NAME))
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	echo "CREATED $@"
+	$(info CREATED $@)
 
 clean:
 	$(RM) $(OBJS)

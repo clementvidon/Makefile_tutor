@@ -42,7 +42,8 @@ ARFLAGS     := -r -c -s
 # MAKE      make command
 
 RM          := rm --force
-MAKE        := make --no-print-directory
+MAKE        := $(MAKE) --no-print-directory
+DIR_DUP		= mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -58,12 +59,12 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $<
-	echo "CREATED $(NAME)"
+	$(info CREATED $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	-[ ! -d $(@D) ] && mkdir -p $(@D)
+	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	echo "CREATED $@"
+	$(info CREATED $@)
 
 clean:
 	$(RM) --recursive $(BUILD_DIR)

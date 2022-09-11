@@ -24,6 +24,7 @@ CFLAGS      := -Wall -Wextra -Werror
 # RM        cleaning command
 
 RM          := rm --force
+MAKE		:= $(MAKE) --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -46,8 +47,8 @@ fclean: clean
 	$(RM) $(NAME)
 
 re:
-	make --no-print-directory fclean
-	make --no-print-directory all
+	$(MAKE) fclean
+	$(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #
