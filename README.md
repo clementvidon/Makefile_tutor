@@ -307,7 +307,9 @@ re:
 - **`MAKE`** is a **predefined variable** whose value corresponds to the make
   executable being run, for this reason we pass our options to it by
   incrementation.  When a makefile is executed from another makefile, the
-  called's `MAKE` variable inherit from the caller's `MAKE` value.
+  called's `MAKE` variable inherit from the caller's `MAKE` value.  We pass it
+  the `--no-print-directory` flag for a cleaner output, remove it to see the
+  difference.
 
 - **The C compilation implicit rule** looks like this:
 
@@ -318,6 +320,7 @@ re:
 
 Where `%.o` evaluates to each object, `%.c` to each source, `$@` to the first
 target (which is `%.o`) and `$<` to the leftmost prerequisite (which is `%.c`).
+Note that `$@` can be replaced by `$(OBJS)` and `$<` by `$(SRCS)`.
 
 *As their name implies implicit rules are implicit and do not need to be
 written.  All the implicit rules can be found in the data-base, accessible
@@ -418,7 +421,9 @@ CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := -I .
 ```
 
-- `CPPFLAGS` is dedicated to **preprocessor's flags** like `-I <include_dir>`.
+- `CPPFLAGS` is dedicated to **preprocessor's flags** like `-I <include_dir>`,
+  it allows you to no longer have to write the full path of a header but only
+  its file name in the source files: `#include "icecream.h"`.
 
 ```make
 #------------------------------------------------#
@@ -650,7 +655,7 @@ re:
 ###     v4 Structure
 
 Builds a **library** so we remove `main.c`.  We generate **dependencies** that
-are stored with the object files thu we rename `obj` directory into `.build`.
+are stored with the object files thus we rename `obj` directory into `.build`.
 
 ```
     before build:          after build:
