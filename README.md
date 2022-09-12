@@ -763,7 +763,7 @@ main.o: main.c              main.o: main.c icecream.h
   files list.
 
 - A library is not a binary but a collection of object files so we use `ar`
-  **creates a static library** during the linking step of the build. `-r` to
+  to **creates a static library** during the linking step of the build. `-r` to
   replace the older object files with the new ones; `-c` to create the library
   if it does not exist and `-s` to write an index into the archive or update an
   existing one.
