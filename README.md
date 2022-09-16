@@ -75,7 +75,7 @@ Then it can be quickly navigated thanks to the:
 - [**Return to Index ↑**](#index) buttons at the end of each version.
 
 Each version of the templates has an assigned directory in the
-[**projects**](projects) directory of the repository, to play with a makefile
+[**projects**](https://github.com/clemedon/Makefile_tutor/tree/main/projects) directory of the repository, to play with a makefile
 open a terminal and run:
 
 ```bash
