@@ -26,7 +26,7 @@ CPPFLAGS    := -I .
 # RM        cleaning command
 # MAKE      make command
 
-RM          := rm --force
+RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
 
 #------------------------------------------------#

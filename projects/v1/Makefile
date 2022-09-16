@@ -23,7 +23,7 @@ CFLAGS      := -Wall -Wextra -Werror
 #------------------------------------------------#
 # RM        cleaning command
 
-RM          := rm --force
+RM          := rm -f
 MAKE		:= $(MAKE) --no-print-directory
 
 #------------------------------------------------#

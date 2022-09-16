@@ -39,7 +39,7 @@ ARFLAGS     := -r -c -s
 #------------------------------------------------#
 # RM        cleaning command
 
-RM          := rm --force
+RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
 DIR_DUP		= mkdir -p $(@D)
 
@@ -65,7 +65,7 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(info CREATED $@)
 
 clean:
-	$(RM) --recursive $(BUILD_DIR)
+	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
 	$(RM) $(NAME)

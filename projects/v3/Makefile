@@ -35,7 +35,7 @@ CPPFLAGS    := -I include
 # RM        cleaning command
 # MAKE      make command
 
-RM          := rm --force
+RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
 DIR_DUP		= mkdir -p $(@D)
 
@@ -61,7 +61,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(info CREATED $@)
 
 clean:
-	$(RM) --recursive $(OBJ_DIR)
+	$(RM) $(OBJS)
 
 fclean: clean
 	$(RM) $(NAME)

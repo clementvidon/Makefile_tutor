@@ -6,9 +6,8 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# LIBS_PATH local lib path
-# LOC_LIBS  project libraries
-# SYS_LIBS  system libraries
+# LIBS_PATH libraries to be built
+# LIBS_NAME libraries to be used
 #
 # INC_DIR   include directory
 # INCS      include directories
@@ -24,23 +23,22 @@ NAME        := icecream
 # CFLAGS    compiler flags
 # CPPFLAGS  preprocessor flags
 # LDFLAGS   linker flags
-# LDLIBS    library names
+# LDLIBS    libraries name
 
 LIBS_PATH   := \
 	lib/libarom/libarom.a \
 	lib/libbase/libbase.a
-LOC_LIBS := arom base
-SYS_LIBS := m
+LIBS_NAME   := arom base m
 
-INC_DIR     := include/
+INC_DIR     := include
 INCS        := $(INC_DIR) $(dir $(LIBS_PATH))
-INCS        := $(INCS) $(addsuffix $(INC_DIR),$(dir $(LIBS_PATH)))
+INCS        := $(INCS) $(addsuffix $(INC_DIR)/,$(dir $(LIBS_PATH)))
 
-SRC_DIR     := src/
+SRC_DIR     := src
 SRCS        := main.c
-SRCS        := $(addprefix $(SRC_DIR),$(SRCS))
+SRCS        := $(addprefix $(SRC_DIR)/,$(SRCS))
 
-BUILD_DIR   := .build/
+BUILD_DIR   := .build
 OBJS        := $(subst .c,.o,$(SRCS))
 OBJS        := $(subst $(SRC_DIR),$(BUILD_DIR),$(OBJS))
 
@@ -51,16 +49,16 @@ CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
 LDFLAGS     := $(addprefix -L,$(dir $(LIBS_PATH)))
-LDLIBS      := $(addprefix -l,$(LOC_LIBS)) $(addprefix -l,$(SYS_LIBS))
+LDLIBS      := $(addprefix -l,$(LIBS_NAME))
 
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        cleaning command
 
-RM          := rm --force
+RM          := rm -f
 MAKE        := $(MAKE) --silent --jobs --no-print-directory
-DIR_DUP		= mkdir -p $(@D)
+DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -71,8 +69,8 @@ DIR_DUP		= mkdir -p $(@D)
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
-# run		run the program
-# info		print the default goal recipe
+# run       run the program
+# info      print the default goal recipe
 
 all: $(NAME)
 
@@ -83,14 +81,14 @@ $(NAME): $(OBJS) $(LIBS_PATH)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	$(info CREATED $(NAME))
 
-$(BUILD_DIR)%.o: $(SRC_DIR)%.c
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	$(info CREATED $@)
 
 clean:
 	for f in $(dir $(LIBS_PATH)); do $(MAKE) -C $$f clean; done
-	$(RM) --recursive $(BUILD_DIR)
+	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
 	for f in $(dir $(LIBS_PATH)); do $(MAKE) -C $$f fclean; done
