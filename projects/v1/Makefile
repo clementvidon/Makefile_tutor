@@ -21,7 +21,8 @@ CFLAGS      := -Wall -Wextra -Werror
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
+# RM        force remove
+# MAKE      quietly make
 
 RM          := rm -f
 MAKE		:= $(MAKE) --no-print-directory

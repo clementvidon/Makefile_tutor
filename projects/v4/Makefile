@@ -9,7 +9,7 @@ NAME        := icecream.a
 # SRC_DIR   source directory
 # SRCS      source files
 #
-# BUILD_DIR	object directory
+# BUILD_DIR object directory
 # OBJS      object files
 # DEPS      dependency files
 #
@@ -24,7 +24,7 @@ SRCS        :=  \
 	base/water.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
-BUILD_DIR	:= .build
+BUILD_DIR   := .build
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
 -include $(DEPS)
@@ -38,12 +38,13 @@ ARFLAGS     := -r -c -s
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
-# MAKE      make command
+# RM        force remove
+# MAKE      quietly make
+# DIR_DUP   duplicate directory tree
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
-DIR_DUP		= mkdir -p $(@D)
+DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #

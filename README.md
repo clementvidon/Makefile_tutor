@@ -259,7 +259,7 @@ CFLAGS      := -Wall -Wextra -Werror
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
+# RM        force remove
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
@@ -429,8 +429,8 @@ CPPFLAGS    := -I .
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
-# MAKE      make command
+# RM        force remove
+# MAKE      quietly make
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
@@ -585,8 +585,9 @@ CPPFLAGS    := -I include
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
-# MAKE      make command
+# RM        force remove
+# MAKE      quietly make
+# DIR_DUP   duplicate directory tree
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
@@ -613,23 +614,23 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
-	$(info CREATED $(NAME))
+    $(CC) $^ -o $@
+    $(info CREATED $(NAME))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	$(DIR_DUP)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	$(info CREATED $@)
+    $(DIR_DUP)
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    $(info CREATED $@)
 
 clean:
-	$(RM) $(OBJS)
+    $(RM) $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME)
+    $(RM) $(NAME)
 
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+    $(MAKE) fclean
+    $(MAKE) all
 ```
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
@@ -773,12 +774,13 @@ main.o: main.c              main.o: main.c icecream.h
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
-# MAKE      make command
+# RM        force remove
+# MAKE      quietly make
+# DIR_DUP   duplicate directory tree
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
-DIR_DUP		= mkdir -p $(@D)
+DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -793,23 +795,23 @@ DIR_DUP		= mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $<
-	$(info CREATED $(NAME))
+    $(AR) $(ARFLAGS) $@ $<
+    $(info CREATED $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	$(DIR_DUP)
-	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
-	$(info CREATED $@)
+    $(DIR_DUP)
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    $(info CREATED $@)
 
 clean:
-	$(RM) $(OBJS) $(DEPS)
+    $(RM) $(OBJS) $(DEPS)
 
 fclean: clean
-	$(RM) $(NAME)
+    $(RM) $(NAME)
 
 re:
-	$(MAKE) fclean
-	$(MAKE) all
+    $(MAKE) fclean
+    $(MAKE) all
 
 #------------------------------------------------#
 #   SPEC                                         #
@@ -908,7 +910,7 @@ info:
 ```make
 .PHONY: FORCE
 print-%: FORCE
-	$(info '$*'='$($*)')
+    $(info '$*'='$($*)')
 ```
 
 - The **`print-<variable>` rule prints the value of the given variable**, for

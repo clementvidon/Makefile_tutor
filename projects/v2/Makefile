@@ -23,8 +23,8 @@ CPPFLAGS    := -I .
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
-# MAKE      make command
+# RM        force remove
+# MAKE      quietly make
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory

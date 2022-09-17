@@ -6,58 +6,57 @@ NAME        := icecream
 #------------------------------------------------#
 #   INGREDIENTS                                  #
 #------------------------------------------------#
-# LIBS_PATH libraries to be built
-# LIBS_NAME libraries to be used
+# LIBS        libraries to be used
+# LIBS_TARGET libraries to be built
 #
-# INC_DIR   include directory
-# INCS      include directories
+# INCS        header file locations
 #
-# SRC_DIR   source directory
-# SRCS      source files
+# SRC_DIR     source directory
+# SRCS        source files
 #
-# BUILD_DIR build directory
-# OBJS      object files
-# DEPS      dependency files
+# BUILD_DIR   build directory
+# OBJS        object files
+# DEPS        dependency files
 #
-# CC        compiler
-# CFLAGS    compiler flags
-# CPPFLAGS  preprocessor flags
-# LDFLAGS   linker flags
-# LDLIBS    libraries name
+# CC          compiler
+# CFLAGS      compiler flags
+# CPPFLAGS    preprocessor flags
+# LDFLAGS     linker flags
+# LDLIBS      libraries name
 
-LIBS_PATH   := \
+LIBS        := arom base m
+LIBS_TARGET :=            \
 	lib/libarom/libarom.a \
 	lib/libbase/libbase.a
-LIBS_NAME   := arom base m
 
-INC_DIR     := include
-INCS        := $(INC_DIR) $(dir $(LIBS_PATH))
-INCS        := $(INCS) $(addsuffix $(INC_DIR)/,$(dir $(LIBS_PATH)))
+INCS        := include    \
+	lib/libarom/include   \
+	lib/libbase/include
 
 SRC_DIR     := src
 SRCS        := main.c
-SRCS        := $(addprefix $(SRC_DIR)/,$(SRCS))
+SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
 BUILD_DIR   := .build
-OBJS        := $(subst .c,.o,$(SRCS))
-OBJS        := $(subst $(SRC_DIR),$(BUILD_DIR),$(OBJS))
-
-DEPS        := $(subst .o,.d,$(OBJS))
+OBJS        := $(SRCS:$(SRC_DIR)%.c=$(BUILD_DIR)%.o)
+DEPS        := $(OBJS:.o=.d)
 -include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
-LDFLAGS     := $(addprefix -L,$(dir $(LIBS_PATH)))
-LDLIBS      := $(addprefix -l,$(LIBS_NAME))
+LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
+LDLIBS      := $(addprefix -l,$(LIBS))
 
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
+# RM        force remove
+# MAKE      quietly make
+# DIR_DUP   duplicate directory tree
 
 RM          := rm -f
-MAKE        := $(MAKE) --silent --jobs --no-print-directory
+MAKE        := $(MAKE) --silent --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
@@ -74,10 +73,10 @@ DIR_DUP     = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(LIBS_PATH):
+$(LIBS_TARGET):
 	$(MAKE) -C $(@D)
 
-$(NAME): $(OBJS) $(LIBS_PATH)
+$(NAME): $(OBJS) $(LIBS_TARGET)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	$(info CREATED $(NAME))
 
@@ -87,11 +86,11 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(info CREATED $@)
 
 clean:
-	for f in $(dir $(LIBS_PATH)); do $(MAKE) -C $$f clean; done
+	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f clean; done
 	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
-	for f in $(dir $(LIBS_PATH)); do $(MAKE) -C $$f fclean; done
+	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
 	$(RM) $(NAME)
 
 re:

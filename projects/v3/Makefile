@@ -32,8 +32,9 @@ CPPFLAGS    := -I include
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
-# MAKE      make command
+# RM        force remove
+# MAKE      quietly make
+# DIR_DUP   duplicate directory tree
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory

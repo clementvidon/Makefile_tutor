@@ -7,7 +7,7 @@ NAME        := libbase.a
 #   INGREDIENTS                                  #
 #------------------------------------------------#
 # SRC_DIR   source directory
-# BUILD_DIR	object directory
+# BUILD_DIR object directory
 # SRCS      source files
 #
 # OBJS      object files
@@ -18,7 +18,7 @@ NAME        := libbase.a
 # CPPFLAGS  preprocessor flags
 
 SRC_DIR     := src
-BUILD_DIR	:= .build
+BUILD_DIR   := .build
 SRCS        := \
 	milk.c \
 	water.c
@@ -37,11 +37,13 @@ ARFLAGS     := -r -c -s
 #------------------------------------------------#
 #   UTENSILS                                     #
 #------------------------------------------------#
-# RM        cleaning command
+# RM        force remove
+# MAKE      quietly make
+# DIR_DUP   duplicate directory tree
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
-DIR_DUP		= mkdir -p $(@D)
+DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
