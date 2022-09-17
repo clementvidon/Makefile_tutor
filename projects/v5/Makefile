@@ -38,9 +38,8 @@ SRCS        := main.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
 BUILD_DIR   := .build
-OBJS        := $(SRCS:$(SRC_DIR)%.c=$(BUILD_DIR)%.o)
+OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
--include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
@@ -84,6 +83,8 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	$(info CREATED $@)
+
+-include $(DEPS)
 
 clean:
 	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f clean; done

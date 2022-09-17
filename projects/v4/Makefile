@@ -27,7 +27,6 @@ SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 BUILD_DIR   := .build
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
--include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
@@ -66,6 +65,8 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 	$(info CREATED $@)
+
+-include $(DEPS)
 
 clean:
 	$(RM) $(OBJS) $(DEPS)

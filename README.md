@@ -722,7 +722,6 @@ SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 BUILD_DIR   := .build
 OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
--include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
@@ -748,27 +747,19 @@ main.o: main.c              main.o: main.c icecream.h
   compilation.  The `-MP` option prevents errors that are triggered if a header
   file has been deleted or renamed.
 
+  Dependency files must be included into our makefile right after the objects
+  creation so to obtain their names we copy `OBJS` into `DEPS` and use
+  *substitution reference* to turn `.o` part into `.d`.
+
 - We change our old `OBJ_DIR = obj` for a `BUILD_DIR = .build`, a hidden **build
   directory** that will contain our object files as well as our dependency
   files.
-
-- **Dependency files** are written in the make language and **must be included**
-  into our makefile to be read.  The `include` directive work the same as C
-  include, it tells make to suspend the current makefile reading and read the
-  included files before continuing.  We obtain the name of the dependencies by
-  duplicating `.o` into `.d` using substitution reference on the `OBJS` content.
-
-- The purpose of the `-include $(DEPS)` initial **hyphen symbol** is **to
-  prevent make from complaining** when a non-zero status code is encountered,
-  which can be caused here by a missing files from our generated dependency
-  files list.
 
 - A library is not a binary but a collection of object files so we use `ar`
   to **creates a static library** during the linking step of the build. `-r` to
   replace the older object files with the new ones; `-c` to create the library
   if it does not exist and `-s` to write an index into the archive or update an
   existing one.
-
 
 ```make
 #------------------------------------------------#
@@ -803,6 +794,8 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     $(info CREATED $@)
 
+-include $(DEPS)
+
 clean:
     $(RM) $(OBJS) $(DEPS)
 
@@ -812,7 +805,20 @@ fclean: clean
 re:
     $(MAKE) fclean
     $(MAKE) all
+```
 
+- **Dependency files** are written in the make language and **must be included**
+  into our makefile to be read.  The `include` directive work the same as C
+  include, it tells make to suspend the current makefile reading and read the
+  included files before continuing. Make sure to include the dependencies after
+  they are created = after the compilation rule.
+
+- The purpose of the `-include $(DEPS)` initial **hyphen symbol** is **to
+  prevent make from complaining** when a non-zero status code is encountered,
+  which can be caused here by a missing files from our generated dependency
+  files list.
+
+```make
 #------------------------------------------------#
 #   SPEC                                         #
 #------------------------------------------------#
@@ -920,9 +926,8 @@ SRCS        := main.c
 SRCS        := $(SRCS:%=$(SRC_DIR)/%)
 
 BUILD_DIR   := .build
-OBJS        := $(SRCS:$(SRC_DIR)%.c=$(BUILD_DIR)%.o)
+OBJS        := $(SRCS:$(SRC_DIR)/%.c=$(BUILD_DIR)/%.o)
 DEPS        := $(OBJS:.o=.d)
--include $(DEPS)
 
 CC          := clang
 CFLAGS      := -Wall -Wextra -Werror
@@ -970,6 +975,8 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
     $(DIR_DUP)
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
     $(info CREATED $@)
+
+-include $(DEPS)
 
 clean:
     for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f clean; done
