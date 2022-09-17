@@ -205,9 +205,9 @@ all:
 [**Bonus**](#bonus)
 
 > - `make` and `run` the *default goal*
-> - `info` rule print the `$(NAME)` recipe without executing it
-> - `print-<variable>` rule prints the value of the given variable
-> - `update` rule update the repository
+> - print `$(NAME)` recipe without executing it
+> - prints the value of an arbitrary variable
+> - update the git repository
 
 ##  Version 1
 
@@ -879,7 +879,123 @@ Builds a an `icecream` **program that uses** a `libbase` and `libarom`
 
 ###     v5 Template
 
+```make
+# @author   clemedon (Clément Vidon)
+####################################### BEG_5 ####
+
+NAME        := icecream
+
+#------------------------------------------------#
+#   INGREDIENTS                                  #
+#------------------------------------------------#
+# LIBS        libraries to be used
+# LIBS_TARGET libraries to be built
+#
+# INCS        header file locations
+#
+# SRC_DIR     source directory
+# SRCS        source files
+#
+# BUILD_DIR   build directory
+# OBJS        object files
+# DEPS        dependency files
+#
+# CC          compiler
+# CFLAGS      compiler flags
+# CPPFLAGS    preprocessor flags
+# LDFLAGS     linker flags
+# LDLIBS      libraries name
+
+LIBS        := arom base m
+LIBS_TARGET :=            \
+    lib/libarom/libarom.a \
+    lib/libbase/libbase.a
+
+INCS        := include    \
+    lib/libarom/include   \
+    lib/libbase/include
+
+SRC_DIR     := src
+SRCS        := main.c
+SRCS        := $(SRCS:%=$(SRC_DIR)/%)
+
+BUILD_DIR   := .build
+OBJS        := $(SRCS:$(SRC_DIR)%.c=$(BUILD_DIR)%.o)
+DEPS        := $(OBJS:.o=.d)
+-include $(DEPS)
+
+CC          := clang
+CFLAGS      := -Wall -Wextra -Werror
+CPPFLAGS    := $(addprefix -I,$(INCS)) -MMD -MP
+LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
+LDLIBS      := $(addprefix -l,$(LIBS))
+```
+
   ***SOON***
+
+```make
+#------------------------------------------------#
+#   UTENSILS                                     #
+#------------------------------------------------#
+# RM        force remove
+# MAKE      quietly make
+# DIR_DUP   duplicate directory tree
+
+RM          := rm -f
+MAKE        := $(MAKE) --silent --no-print-directory
+DIR_DUP     = mkdir -p $(@D)
+
+#------------------------------------------------#
+#   RECIPES                                      #
+#------------------------------------------------#
+# all       default goal
+# %.o       compilation .c -> .o
+# $(NAME)   link .o -> archive
+# clean     remove .o
+# fclean    remove .o + binary
+# re        remake default goal
+# run       run the program
+# info      print the default goal recipe
+
+all: $(NAME)
+
+$(LIBS_TARGET):
+    $(MAKE) -C $(@D)
+
+$(NAME): $(OBJS) $(LIBS_TARGET)
+    $(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
+    $(info CREATED $(NAME))
+
+$(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
+    $(DIR_DUP)
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+    $(info CREATED $@)
+
+clean:
+    for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f clean; done
+    $(RM) $(OBJS) $(DEPS)
+
+fclean: clean
+    for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
+    $(RM) $(NAME)
+
+re:
+    $(MAKE) fclean
+    $(MAKE) all
+```
+
+  ***SOON***
+
+```make
+#------------------------------------------------#
+#   SPEC                                         #
+#------------------------------------------------#
+
+.PHONY: clean fclean re
+.SILENT:
+
+####################################### end_5 ####
+```
 
 [**Return to Index ↑**](#index)
 
@@ -903,8 +1019,8 @@ info:
     $(MAKE) --dry-run --always-make | grep -v "info"
 ```
 
-- The **`info` rule** will execute a simple `make` command with `--dry-run` to
-  **print the `$(NAME)` recipe without executing it**, `--always-make` to `make`
+- The `info` rule will execute a simple `make` command with `--dry-run` to
+  **print** the **`$(NAME)` recipe without executing it**, `--always-make` to `make`
   even if the targets already exist and filter the output with `grep`.
 
 ```make
@@ -913,8 +1029,8 @@ print-%: FORCE
     $(info '$*'='$($*)')
 ```
 
-- The **`print-<variable>` rule prints the value of the given variable**, for
-  example `print-CC` will output `CC=clang`.
+- The `print-<variable>` rule **prints the value of an arbitrary variable**, for
+  example a `make print-CC` will output `CC=clang`.
 
 ```make
 update:
@@ -925,9 +1041,9 @@ update:
 .PHONY: update
 ```
 
-- The **`update` rule** will **update the repository** to its last version, as well
-  as its submodules. `stash` commands saves eventual uncommitted changes and put
-  them back in place once the update is done.
+- The `update` rule will **update the git repository** to its last version, as
+  well as its *git submodules*. `stash` commands saves eventual uncommitted
+  changes and put them back in place once the update is done.
 
 # Sources
 
