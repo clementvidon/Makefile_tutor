@@ -25,7 +25,7 @@ CFLAGS      := -Wall -Wextra -Werror
 # MAKE      quietly make
 
 RM          := rm -f
-MAKE		:= $(MAKE) --no-print-directory
+MAKE        := $(MAKE) --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #

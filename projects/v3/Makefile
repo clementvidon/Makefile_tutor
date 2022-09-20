@@ -38,7 +38,7 @@ CPPFLAGS    := -I include
 
 RM          := rm -f
 MAKE        := $(MAKE) --no-print-directory
-DIR_DUP		= mkdir -p $(@D)
+DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
 #   RECIPES                                      #
