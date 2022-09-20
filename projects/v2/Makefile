@@ -43,7 +43,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $^ -o $@
-	$(info CREATED $(NAME))
+	$(info CREATED $@)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<

@@ -174,7 +174,7 @@ all:
 [**Version 2 / simple**](#version-2)
 
 > - preprocessor's flags
-> - output of a descriptive message
+> - print a custom message
 > - C compilation implicit rule is overwritten
 > - rules are written in their order of execution
 > - `.SILENT:` silences the rules
@@ -318,9 +318,20 @@ re:
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 ```
 
-Where `%.o` evaluates to each object, `%.c` to each source, `$@` to the first
+Where `%.o` expands to each object, `%.c` to each source, `$@` to the first
 target (which is `%.o`) and `$<` to the leftmost prerequisite (which is `%.c`).
-Note that `$@` can be replaced by `$(OBJS)` and `$<` by `$(SRCS)`.
+
+Note that `$@` can NOT be replaced with `$(OBJS)` because `$@` expands to `%.o`
+that expands to each `.o` one after another (alternately) whereas `$(OBJS)`
+expands to all the `.o` at once.  This is also valid for `$<`, `%.c` and
+`$(SRCS)`.
+
+Also note that `$<` (leftmost prerequisite) can be replaced by `$^` (all
+prerequisites) because in both case it will expand to the current `.c` that
+`%.c` is expanding to (as it expands to only one `.c` after another).  On the
+other hand if our prerequisite was `$(SRCS)` instead `%.c` then `$<` and `$^`
+would not have the same effect, one would expand to the first `$(SRCS)` element
+while the other would expand to all of them (exactly like `$(SRCS)` itself).
 
 *As their name implies implicit rules are implicit and do not need to be
 written.  All the implicit rules can be found in the data-base, accessible
@@ -391,7 +402,7 @@ As above but for a project that **includes header files**:
 ###     v2 Brief
 
 - preprocessor's flags
-- output of a descriptive message
+- print a custom message
 - C compilation implicit rule is overwritten
 - *default goal* `all` appears first
 - `.SILENT:` silences the rules
@@ -439,8 +450,8 @@ MAKE        := $(MAKE) --no-print-directory
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
-# %.o       compilation .c -> .o
 # $(NAME)   linking .o -> binary
+# %.o       compilation .c -> .o
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
@@ -449,7 +460,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
     $(CC) $^ -o $@
-    $(info CREATED $(NAME))
+    $(info CREATED $@)
 
 %.o: %.c
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
@@ -466,11 +477,11 @@ re:
     $(MAKE) all
 ```
 
-- The use of the `info` function to **output of a descriptive message** in the
-  basic rules.
+- The `info` function is used here to **print a custom message** about what has
+  just been built.
 
-- The **C compilation implicit rule is overwritten** with an explicit version in
-  which we can add an `info` statement.
+- The **C compilation implicit rule is overwritten** with an explicit version so
+  we can add our `info` statement to it.
 
 - The order in which the rules are written does not matter as long as our
   **default goal `all` appears first** (the rule that will be triggered by a
@@ -605,8 +616,8 @@ DIR_DUP     = mkdir -p $(@D)
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
-# %.o       compilation .c -> .o
 # $(NAME)   linking .o -> binary
+# %.o       compilation .c -> .o
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
@@ -615,7 +626,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
     $(CC) $^ -o $@
-    $(info CREATED $(NAME))
+    $(info CREATED $@)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
     $(DIR_DUP)
@@ -679,7 +690,7 @@ are stored with the object files thus we rename `obj` directory into `.build`.
                            │       ├── coco.o
                            │       └── coco.d
                            ├── Makefile
-                           └── icecream.a
+                           └── libicecream.a
 ```
 
 ###     v4 Brief
@@ -696,7 +707,7 @@ are stored with the object files thus we rename `obj` directory into `.build`.
 ```make
 ####################################### BEG_4 ####
 
-NAME        := icecream.a
+NAME        := libicecream.a
 
 #------------------------------------------------#
 #   INGREDIENTS                                  #
@@ -777,8 +788,8 @@ DIR_DUP     = mkdir -p $(@D)
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
-# %.o       compilation .c -> .o
 # $(NAME)   link .o -> library
+# %.o       compilation .c -> .o
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
@@ -786,8 +797,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(AR) $(ARFLAGS) $@ $<
-    $(info CREATED $(NAME))
+    $(AR) $(ARFLAGS) $@ $^
+    $(info CREATED $@)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
     $(DIR_DUP)
@@ -954,8 +965,9 @@ DIR_DUP     = mkdir -p $(@D)
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
-# %.o       compilation .c -> .o
 # $(NAME)   link .o -> archive
+# $(LIBS)   build libraries
+# %.o       compilation .c -> .o
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
@@ -964,12 +976,12 @@ DIR_DUP     = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(LIBS_TARGET):
-    $(MAKE) -C $(@D)
-
 $(NAME): $(OBJS) $(LIBS_TARGET)
     $(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-    $(info CREATED $(NAME))
+    $(info CREATED $@)
+
+$(LIBS_TARGET):
+    $(MAKE) -C $(@D)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
     $(DIR_DUP)
@@ -1040,12 +1052,12 @@ print-%: FORCE
   example a `make print-CC` will output `CC=clang`.
 
 ```make
+.PHONY: update
 update:
     git stash
     git pull
     git submodule update --init
     git stash pop
-.PHONY: update
 ```
 
 - The `update` rule will **update the git repository** to its last version, as

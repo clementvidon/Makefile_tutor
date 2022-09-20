@@ -54,7 +54,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $^ -o $@
-	$(info CREATED $(NAME))
+	$(info CREATED $@)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)

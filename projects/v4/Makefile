@@ -1,7 +1,7 @@
 # @author   clemedon (Clément Vidon)
 ####################################### BEG_4 ####
 
-NAME        := icecream.a
+NAME        := libicecream.a
 
 #------------------------------------------------#
 #   INGREDIENTS                                  #
@@ -58,8 +58,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $<
-	$(info CREATED $(NAME))
+	$(AR) $(ARFLAGS) $@ $^
+	$(info CREATED $@)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)

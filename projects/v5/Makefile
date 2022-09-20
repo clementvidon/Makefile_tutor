@@ -75,7 +75,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBS_TARGET)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-	$(info CREATED $(NAME))
+	$(info CREATED $@)
 
 $(LIBS_TARGET):
 	$(MAKE) -C $(@D)
