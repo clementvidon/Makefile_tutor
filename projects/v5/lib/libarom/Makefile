@@ -48,8 +48,8 @@ DIR_DUP     = mkdir -p $(@D)
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
-# %.o       compilation .c -> .o
 # $(NAME)   link .o -> library
+# %.o       compilation .c -> .o
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal

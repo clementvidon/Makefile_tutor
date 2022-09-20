@@ -33,8 +33,8 @@ MAKE        := $(MAKE) --no-print-directory
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
-# %.o       compilation .c -> .o
 # $(NAME)   linking .o -> binary
+# %.o       compilation .c -> .o
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal

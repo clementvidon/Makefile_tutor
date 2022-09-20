@@ -62,8 +62,9 @@ DIR_DUP     = mkdir -p $(@D)
 #   RECIPES                                      #
 #------------------------------------------------#
 # all       default goal
-# %.o       compilation .c -> .o
 # $(NAME)   link .o -> archive
+# $(LIBS)   build libraries
+# %.o       compilation .c -> .o
 # clean     remove .o
 # fclean    remove .o + binary
 # re        remake default goal
@@ -72,12 +73,12 @@ DIR_DUP     = mkdir -p $(@D)
 
 all: $(NAME)
 
-$(LIBS_TARGET):
-	$(MAKE) -C $(@D)
-
 $(NAME): $(OBJS) $(LIBS_TARGET)
 	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
 	$(info CREATED $(NAME))
+
+$(LIBS_TARGET):
+	$(MAKE) -C $(@D)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)
