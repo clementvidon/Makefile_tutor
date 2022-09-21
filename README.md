@@ -49,13 +49,12 @@ of making them more digestible and even tasty  🍔
 - v4 Make a library.
 - v4 Auto-dependency generation.
 - v4 Dependency management (build only the necessary).
-- v4 Build directory for objects and deps.
+- v4 Build directory for objects and dependencies.
 
 ***[ SOON ]***
 
 - v5 Make with library.
-- v5 Fully automated and auto scalability.
-- v5 String functions.
+- v5 More automations and auto scalability.
 
 ***[ TODO ]***
 
