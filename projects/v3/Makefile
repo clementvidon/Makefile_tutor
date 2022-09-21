@@ -53,8 +53,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
-	$(info CREATED $@)
+	$(CC) $(OBJS) -o $(NAME)
+	$(info CREATED $(NAME))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)

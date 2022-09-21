@@ -39,7 +39,7 @@ MAKE        := $(MAKE) --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
+	$(CC) $(OBJS) -o $(NAME)
 
 clean:
 	$(RM) $(OBJS)

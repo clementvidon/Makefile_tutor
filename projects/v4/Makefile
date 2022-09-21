@@ -58,8 +58,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(AR) $(ARFLAGS) $@ $^
-	$(info CREATED $@)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	$(info CREATED $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 	$(DIR_DUP)

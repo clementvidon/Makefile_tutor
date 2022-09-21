@@ -74,8 +74,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBS_TARGET)
-	$(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-	$(info CREATED $@)
+	$(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME)
+	$(info CREATED $(NAME))
 
 $(LIBS_TARGET):
 	$(MAKE) -C $(@D)

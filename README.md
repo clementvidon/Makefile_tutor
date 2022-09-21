@@ -118,7 +118,7 @@ What we call a **`rule`** is made of:
 target: prerequisite
     recipe line 1
     recipe line 2
-    ...
+    …
 ```
 
 # Syntax
@@ -165,9 +165,11 @@ all:
 > - 42 C coding style conventions
 > - `MAKE` predifined variable
 > - The C compilation implicit rule
+> - pattern rule contains `%` character
+> - Automatic variables in practice
 > - Illustration of a `make all`
 > - C build recap
-> - multi-threaded `make` with `--jobs`
+> - parallelization enabled by `make --jobs`
 > - the `.PHONY:` special target
 
 [**Version 2 / simple**](#version-2)
@@ -228,9 +230,11 @@ The simplest, build a program called `icecream` with the following structure:
 - 42 C coding style conventions
 - `MAKE` predifined variable
 - The C compilation implicit rule
+- pattern rule contains `%` character
+- Automatic variables in practice
 - Illustration of a `make all`
 - C build recap
-- multi-threaded `make` with `--jobs`
+- parallelization enabled by `make --jobs`
 - the `.PHONY:` special target
 
 ###     v1 Template
@@ -275,7 +279,7 @@ MAKE        := $(MAKE) --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $^ -o $@
+    $(CC) $(OBJS) -o $(NAME)
 
 clean:
     $(RM) $(OBJS)
@@ -320,21 +324,43 @@ re:
 Where `%.o` expands to each object, `%.c` to each source, `$@` to the first
 target (which is `%.o`) and `$<` to the leftmost prerequisite (which is `%.c`).
 
-Note that `$@` can NOT be replaced with `$(OBJS)` because `$@` expands to `%.o`
-that expands to each `.o` one after another (alternately) whereas `$(OBJS)`
-expands to all the `.o` at once.  This is also valid for `$<`, `%.c` and
-`$(SRCS)`.
-
-Also note that `$<` (leftmost prerequisite) can be replaced by `$^` (all
-prerequisites) because in both case it will expand to the current `.c` that
-`%.c` is expanding to (as it expands to only one `.c` after another).  On the
-other hand if our prerequisite was `$(SRCS)` instead `%.c` then `$<` and `$^`
-would not have the same effect, one would expand to the first `$(SRCS)` element
-while the other would expand to all of them (exactly like `$(SRCS)` itself).
-
 *As their name implies implicit rules are implicit and do not need to be
 written.  All the implicit rules can be found in the data-base, accessible
 with a `make -p -f/dev/null | less` shell command.*
+
+- A **pattern rule** is a rule whose target **contains** a **`%` character**
+  (here `%.o: .c`).  This character means "exactly one of them".  It is used
+  here to say that each `.o` requires a `.c` with the same name and the `$(CC)…`
+  recipe line will execute will execute as many times as there are `.o: .c`
+  pairs, thus creating for each source its corresponding object, one at a time.
+
+- **Automatic variables in practice**
+
+```make
+# Link
+
+$(NAME): $(OBJS)
+    $(CC) $^ -o $@
+```
+
+`$@` expands to the *current target*, here we could use `$(NAME)` instead.
+
+`$^` expands to *all prerequisites*, here we could use `$(OBJS)` instead but not
+`$<` that expands to the *leftmost prerequisite* so only the first item found in
+`$(OBJS)`.
+
+```make
+# Compile
+
+%.o: %.c
+    $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+```
+
+`$<` expands to the *leftmost prerequisite*, here it could not be replaced with
+`$(SRCS)` because `$(SRCS)` expands to all `.c` at once which is not the case of
+the pattern rule `%.c`.  On the other hand here `$<` is equivalent to `$^`, both
+will always expand to one `.c`: the current one expanded by `%.c`.  For the same
+reasons `$@` expands to `%.o` not to `$(OBJS)`.
 
 - **Illustration of a `make all`**:
 
@@ -349,7 +375,7 @@ $(NAME): $(OBJS)                        2 ← 1
 ```
 
 The `all` rule requires `icecream` that requires `objects` that require
-`sources` that require...  a programmer.  In other words `all` creates `icecream`
+`sources` that require…  a programmer.  In other words `all` creates `icecream`
 with the `.o` created with the `.c` that you are supposed to create.
 
 Make will first trace its path to the lower level where it finds a raw material
@@ -357,28 +383,28 @@ Make will first trace its path to the lower level where it finds a raw material
 building each resource that is required by the direct upper level `0 → 1 → 2 →
 3` (`target`).
 
-- **C build recap** `%.o` target compile the `.c` into `.o`, the `-c`
-  tells to compile the `.c` without linking the `.o` and the `-o` indicate how
-  to name the `.o` resulting from the `.c`.  Afterward the `$(NAME)` is in
-  charge of linking the `.o` into a binary `$(NAME)` file whose name is
-  specified with the `-o` flag.
+- **C build recap** `%.o` target compile the `.c` into `.o`, the `-c` tells to
+  compile the `.c` without linking the `.o` and the `-o` indicate how to name
+  the `.o` resulting from the `.c`.  Afterward the `$(NAME)` is in charge of
+  linking the `.o` into a binary `$(NAME)` file whose name is specified with the
+  `-o` flag.
 
 - For the `re` command we have no choice but make an external call to our
   makefile because we should not rely on the order in which prerequisites are
-  specified.  For example `re: fclean all` wouldn't work with a **multi-threaded
-  `make` with `--jobs`** option.
+  specified.  For example `re: fclean all` wouldn't always work if
+  **parallelization** is **enabled by `make --jobs`**.
 
 - The prerequisites given to **the `.PHONY:` special target** become targets
   that make will run regardless of whether a file with that name exists.  In
   short these prerequisites are our targets that don't bear the name of a file.
 
-  Try to remove the `.PHONY: re`, create a file named `re` in your project
-  directory and run `make re`.  It won't work.
+Try to remove the `.PHONY: re`, create a file named `re` in your project
+directory and run `make re`.  It won't work.
 
-  Now if you do the same with `all` it won't cause any problem, as we know
-  prerequisites are completed before their target and `all` has the sole action
-  of invoking `$(NAME)`, as long as a rule doesn't have a recipe, `.PHONY` is
-  not necessary.
+Now if you do the same with `all` it won't cause any problem, as we know
+prerequisites are completed before their target and `all` has the sole action of
+invoking `$(NAME)`, as long as a rule doesn't have a recipe, `.PHONY` is not
+necessary.
 
 [**Return to Index ↑**](#index)
 
@@ -458,8 +484,8 @@ MAKE        := $(MAKE) --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $^ -o $@
-    $(info CREATED $@)
+    $(CC) $(OBJS) -o $(NAME)
+    $(info CREATED $(NAME))
 
 %.o: %.c
     $(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
@@ -624,8 +650,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(CC) $^ -o $@
-    $(info CREATED $@)
+    $(CC) $(OBJS) -o $(NAME)
+    $(info CREATED $(NAME))
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
     $(DIR_DUP)
@@ -796,8 +822,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-    $(AR) $(ARFLAGS) $@ $^
-    $(info CREATED $@)
+    $(AR) $(ARFLAGS) $(NAME) $(OBJS)
+    $(info CREATED $(NAME))
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
     $(DIR_DUP)
@@ -976,8 +1002,8 @@ DIR_DUP     = mkdir -p $(@D)
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBS_TARGET)
-    $(CC) $(LDFLAGS) $^ $(LDLIBS) -o $@
-    $(info CREATED $@)
+    $(CC) $(LDFLAGS) $(OBJS) $(LDLIBS) -o $(NAME)
+    $(info CREATED $(NAME))
 
 $(LIBS_TARGET):
     $(MAKE) -C $(@D)

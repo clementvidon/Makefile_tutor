@@ -42,8 +42,8 @@ MAKE        := $(MAKE) --no-print-directory
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $^ -o $@
-	$(info CREATED $@)
+	$(CC) $(OBJS) -o $(NAME)
+	$(info CREATED $(NAME))
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
