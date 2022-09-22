@@ -43,17 +43,17 @@ of making them more digestible and even tasty  🍔
 - The [bold text](#usage) which acts as a summary
 - [v1](#version-1) The simplest C project
 - [v2](#version-2) Project that include headers
-- [v2](#version-2)  Clean make output
+- [v2](#version-2) + Clean make output
 - [v3](#version-3) Project with any directory structure
-- [v3](#version-3)  Separate object directory
+- [v3](#version-3) + Separate object directory
 - [v4](#version-4) Static library
-- [v4](#version-4)  Auto-dependency generation
-- [v4](#version-4)  Separate build directory
+- [v4](#version-4) + Auto-dependency generation
+- [v4](#version-4) + Separate build directory
 
 ***[ SOON ]***
 
 - [v5](#version-5) Project that uses libraries
-- [v5](#version-5)  Automated and auto scalable
+- [v5](#version-5) + Automated and auto scalable
 
 ***[ TODO ]***
 
