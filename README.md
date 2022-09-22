@@ -38,30 +38,29 @@ of making them more digestible and even tasty  🍔
 
 ***[ DONE ]***
 
-- [GitHub Page](https://clemedon.github.io/Makefile_tutor/).
-- projects directory to [try](#usage) each template version.
-- Bold text that compile the whole tutorial into a quick summary.
-- v1 Minimal makefile.
-- v2 Include directory.
-- v3 Multiple source directories.
-- v3 Corresponding target directories for objects.
-- v3 Creation of target directories when they don't exist.
-- v4 Make a library.
-- v4 Auto-dependency generation.
-- v4 Dependency management (build only the necessary).
-- v4 Build directory for objects and dependencies.
+- [GitHub Page](https://clemedon.github.io/Makefile_tutor/)
+- A ['ready to make'](#usage) project of each template version
+- The [bold text](#usage) which acts as a summary
+- [v1](#version-1) The simplest C project
+- [v2](#version-2) Project that include headers
+- [v2](#version-2) +Clean make output
+- [v3](#version-3) Project with any directory structure
+- [v3](#version-3) +Separate object directory
+- [v4](#version-4) Static library
+- [v4](#version-4) +Auto-dependency generation
+- [v4](#version-4) +Separate build directory
 
 ***[ SOON ]***
 
-- v5 Make with library.
-- v5 More automations and auto scalability.
+- [v5](#version-5) Project that uses libraries
+- [v5](#version-5) +Automated and auto scalable
 
 ***[ TODO ]***
 
-- v6 Make C and C++.
-- Makefile generator.
-- BSD compatibility (and POSIX compliance).
-- DOS compatibility.
+- v6 Make C and C++
+- Makefile generator
+- BSD portability (POSIX)
+- DOS portability
 
 # Usage
 
@@ -160,10 +159,10 @@ all:
 
 ***The first part focuses on building a functional makefile in 3 steps.***
 
-[**Version 1 / base**](#version-1)
+[**Version 1 / Simplest C project**](#version-1)
 
 > - 42 C coding style conventions
-> - `MAKE` predifined variable
+> - `MAKE` predefined variable
 > - The C compilation implicit rule
 > - pattern rule contains `%` character
 > - Automatic variables in practice
@@ -172,25 +171,24 @@ all:
 > - parallelization enabled by `make --jobs`
 > - the `.PHONY:` special target
 
-[**Version 2 / simple**](#version-2)
+[**Version 2 / Project that include headers**](#version-2)
 
 > - preprocessor's flags
 > - print a custom message
 > - C compilation implicit rule is overwritten
-> - rules are written in their order of execution
-> - `.SILENT:` silences the rules
+> - *default goal* `all` appears first
+> - `.SILENT:` silences the rules output
 
-[**Version 3 / structured**](#version-3)
+[**Version 3 / Project with any directory structure**](#version-3)
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
 > - generate the `OBJ_DIR` based on `SRC_DIR`
 > - compilation rule uses multiple source and object directories
-> - `clean` rule `--recursive`
 
 ***The second part presents various useful makefiles and more advanced features.***
 
-[**Version 4 / for library**](#version-4)
+[**Version 4 / Static library**](#version-4)
 
 > - when a header file is modified the executable will rebuild
 > - automatically generate a list of dependencies
@@ -199,7 +197,7 @@ all:
 > - hyphen symbol to prevent make from complaining
 > - creates a static library
 
-[**Version 5 / with libraries**](#version-5)
+[**Version 5 / Project that uses libraries**](#version-5)
 
   ***SOON***
 
@@ -228,7 +226,7 @@ The simplest, build a program called `icecream` with the following structure:
 ###     v1 Brief
 
 - 42 C coding style conventions
-- `MAKE` predifined variable
+- `MAKE` predefined variable
 - The C compilation implicit rule
 - pattern rule contains `%` character
 - Automatic variables in practice
@@ -430,7 +428,7 @@ As above but for a project that **includes header files**:
 - print a custom message
 - C compilation implicit rule is overwritten
 - *default goal* `all` appears first
-- `.SILENT:` silences the rules
+- `.SILENT:` silences the rules output
 
 ###     v2 Template
 
@@ -522,7 +520,7 @@ re:
 ```
 
 - Normally make prints each line of a rule's recipe before it is executed.  The
-  special target **`.SILENT:` silences the rules** specified as prerequisites,
+  special target **`.SILENT:` silences the rules output** specified as prerequisites,
   when it is used without prerequisites it silents all the rules (implicit ones
   like C compilation included).
 
@@ -571,7 +569,6 @@ directories** and their **corresponding object directories**:
 - substitution reference so `main.c` becomes `src/main.c`
 - generate the `OBJ_DIR` based on `SRC_DIR`
 - compilation rule uses multiple source and object directories
-- `clean` rule `--recursive`
 
 ###     v3 Template
 
@@ -671,8 +668,6 @@ re:
 
 -  The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
    since our structure **uses multiple source and object directories**.
-
-- In the **`clean` rule** we add **`--recursive`** to `RM` to remove `OBJ_DIR` and its content recursively.
 
 ```make
 #------------------------------------------------#
