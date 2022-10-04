@@ -300,6 +300,8 @@ re:
 ####################################### END_1 ####
 ```
 
+<br>
+
 - The choice of the `CC` and `CFLAGS` values, `$(NAME)`, `clean`, `fclean`,
   `all` and `re` as the basic rules as well as not using a wildcard to auto
   generate the sources list is guided by the **42 C coding style conventions**,
@@ -472,10 +474,14 @@ CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := -I .
 ```
 
+<br>
+
 - `CPPFLAGS` is dedicated to **preprocessor's flags** like `-I <include_dir>`,
   it allows you to no longer have to write the full path of a header but only
   its file name in the sources: `#include "icecream.h"` instead of `#include
   "../../path/to/include/icecream.h"`.
+
+<br>
 
 ```make
 #------------------------------------------------#
@@ -518,6 +524,8 @@ re:
     $(MAKE) all
 ```
 
+<br>
+
 - The `info` function is used here to **print a custom message** about what has
   just been built.
 
@@ -536,6 +544,8 @@ makefile which makes it powerful for debugging.*
   **default goal `all` appears first** (the rule that will be triggered by a
   simple `make` command).
 
+<br>
+
 ```make
 #------------------------------------------------#
 #   SPEC                                         #
@@ -545,6 +555,8 @@ makefile which makes it powerful for debugging.*
 .SILENT:
 ```
 
+<br>
+
 - Normally make prints each line of a rule's recipe before it is executed.  The
   special target **`.SILENT:` silences the rules output** specified as
   prerequisites, when it is used without prerequisites it silents all the rules
@@ -552,6 +564,8 @@ makefile which makes it powerful for debugging.*
 
 *To silence at the recipe-line level we can prefix the wanted recipe lines with an `@`
 symbol.*
+
+<br>
 
 ```make
 ####################################### END_2 ####
@@ -630,6 +644,8 @@ CFLAGS      := -Wall -Wextra -Werror
 CPPFLAGS    := -I include
 ```
 
+<br>
+
 - We can **split the line** by ending it **with a `backslash`** to increase the
   readability of `SRCS` content and facilitate its modification.
 
@@ -641,6 +657,8 @@ CPPFLAGS    := -I include
   `$(SRC_DIR)/` alteration, so `main.c` becomes `src/main.c`. `OBJS` will then
   use the same process to convert `src/main.c` into `src/main.o`, dedicated to
   the `OBJ_DIR`.
+
+<br>
 
 ```make
 #------------------------------------------------#
@@ -655,11 +673,15 @@ MAKE        := $(MAKE) --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 ```
 
+<br>
+
 - `DIR_DUP` will **generate the `OBJ_DIR` based on `SRC_DIR`** structure with
   `mkdir -p` which creates the directory and the parents directories if missing,
   and `$(@D)` that we have seen in [syntax](#syntax) section.
 
 *This will work with every possible kind of src directory structure.*
+
+<br>
 
 ```make
 #------------------------------------------------#
@@ -694,8 +716,12 @@ re:
     $(MAKE) all
 ```
 
+<br>
+
 - The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
   since our structure **uses dedicated source and object directories**.
+
+<br>
 
 ```make
 #------------------------------------------------#
@@ -790,6 +816,8 @@ AR          := ar
 ARFLAGS     := -r -c -s
 ```
 
+<br>
+
 - Unlike with sources, **when a header file is modified** make has no way of
   knowing this and will not consider **the executable** to be out of date, and
   therefor **will** not **rebuild** it.  In order to change this behavior we
@@ -825,6 +853,8 @@ main.o: main.c              main.o: main.c icecream.h
   replace the older objects with the new ones with `-c` to create the library if
   it does not exist and `-s` to write an index into the archive or update an
   existing one.
+
+<br>
 
 ```make
 #------------------------------------------------#
@@ -872,6 +902,8 @@ re:
     $(MAKE) all
 ```
 
+<br>
+
 - **Dependency files** are written in the make language and **must be included**
   into our makefile to be read.  The `include` directive work the same as C
   `#include`, it tells make to suspend its current makefile reading and read the
@@ -885,6 +917,8 @@ re:
   prevent make from complaining** when a non-zero status code is encountered,
   which can be caused here by a missing files from our generated dependency
   files list.
+
+<br>
 
 ```make
 #------------------------------------------------#
@@ -1010,6 +1044,8 @@ LDFLAGS     := $(addprefix -L,$(dir $(LIBS_TARGET)))
 LDLIBS      := $(addprefix -l,$(LIBS))
 ```
 
+<br>
+
 - We can notice that the `m` library from `LIBS` is not mentionned in
   `LIBS_TARGET` for the reason that `m` is a **system library** (`libm` for
   mathematical functions found in `math.h`).  Unlike the `libc` which is linked
@@ -1044,6 +1080,8 @@ Compiling with a library requires, in addition to a C project and a library, a
 library (conventionally: lib<name>).
 
 For example: `-I lib/libarom/include -L lib/libarom -l arom`
+
+<br>
 
 ```make
 
@@ -1100,6 +1138,8 @@ re:
     $(MAKE) all
 ```
 
+<br>
+
 - `$(LIBS_TARGET)` rule **builds each of the required libraries** found in the
   `INGREDIENTS` part.  It is a `$(NAME)` prerequisite for the same reason as
   `$(OBJS)` because our *final goal* needs the libraries as well as the objects
@@ -1111,6 +1151,8 @@ re:
   `$(LIBS_TARGET)` we can **call** these **rules** for each of them
   **recursively** using a shell `for` loop.  Here again we use the `dir`
   function to only keep the directory part of the library.
+
+<br>
 
 ```make
 #------------------------------------------------#
