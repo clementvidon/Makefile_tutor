@@ -801,8 +801,6 @@ main.o: main.c              main.o: main.c icecream.h
     clang -c $< -o $@           clang -c $< -o $@
 ```
 
-<sub><sub><hr></sub></sub>
-
 - Doing this manually for multiple sources and headers is both tedious and error
   prone.  By adding `-MMD` to `CPPFLAGS` our compiler will **automatically
   generate a list of dependencies** for each object file encountered during the
