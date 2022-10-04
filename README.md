@@ -45,7 +45,7 @@ the aim of making them more digestible and even tasty  🍔
 - [v2](#version-2) Projects that include headers
 - [v3](#version-3) Projects with any kind of directory structure
 - [v4](#version-4) Static libraries
-- [v5](#version-5) Projects that use libraries
+- [v5](#version-5) Projects that uses libraries
 
 ***[ TODO ]***
 
