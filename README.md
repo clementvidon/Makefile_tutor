@@ -307,6 +307,7 @@ re:
   to the more GNU conventional `mostlyclean` and `clean` respectively).
 
 <br>
+
 - **`MAKE`** is a **predefined variable** whose value corresponds to the make
   executable being run, for this reason we choose to increment its options.
   When a makefile is executed from another makefile, the called's `MAKE`
@@ -315,6 +316,7 @@ re:
   `make` to see the difference.
 
 <br>
+
 - **The C compilation implicit rule** looks like this:
 
 ```make
@@ -330,6 +332,7 @@ written.  All the implicit rules can be found in the data-base, accessible
 with a `make -p -f/dev/null | less` shell command.*
 
 <br>
+
 - A **pattern rule** is a rule whose target **contains** a **`%` character**
   (here `%.o: %.c`).  This character means "exactly one of them".  It is used
   here to say that each `.o` requires a `.c` with the same name and the `$(CC)…`
@@ -337,6 +340,7 @@ with a `make -p -f/dev/null | less` shell command.*
   creating for each source its corresponding object, one at a time.
 
 <br>
+
 - **Automatic variables in practice**:
 
 ```make
@@ -366,6 +370,7 @@ equivalent to `$^`, both will always expand to one source: the current one
 expanded by `%.c`.  For the same reasons `$@` expands to `%.o` not to `$(OBJS)`.
 
 <br>
+
 - **Illustration of a `make all`**:
 
 ```make
@@ -388,6 +393,7 @@ resource that is required by the direct upper level encountered `0 → 1 → 2 �
 (the `icecream`, our *final goal*).
 
 <br>
+
 - **C build recap** `%.o` target requires the sources to be compiled into
   objects, the `-c` option tells the compiler to only compile without linking.
   The `-o` option is used to specify the objects name.  Afterward the `$(NAME)`
@@ -395,12 +401,14 @@ resource that is required by the direct upper level encountered `0 → 1 → 2 �
   specified with the `-o` flag.
 
 <br>
+
 - For the `re` rule we have no choice but make an external call to our makefile
   because we should not rely on the order in which prerequisites are specified.
   For example `re: fclean all` wouldn't not be reliable if **parallelization**
   was **enabled by `make --jobs`**.
 
 <br>
+
 - The prerequisites given to **the `.PHONY:` special target** become targets
   that make will run regardless of whether a file with that name exists.  In
   short these prerequisites are our targets that don't bear the name of a file.
@@ -518,10 +526,12 @@ re:
 makefile which makes it powerful for debugging.*
 
 <br>
+
 - The **C compilation implicit rule is overwritten** with an explicit equivalent
   which let us add an `info` statement to it.
 
 <br>
+
 - The order in which the rules are written does not matter as long as our
   **default goal `all` appears first** (the rule that will be triggered by a
   simple `make` command).
@@ -624,6 +634,7 @@ CPPFLAGS    := -I include
   readability of `SRCS` content and facilitate its modification.
 
 <br>
+
 - A string **substitution reference** substitutes the value of each item of a
   variable with the specified alterations.  `$(SRCS:%=$(SRC_DIR)/%)` means that
   each item of `SRCS` represented by `%` becomes itself (`%`) plus the
@@ -791,6 +802,7 @@ main.o: main.c              main.o: main.c icecream.h
 ```
 
 <br>
+
 - Doing this manually for multiple sources and headers is both tedious and error
   prone.  By adding `-MMD` to `CPPFLAGS` our compiler will **automatically
   generate a list of dependencies** for each object file encountered during the
@@ -802,10 +814,12 @@ main.o: main.c              main.o: main.c icecream.h
   *substitution reference* to turn `.o` part of their name into `.d`.
 
 <br>
+
 - We change our old `OBJ_DIR = obj` for a `BUILD_DIR = .build`, a hidden **build
   directory** that will contain our dependency files in addition to our objects.
 
 <br>
+
 - A static library is not a binary but a collection of objects so we use `ar` to
   **creates a static library** during the linking step of the build.  `-r` to
   replace the older objects with the new ones with `-c` to create the library if
@@ -866,6 +880,7 @@ re:
   `$(CPPFLAGS)`.
 
 <br>
+
 - The purpose of the `-include $(DEPS)` initial **hyphen symbol** is **to
   prevent make from complaining** when a non-zero status code is encountered,
   which can be caused here by a missing files from our generated dependency
@@ -1002,21 +1017,25 @@ LDLIBS      := $(addprefix -l,$(LIBS))
   not **linked by default**.
 
 <br>
+
 - In `CPPFLAGS` we use **`addprefix`** that, as its name suggests is a **make
   function** that allows you to add a prefix, here a `-I` to each of the item
   found in `$(INCS)` (that contains the paths to our project and libraries
   headers).
 
 <br>
+
 - `LDFLAGS` and `LDLIBS` contains the **flags and libraries** that will be
   **used by the linker** `ld` to link the library to our project sources.
 
 <br>
+
 - The **`dir` function** means that we want to keep only directory part of the
   given item, there exists a `notdir` function that does the opposite to keep
   only the file name of the given item.
 
 <br>
+
 - **Compiling with a library recap**:
 
 Compiling with a library requires, in addition to a C project and a library, a
@@ -1087,6 +1106,7 @@ re:
   to be built.
 
 <br>
+
 - As both rules `clean` and `fclean` appear in the makefile of all our
   `$(LIBS_TARGET)` we can **call** these **rules** for each of them
   **recursively** using a shell `for` loop.  Here again we use the `dir`
