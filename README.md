@@ -41,11 +41,11 @@ the aim of making them more digestible and even tasty  🍔
 - [GitHub Page](https://clemedon.github.io/Makefile_tutor/)
 - A [ready to make](#usage) project of each template version
 - [bold text](#usage) that acts as a summary
-- [v1](#version-1) Simplest C projects
-- [v2](#version-2) Projects that include headers
-- [v3](#version-3) Projects with any kind of directory structure
-- [v4](#version-4) Static libraries
-- [v5](#version-5) Projects that uses libraries
+- [v1](#version-1) Simplest C project
+- [v2](#version-2) Project that include headers
+- [v3](#version-3) Project with any kind of directory structure
+- [v4](#version-4) Static library
+- [v5](#version-5) Project that uses libraries
 
 ***[ TODO ]***
 
@@ -177,7 +177,7 @@ all:
 > - *default goal* `all` appears first
 > - `.SILENT:` silences the rules output
 
-[**Version 3 / Project with any directory structure**](#version-3)
+[**Version 3 / Project with any kind of directory structure**](#version-3)
 
 > - split the line with a `backslash`
 > - substitution reference so `main.c` becomes `src/main.c`
