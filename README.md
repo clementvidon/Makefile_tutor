@@ -1176,16 +1176,18 @@ update:
 
 # Sources
 
-- [**doc / w3cub**](https://docs.w3cub.com/gnu_make/)
-- [**manual / gnu**](https://www.gnu.org/software/make/manual/html_node)
-- [**a richer tutorial / makefiletutorial**](https://makefiletutorial.com/)
-- [**order-only exquisite / stackoverflow**](https://stackoverflow.com/a/68584653)
-- [**c libraries / docencia**](https://docencia.ac.upc.edu/FIB/USO/Bibliografia/unix-c-libraries.html#creating_static_archive)
-- [**auto-deps gen / mad-scientist**](http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/)
-- [**auto-deps gen / scottmcpeak**](https://scottmcpeak.com/autodepend/autodepend.html)
-- [**auto-deps gen / microhowto**](http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)
-- [**include statement / gnu**](https://www.gnu.org/software/make/manual/html_node/Include.html)
-- [**redis makefiel / github**](https://github.com/redis/redis/blob/unstable/src/Makefile)
+| Topic | Website |
+| ----- | ------- |
+| doc | [**docs.w3cub.com**](https://docs.w3cub.com/gnu_make/)  |
+| manual | [**gnu.org**](https://www.gnu.org/software/make/manual/html_node)  |
+| a richer tutorial | [**makefiletutorial.com**](https://makefiletutorial.com/)  |
+| order-only exquisite | [**stackoverflow.com**](https://stackoverflow.com/a/68584653)  |
+| c libraries | [**docencia.ac.upc.edu**](https://docencia.ac.upc.edu/FIB/USO/Bibliografia/unix-c-libraries.html#creating_static_archive)  |
+| auto-deps gen | [**make.mad-scientist.net**](http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/)  |
+| auto-deps gen | [**scottmcpeak.com**](https://scottmcpeak.com/autodepend/autodepend.html)  |
+| auto-deps gen | [**microhowto.info**](http://www.microhowto.info/howto/automatically_generate_makefile_dependencies.html)  |
+| include statement | [**gnu.org**](https://www.gnu.org/software/make/manual/html_node/Include.html)  |
+| redis makefile | [**github.com**](https://github.com/redis/redis/blob/unstable/src/Makefile)  |
 
 # Contact
 
