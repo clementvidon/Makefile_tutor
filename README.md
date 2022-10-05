@@ -29,7 +29,7 @@ Initially intended to help 42 students to step up their Makefile skills through
 **a documented template** that evolves gradually, **version by version**.  With
 the aim of making them more digestible and even tasty  🍔
 
-**2 hours** estimated to complete this tutorial. **82 hours** invested to design
+**2 hours** estimated to complete this tutorial. 82 hours invested to design
 it.
 
 **TL;DR** Confer to the bold text.
