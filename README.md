@@ -25,7 +25,7 @@ Addressed to beginners and not to newcomers, the idea behind this tutorial is to
 template we are going to explore will not be covered here.  On the other hand
 everything that is covered in this tutorial will be carefully detailed.
 
-Initially intended to help 42 students to step up their makefile skills through
+Initially intended to help 42 students to step up their Makefile skills through
 **a documented template** that evolves gradually, **version by version**.  With
 the aim of making them more digestible and even tasty  🍔
 
@@ -70,7 +70,7 @@ Then it can be quickly navigated thanks to the:
 
 Each version of the template has an assigned directory in the
 [**projects**](https://github.com/clemedon/Makefile_tutor/tree/main/projects)
-directory of the repository, to play with a makefile open a terminal and run:
+directory of the repository, to play with a Makefile open a terminal and run:
 
 ```bash
 git clone git@github.com:clemedon/Makefile_tutor.git
@@ -94,7 +94,7 @@ Each **version** the template has **3 sections**:
 
 - **Structure** is the project structure sketch.
 - **Brief** is a summary made from the bold parts of the template comments.
-- **Template** is a commented makefile template with comments (that are always
+- **Template** is a commented Makefile template with comments (that are always
   placed at the end of the template part that concerns them).
 
 Our **template** will be articulated around the following **parts**:
@@ -124,10 +124,10 @@ target: prerequisite
 
 # Syntax
 
-Like every makefile the template uses a combination of makefile syntax and shell
+Like every Makefile the template uses a combination of Makefile syntax and shell
 script syntax.  The **shell script syntax** is reserved and limited to recipe
 lines, by default those lines have to **start with a `TAB`** character to be
-differentiated by make (and passed to the shell).  The **makefile syntax** is
+differentiated by make (and passed to the shell).  The **Makefile syntax** is
 used for **all the other lines**.
 
 About the **equal signs**:
@@ -314,7 +314,7 @@ re:
 
 - **`MAKE`** is a **predefined variable** whose value corresponds to the make
   executable being run, for this reason we choose to increment its options.
-  When a makefile is executed from another makefile, the called's `MAKE`
+  When a Makefile is executed from another Makefile, the called's `MAKE`
   variable inherit from the caller's `MAKE` value.  We pass it the
   `--no-print-directory` flag for a cleaner output, try to remove it and run
   `make` to see the difference.
@@ -406,7 +406,7 @@ resource that is required by the direct upper level encountered `0 → 1 → 2 �
 
 <sub><sub><hr></sub></sub>
 
-- For the `re` rule we have no choice but make an external call to our makefile
+- For the `re` rule we have no choice but make an external call to our Makefile
   because we should not rely on the order in which prerequisites are specified.
   For example `re: fclean all` wouldn't not be reliable if **parallelization**
   was **enabled by `make --jobs`**.
@@ -417,7 +417,7 @@ resource that is required by the direct upper level encountered `0 → 1 → 2 �
   that make will run regardless of whether a file with that name exists.  In
   short these prerequisites are our targets that don't bear the name of a file.
 
-Try to remove the `.PHONY: re`, create a file named `re` at the makefile level
+Try to remove the `.PHONY: re`, create a file named `re` at the Makefile level
 in the project directory and run `make re`.  It won't work.
 
 Now if you do the same with `all` it won't cause any problem, as we know
@@ -527,7 +527,7 @@ re:
 
 *We prefer `info` to shell `echo` because it is a make function.  Also unlike
 `echo` that can only be used inside a recipe, `info` can be used anywhere in a
-makefile which makes it powerful for debugging.*
+Makefile which makes it powerful for debugging.*
 
 <sub><sub><hr></sub></sub>
 
@@ -811,7 +811,7 @@ main.o: main.c              main.o: main.c icecream.h
   compilation.  The `-MP` option prevents errors that are triggered if a header
   file has been deleted or renamed.
 
-  Dependency files must be included into our makefile right after the objects
+  Dependency files must be included into our Makefile right after the objects
   creation so to obtain their names we copy `OBJS` into `DEPS` and use
   *substitution reference* to turn `.o` part of their name into `.d`.
 
@@ -875,8 +875,8 @@ re:
 ```
 
 - **Dependency files** are written in the make language and **must be included**
-  into our makefile to be read.  The `include` directive work the same as C
-  `#include`, it tells make to suspend its current makefile reading and read the
+  into our Makefile to be read.  The `include` directive work the same as C
+  `#include`, it tells make to suspend its current Makefile reading and read the
   included files before continuing. Make sure to include the dependencies after
   they are created → after the compilation rule that invoke `-MMD` via
   `$(CPPFLAGS)`.
@@ -1109,7 +1109,7 @@ re:
 
 <sub><sub><hr></sub></sub>
 
-- As both rules `clean` and `fclean` appear in the makefile of all our
+- As both rules `clean` and `fclean` appear in the Makefile of all our
   `$(LIBS_TARGET)` we can **call** these **rules** for each of them
   **recursively** using a shell `for` loop.  Here again we use the `dir`
   function to only keep the directory part of the library.
