@@ -29,8 +29,9 @@ Initially intended to help 42 students to step up their makefile skills through
 **a documented template** that evolves gradually, **version by version**.  With
 the aim of making them more digestible and even tasty  🍔
 
-- 2h estimated to fully achieve this tutorial.
-- 81h invested in the realization of this tutorial.
+
+It will take you **less than 2h** to completely achieve this tutorial.<br>
+*Against 82h invested in its realization.*
 
 **TL;DR** Confer to the bold text.
 
