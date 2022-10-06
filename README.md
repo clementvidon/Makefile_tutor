@@ -47,7 +47,7 @@ it.
 - [v1](#version-1) Simplest C project
 - [v2](#version-2) Project that include headers
 - [v3](#version-3) Project with any kind of directory structure
-- [v4](#version-4) Static library
+- [v4](#version-4) Static library (+ introduce auto-gen dependencies)
 - [v5](#version-5) Project that uses libraries
 
 ***[ TODO ]***
