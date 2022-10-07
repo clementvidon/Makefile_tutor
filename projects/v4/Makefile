@@ -38,11 +38,11 @@ ARFLAGS     := -r -c -s
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
-# MAKE      quietly make
+# MAKEFLAGS make flags
 # DIR_DUP   duplicate directory tree
 
 RM          := rm -f
-MAKE        := $(MAKE) --no-print-directory
+MAKEFLAGS   += --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#

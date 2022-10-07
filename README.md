@@ -131,7 +131,7 @@ used for **all the other lines**.
 
 About the **equal signs**:
 
-- `:=` **simply expand** the defined variable (like C equal sign).
+- `:=` **simply expand** the defined variable (like C `=`).
 - `=` **recursively expand** the defined variable (the expression is expanded
   afterward, when (and each time) the variable is used).
 
@@ -163,7 +163,7 @@ all:
 [**Version 1 / Simplest C project**](#version-1)
 
 > - 42 C coding style conventions
-> - `MAKE` predefined variable
+> - builtin variables
 > - The C compilation implicit rule
 > - pattern rule contains `%` character
 > - Automatic variables in practice
@@ -202,7 +202,8 @@ all:
 > - `addprefix` make function
 > - flags and libraries used by the linker
 > - `dir` function
-> - Compiling with a library recap
+> - Build with a library
+> - Linking with a library
 > - builds each of the required libraries
 > - call rules recursively
 
@@ -231,7 +232,7 @@ The simplest, build a program called `icecream` with the following structure:
 ###     v1 Brief
 
 - 42 C coding style conventions
-- `MAKE` predefined variable
+- builtin variables
 - The C compilation implicit rule
 - pattern rule contains `%` character
 - Automatic variables in practice
@@ -266,9 +267,10 @@ CFLAGS      := -Wall -Wextra -Werror
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
+# MAKEFLAGS make flags
 
 RM          := rm -f
-MAKE        := $(MAKE) --no-print-directory
+MAKEFLAGS   += --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -303,20 +305,23 @@ re:
 ####################################### END_1 ####
 ```
 
-- The choice of the `CC` and `CFLAGS` values, `$(NAME)`, `clean`, `fclean`,
-  `all` and `re` as the basic rules as well as not using a wildcard to auto
-  generate the sources list is guided by the **42 C coding style conventions**,
-  do not hesitate to disagree and change it (like renaming `clean` and `fclean`
-  to the more GNU conventional `mostlyclean` and `clean` respectively).
+- The choice of the `CC` and `CFLAGS` values, `NAME`, `clean`, `fclean`, `all`
+  and `re` as the basic rules as well as not using a wildcard to auto generate
+  the sources list is guided by the **42 C coding style conventions**, do not
+  hesitate to disagree and change it (like renaming `clean` and `fclean` to the
+  more GNU conventional `mostlyclean` and `clean` respectively).
 
 <sub><sub><hr></sub></sub>
 
-- **`MAKE`** is a **predefined variable** whose value corresponds to the make
-  executable being run, for this reason we choose to increment its options.
-  When a Makefile is executed from another Makefile, the called's `MAKE`
-  variable inherit from the caller's `MAKE` value.  We pass it the
-  `--no-print-directory` flag for a cleaner output, try to remove it and run
-  `make` to see the difference.
+- `MAKE` and `MAKEFLAGS` are **builtin variables** like `CFLAGS` and a lot of
+  others that you can find in the *data-base* (`make --print-data-base`
+  command). `MAKE` value corresponds to the `make` executable being run and
+  `MAKEFLAGS` to its flags.  When a Makefile is executed from another Makefile,
+  the called's `MAKE` `MAKEFLAGS` variables inherit from the caller's `MAKE`
+  `MAKEFLAGS` values.
+
+Here we append `--no-print-directory` to `MAKEFLAGS` content to have a clearer
+output, try to remove it and `make re` to see the difference.
 
 <sub><sub><hr></sub></sub>
 
@@ -331,8 +336,8 @@ Where `%.o` expands to each objects, `%.c` to each sources, `$@` to the first
 target (which is `%.o`) and `$<` to the leftmost prerequisite (which is `%.c`).
 
 *As their name implies implicit rules are implicit and do not need to be
-written.  All the implicit rules can be found in the data-base, accessible
-with a `make -p -f/dev/null | less` shell command.*
+written.  As well as the builtin variables, all the implicit rules can be found
+in the data-base, accessible with `make -p -f/dev/null | less` command.*
 
 <sub><sub><hr></sub></sub>
 
@@ -485,10 +490,10 @@ CPPFLAGS    := -I .
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
-# MAKE      quietly make
+# MAKEFLAGS make flags
 
 RM          := rm -f
-MAKE        := $(MAKE) --no-print-directory
+MAKEFLAGS   += --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
@@ -650,11 +655,11 @@ CPPFLAGS    := -I include
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
-# MAKE      quietly make
+# MAKEFLAGS make flags
 # DIR_DUP   duplicate directory tree
 
 RM          := rm -f
-MAKE        := $(MAKE) --no-print-directory
+MAKEFLAGS   += --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 ```
 
@@ -832,11 +837,11 @@ main.o: main.c              main.o: main.c icecream.h
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
-# MAKE      quietly make
+# MAKEFLAGS make flags
 # DIR_DUP   duplicate directory tree
 
 RM          := rm -f
-MAKE        := $(MAKE) --no-print-directory
+MAKEFLAGS   += --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
@@ -954,7 +959,8 @@ Builds an `icecream` **program that uses** `libbase` and `libarom`
 - `addprefix` make function
 - flags and libraries used by the linker
 - `dir` function
-- Compiling with a library recap
+- Build with a library
+- Linking with a library
 - builds each of the required libraries
 - call rules recursively
 
@@ -1026,8 +1032,8 @@ LDLIBS      := $(addprefix -l,$(LIBS))
 
 <sub><sub><hr></sub></sub>
 
-- `LDFLAGS` and `LDLIBS` contains the **flags and libraries** that will be
-  **used by the linker** `ld` to link the library to our project sources.
+- `LDFLAGS` and `LDLIBS` contain the **flags and libraries** that will be **used
+  by the linker** `ld` to link the library to our project sources.
 
 <sub><sub><hr></sub></sub>
 
@@ -1037,12 +1043,9 @@ LDLIBS      := $(addprefix -l,$(LIBS))
 
 <sub><sub><hr></sub></sub>
 
-- **Compiling with a library recap**:
-
-Compiling with a library requires, in addition to a C project and a library, a
-`-I` flag that indicates to the compiler where to find the library header files,
-`-L` indicate to the linker where to find the library and `-l` the name of this
-library (conventionally: lib<name>).
+- **Build with a library** requires three flags: `-I` tell the compiler where to
+  find the lib header files, `-L` tells the linker where to look for the library
+  and `-l` the name of this library (without its conventional `lib` prefix).
 
 For example: `-I lib/libarom/include -L lib/libarom -l arom`
 
@@ -1052,11 +1055,11 @@ For example: `-I lib/libarom/include -L lib/libarom -l arom`
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
-# MAKE      quietly make
+# MAKEFLAGS make flags
 # DIR_DUP   duplicate directory tree
 
 RM          := rm -f
-MAKE        := $(MAKE) --silent --no-print-directory
+MAKEFLAGS   += --silent --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
@@ -1100,6 +1103,11 @@ re:
     $(MAKE) fclean
     $(MAKE) all
 ```
+
+- **Linking with a library** requires special attention to the order of the
+  linking flags.  In our case we need to make sure that `$(LDFLAGS)` and
+  `$(LDLIBS)` passes respectively before and after the `$(OBJS)` in the linking
+  recipe.
 
 - `$(LIBS_TARGET)` rule **builds each of the required libraries** found in the
   `INGREDIENTS` part.  It is a `$(NAME)` prerequisite for the same reason as

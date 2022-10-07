@@ -51,11 +51,11 @@ LDLIBS      := $(addprefix -l,$(LIBS))
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
-# MAKE      quietly make
+# MAKEFLAGS make flags
 # DIR_DUP   duplicate directory tree
 
 RM          := rm -f
-MAKE        := $(MAKE) --silent --no-print-directory
+MAKEFLAGS   += --silent --no-print-directory
 DIR_DUP     = mkdir -p $(@D)
 
 #------------------------------------------------#
@@ -98,6 +98,9 @@ fclean: clean
 re:
 	$(MAKE) fclean
 	$(MAKE) all
+
+info-%:
+	$(MAKE) --dry-run --always-make $* | grep -v "info"
 
 #------------------------------------------------#
 #   SPEC                                         #

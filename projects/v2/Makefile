@@ -24,10 +24,10 @@ CPPFLAGS    := -I .
 #   UTENSILS                                     #
 #------------------------------------------------#
 # RM        force remove
-# MAKE      quietly make
+# MAKEFLAGS make flags
 
 RM          := rm -f
-MAKE        := $(MAKE) --no-print-directory
+MAKEFLAGS   += --no-print-directory
 
 #------------------------------------------------#
 #   RECIPES                                      #
