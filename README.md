@@ -380,7 +380,7 @@ expanded by `%.c`.  For the same reasons `$@` expands to `%.o` not to `$(OBJS)`.
 all: $(NAME)                            3 ← 2
 
 $(NAME): $(OBJS)                        2 ← 1
-    $(CC) $^ -o $@
+    $(CC) $(OBJS) -o $(NAME)
 
 %.o: %.c                                1 ← 0
     $(CC) $(CFLAGS) -c -o $@ $<
