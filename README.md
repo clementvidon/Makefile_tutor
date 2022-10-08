@@ -1,5 +1,5 @@
 <h1 align="center">
-    MAKEFILE TUTOR (GNU UNIX)
+    MAKEFILE TUTOR (GNU)
 </h1>
 
 <h3 align="center">
@@ -32,7 +32,7 @@ the aim of making them more digestible and even tasty  🍔
 **2 hours** estimated to complete this tutorial. 86 hours invested to design
 it.
 
-**TL;DR** Confer to the bold text.
+**TL;DR** Refer to the bold text.
 
 [**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)<br>
 [**→ GitHub Repo ←**](https://github.com/clemedon/Makefile_tutor/)
@@ -52,10 +52,7 @@ it.
 
 ***[ TODO ]***
 
-- v6 Make C and C++
-- Makefile generator
-- BSD portability (POSIX)
-- DOS portability
+- POSIX Makefile
 
 # Usage
 
