@@ -1,5 +1,5 @@
 <h1 align="center">
-    MAKEFILE TUTOR (GNU)
+    [GNU] MAKEFILE TUTOR
 </h1>
 
 <h3 align="center">
