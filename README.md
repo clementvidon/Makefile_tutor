@@ -69,7 +69,7 @@ Each version of the template has an assigned directory in the
 directory of the repository, to play with a Makefile open a terminal and run:
 
 ```bash
-git clone git@github.com:clemedon/Makefile_tutor.git
+git clone https://github.com/clemedon/Makefile_tutor.git
 cd Makefile_tutor/projects
 ```
 
