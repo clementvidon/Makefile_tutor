@@ -26,10 +26,10 @@ template we are going to explore will not be covered here.  On the other hand
 everything that is covered in this tutorial will be carefully detailed.
 
 Initially intended to help 42 students to step up their Makefile skills through
-**a documented template** that evolves gradually, **version by version**.  With
-the aim of making them more digestible and even tasty  🍔
+**a C destined documented template** that evolves gradually, **version by
+version**.  With the aim of making them more digestible and even tasty  🍔
 
-**2 hours** estimated to complete this tutorial. 86 hours invested to design
+**1h30 hours** estimated to complete this tutorial. 90 hours invested to design
 it.
 
 **TL;DR** Refer to the bold text.
@@ -142,6 +142,8 @@ all:
     $(info $(A)) # output "Did"
     $(info $(B)) # output "Did you understand ?"
 ```
+
+About **variables** note that `${VAR}` and `$(VAR)` is exactly the same.
 
 **Automatic Variables** expansion:
 
