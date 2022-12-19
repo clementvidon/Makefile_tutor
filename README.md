@@ -1107,6 +1107,8 @@ re:
   linking flags.  In our case we need to make sure that `$(LDFLAGS)` and
   `$(LDLIBS)` passes respectively before and after the `$(OBJS)` in the linking
   recipe.
+  
+<sub><sub><hr></sub></sub>
 
 - `$(LIBS_TARGET)` rule **builds each of the required libraries** found in the
   `INGREDIENTS` part.  It is a `$(NAME)` prerequisite for the same reason as
