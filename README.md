@@ -29,8 +29,7 @@ Initially intended to help 42 students to step up their Makefile skills through
 **a C destined documented template** that evolves gradually, **version by
 version**.  With the aim of making them more digestible and even tasty  🍔
 
-**1h30 hours** estimated to complete this tutorial. 90 hours invested to design
-it.
+Count **1h hour** to complete this tutorial plus some time to play with the [**examples**](https://github.com/clemedon/Makefile_tutor/tree/main/projects). For those of you who are wondering, as I write this line I invested a total of 102 hours and 20 minutes in the making of this tutorial.
 
 **TL;DR** Refer to the bold text.
 
