@@ -38,20 +38,17 @@ Count **1 hour** to complete this tutorial plus some time to play with the [**ex
 
 <hr>
 
-***[ DONE ]***
+**Roadmap**
 
-- [GitHub Page](https://clemedon.github.io/Makefile_tutor/)
-- A [ready to make](#usage) project of each template version
-- [bold text](#usage) that acts as a summary
-- [v1](#version-1) Simplest C project
-- [v2](#version-2) Project that include headers
-- [v3](#version-3) Project with any kind of directory structure
-- [v4](#version-4) Static library *+ introduce auto-gen dependencies*
-- [v5](#version-5) Project that uses libraries
-
-***[ TODO ]***
-
-- POSIX Makefile
+- [x] [GitHub Page](https://clemedon.github.io/Makefile_tutor/)
+- [x] A [ready to make](#usage) project of each template version
+- [x] [bold text](#usage) that acts as a summary
+- [x] [v1](#version-1) Simplest C project
+- [x] [v2](#version-2) Project that include headers
+- [x] [v3](#version-3) Project with any kind of directory structure
+- [x] [v4](#version-4) Static library *+ introduce auto-gen dependencies*
+- [x] [v5](#version-5) Project that uses libraries
+- [ ] POSIX Makefile
 
 # Usage
 
@@ -1106,7 +1103,7 @@ re:
   linking flags.  In our case we need to make sure that `$(LDFLAGS)` and
   `$(LDLIBS)` passes respectively before and after the `$(OBJS)` in the linking
   recipe.
-  
+
 <sub><sub><hr></sub></sub>
 
 - `$(LIBS_TARGET)` rule **builds each of the required libraries** found in the
