@@ -29,7 +29,7 @@ Initially intended to help 42 students to step up their Makefile skills through
 **a C-focused documented template** that evolves gradually, **version by
 version**.  With the aim of making them more digestible and even tasty  🍔
 
-Allow **1 hour** to complete this tutorial, plus some additional time to work with the [**examples**](https://github.com/clemedon/Makefile_tutor/tree/main/projects). For those of you who are wondering, as I write this line, I have invested a total of 102 hours and 40 minutes in creating this tutorial.
+Allow **1 hour** to complete this tutorial, plus some additional time to work with the [**examples**](https://github.com/clemedon/Makefile_tutor/tree/main/projects). For those of you who are wondering, as I write this line, I have invested a total of 102 hours and 50 minutes in creating this tutorial.
 
 **TL;DR** Refer to the bold text.
 
