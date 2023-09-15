@@ -26,10 +26,10 @@ template we are going to explore will not be covered here.  On the other hand
 everything that is covered in this tutorial will be carefully detailed.
 
 Initially intended to help 42 students to step up their Makefile skills through
-**a C destined documented template** that evolves gradually, **version by
+**a C-focused documented template** that evolves gradually, **version by
 version**.  With the aim of making them more digestible and even tasty  🍔
 
-Count **1 hour** to complete this tutorial plus some time to play with the [**examples**](https://github.com/clemedon/Makefile_tutor/tree/main/projects). For those of you who are wondering, as I write this line I invested a total of 102 hours and 20 minutes in the making of this tutorial.
+Allow **1 hour** to complete this tutorial, plus some additional time to work with the [**examples**](https://github.com/clemedon/Makefile_tutor/tree/main/projects). For those of you who are wondering, as I write this line, I have invested a total of 102 hours and 20 minutes in creating this tutorial.
 
 **TL;DR** Refer to the bold text.
 
@@ -77,7 +77,7 @@ make <target>
 *PS1 **`C++` users** have to replace `CC = clang` with `CXX = g++` and `CFLAGS`
 with `CXXFLAGS`.*
 
-*PS2 do not hesitate to **fork me** so as to remove everything that does not
+*PS2 feel free to **fork me** so as to remove everything that does not
 interest you and customize me according to your needs.*
 
 # Glossary
