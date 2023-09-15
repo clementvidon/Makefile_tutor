@@ -82,7 +82,7 @@ interest you and customize me according to your needs.*
 
 # Glossary
 
-Each **version** the template has **3 sections**:
+Each **version** of the template has **3 sections**:
 
 - **Structure** is the project structure sketch.
 - **Brief** is a summary made from the bold parts of the template comments.
