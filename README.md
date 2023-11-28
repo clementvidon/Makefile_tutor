@@ -642,8 +642,7 @@ CPPFLAGS    := -I include
   variable with the specified alterations.  `$(SRCS:%=$(SRC_DIR)/%)` means that
   each item of `SRCS` represented by `%` becomes itself (`%`) plus the
   `$(SRC_DIR)/` alteration, so `main.c` becomes `src/main.c`. `OBJS` will then
-  use the same process to convert `src/main.c` into `src/main.o`, dedicated to
-  the `OBJ_DIR`.
+  use the same process to convert `src/main.c` into `obj/main.o`, based on `OBJ_DIR` and the new value of `SRCS`.
 
 ```make
 #------------------------------------------------#
@@ -660,7 +659,7 @@ DIR_DUP     = mkdir -p $(@D)
 
 - `DIR_DUP` will **generate the `OBJ_DIR` based on `SRC_DIR`** structure with
   `mkdir -p` which creates the directory and the parents directories if missing,
-  and `$(@D)` that we have seen in [syntax](#syntax) section.
+  and `$(@D)` that will expand to the directory part of the target, as we've seen in the [syntax](#syntax) section.
 
 *This will work with every possible kind of src directory structure.*
 
@@ -697,7 +696,7 @@ re:
     $(MAKE) all
 ```
 
-- The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`
+- The **compilation rule** `.o: %.c` becomes `$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c`,
   since our structure **uses dedicated source and object directories**.
 
 ```make
@@ -718,7 +717,7 @@ re:
 ###     v4 Structure
 
 Builds a **library** so there are no `main.c`.  We generate **dependencies**
-that are stored with the objects therefor we rename the `obj` directory into a
+that are stored with the objects. Therefor we rename the `obj` directory into a
 more general `.build` directory.
 
 ```
@@ -1143,7 +1142,7 @@ run: re
 
 - `run` is a simple rule that **`make` and `run` the default goal**.  We start
   the shell command with the `hyphen` symbol to prevent make from interrupting
-  its execution if our program execution returns a non-zero value.
+  its own execution if our program execution returns a non-zero value.
 
 ```make
 info-%:
