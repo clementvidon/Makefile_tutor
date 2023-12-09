@@ -36,6 +36,11 @@ Allow **1 hour** to complete this tutorial, plus some additional time to work wi
 [**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)<br>
 [**→ GitHub Repo ←**](https://github.com/clemedon/Makefile_tutor/)
 
+[![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
+
+[cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
+[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+
 <hr>
 
 **Roadmap**
@@ -1198,5 +1203,3 @@ update:
 cvidon   42
 clemedon icloud
 ```
-
-<sub><i>Copyright 2022 Clément Vidon.  All Rights Reserved.</i></sub>
