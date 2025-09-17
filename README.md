@@ -33,7 +33,7 @@ Allow **1 hour** to complete this tutorial, plus some additional time to work wi
 
 **TL;DR** Refer to the bold text.
 
-[**→ GitHub Page ←**](https://clemedon.github.io/Makefile_tutor/)<br>
+[**→ GitHub Page ←**](https://clementvidon.github.io/Makefile_tutor/)<br>
 [**→ GitHub Repo ←**](https://github.com/clemedon/Makefile_tutor/)
 
 [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
