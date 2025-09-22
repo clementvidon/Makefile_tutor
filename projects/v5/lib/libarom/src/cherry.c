@@ -1,6 +1,6 @@
 #include "arom.h"
 
-void arom_coco(void)
+void arom_cherry(void)
 {
-	write (1, "arom: coco\n", 11);
+	write (1, "arom: cherry\n", 13);
 }
