@@ -87,11 +87,13 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
 
 -include $(DEPS)
 
-clean:
+clean: mclean
 	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f clean; done
+
+mclean:
 	$(RM) $(OBJS) $(DEPS)
 
-fclean: clean
+fclean: mclean
 	for f in $(dir $(LIBS_TARGET)); do $(MAKE) -C $$f fclean; done
 	$(RM) $(NAME)
 
@@ -106,7 +108,7 @@ info-%:
 #   SPEC                                         #
 #------------------------------------------------#
 
-.PHONY: clean fclean re
+.PHONY: clean fclean mclean re 
 .SILENT:
 
 ####################################### END_5 ####
